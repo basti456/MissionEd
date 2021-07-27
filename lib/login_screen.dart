@@ -13,9 +13,10 @@ class LoginScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 0.0),
           child: ListView(
-
             children: [
-              SizedBox(height: 80.0,),
+              SizedBox(
+                height: 80.0,
+              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -46,18 +47,15 @@ class LoginScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  TextField(
-                    decoration: kDecoration
-                  ),
+                  TextField(decoration: kDecoration),
                   SizedBox(
                     height: 24.0,
                   ),
                   TextField(
-                    decoration: kDecoration.copyWith(
-                      prefixIcon: Icon(Icons.vpn_key_outlined),
-                      hintText: 'Enter your password',
-                    )
-                  ),
+                      decoration: kDecoration.copyWith(
+                    prefixIcon: Icon(Icons.vpn_key_outlined),
+                    hintText: 'Enter your password',
+                  )),
                   SizedBox(
                     height: 16.0,
                   ),
@@ -65,7 +63,6 @@ class LoginScreen extends StatelessWidget {
                     colour: Color(0xff312C69),
                     text: 'Log In',
                   ),
-
                   Text(
                     ' Forget your password ?',
                     style: TextStyle(
@@ -76,7 +73,9 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 120,),
+              SizedBox(
+                height: 120,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.baseline,
@@ -112,16 +111,13 @@ class LoginScreen extends StatelessWidget {
                     fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 5,),
-
-              Container(
-                  height: 48 ,
-                  child: Image.asset('images/goog.png')
+              SizedBox(
+                height: 5,
               ),
-              SizedBox(height: 20,)
-
-
-
+              Container(height: 48, child: Image.asset('images/goog.png')),
+              SizedBox(
+                height: 20,
+              )
             ],
           ),
         ),
