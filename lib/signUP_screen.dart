@@ -12,15 +12,16 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       backgroundColor: Color(0xfffcfcfc),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(20.0, 24.0, 20.0, 0.0),
           child: ListView(
-
             children: [
-              SizedBox(height: 60.0,),
+              SizedBox(
+                height: 60.0,
+              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -53,32 +54,28 @@ class _SignUpState extends State<SignUp> {
                 children: [
                   TextField(
                       decoration: kDecoration.copyWith(
-                        prefixIcon: Icon(Icons.person_outline_outlined),
-                        hintText: 'Enter username'
-                      )
-                  ),
+                          prefixIcon: Icon(Icons.person_outline_outlined),
+                          hintText: 'Enter username')),
                   SizedBox(
                     height: 16.0,
                   ),
-                  TextField(
-                      decoration: kDecoration
-                  ),
-                  SizedBox(height: 16.0,),
-                  TextField(
-                      decoration: kDecoration.copyWith(
-                        prefixIcon: Icon(Icons.vpn_key_outlined),
-                        hintText: 'Enter your password',
-                      )
-                  ),
+                  TextField(decoration: kDecoration),
                   SizedBox(
                     height: 16.0,
                   ),
                   TextField(
                       decoration: kDecoration.copyWith(
-                        prefixIcon: Icon(Icons.vpn_key_outlined),
-                        hintText: 'Confirm password',
-                      )
+                    prefixIcon: Icon(Icons.vpn_key_outlined),
+                    hintText: 'Enter your password',
+                  )),
+                  SizedBox(
+                    height: 16.0,
                   ),
+                  TextField(
+                      decoration: kDecoration.copyWith(
+                    prefixIcon: Icon(Icons.vpn_key_outlined),
+                    hintText: 'Confirm password',
+                  )),
                   SizedBox(
                     height: 16.0,
                   ),
@@ -86,11 +83,11 @@ class _SignUpState extends State<SignUp> {
                     colour: Color(0xff312C69),
                     text: 'Sign Up',
                   ),
-
-
                 ],
               ),
-              SizedBox(height: 60,),
+              SizedBox(
+                height: 60,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.baseline,
@@ -126,16 +123,13 @@ class _SignUpState extends State<SignUp> {
                     fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 5,),
-
-              Container(
-                  height: 42 ,
-                  child: Image.asset('images/goog.png')
+              SizedBox(
+                height: 5,
               ),
-              SizedBox(height: 20,)
-
-
-
+              Container(height: 42, child: Image.asset('images/goog.png')),
+              SizedBox(
+                height: 20,
+              )
             ],
           ),
         ),
