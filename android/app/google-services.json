@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "757081676582",
+    "project_id": "missioned-d3b59",
+    "storage_bucket": "missioned-d3b59.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:757081676582:android:766dd674880479c7c87fe7",
+        "android_client_info": {
+          "package_name": "com.android.mission_ed"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "757081676582-qupoh672qdpjb5lmmlpjl9adsrdoqk47.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android.mission_ed",
+            "certificate_hash": "6d84d130ba7f732c35dd2f4d899f24f676ff989f"
+          }
+        },
+        {
+          "client_id": "757081676582-pam9qcjpt8ar9cljqrqkerd0mmpfan3i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPQI9DVB9f2qm6RK2sZb3E4vIkJWeNDps"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "757081676582-pam9qcjpt8ar9cljqrqkerd0mmpfan3i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
