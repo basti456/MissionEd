@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'round_icon_button.dart';
 import 'single_post.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key key}) : super(key: key);
 
@@ -12,54 +13,84 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 2.0,
-        title: Text(
-          'MissionEd',
-          style: TextStyle(
-              fontSize: 20.0,
-              fontWeight: FontWeight.bold,
-              color: Colors.blueAccent,
-              letterSpacing: 3.0),
-        ),
-        centerTitle: true,
-      ),
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.all(2.0),
+      backgroundColor: Color(0xfffcfcfc),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(
+                height: 20.0,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 2),
+                child: Text(
+                  'MissionEd',
+                  style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xff312C69),
+                      letterSpacing: 3.0),
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(2.0),
                     child: Container(
-                      height: 50,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black54),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      child: Text(
-                        'Create New Post',
-                        style: TextStyle(
-                          fontSize: 25.0,
-                        ),
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            ' Latest Posts',
+                            style: TextStyle(
+                              textBaseline: TextBaseline.ideographic,
+                              color: Color(0xff4D3AA4),
+                              fontSize: 16.0,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                )
-              ],
-            ),
-            Container(
-              child: Column(
-                children: <Widget>[
-                  Text('Latest Posts'),
+                  Container(
+                    height: 38,
+                    width: 100,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black54),
+                        borderRadius: BorderRadius.circular(16.0),
+                        color: Color(0xff312C69)),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.all(2.0),
+                            child: Container(
+                              child: Text(
+                                'Create +',
+                                style: TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                 ],
               ),
-            ),
-            SinglePost()
-          ],
+              SizedBox(height: 10.0,),
+              SinglePost()
+            ],
+          ),
         ),
       ),
     );
