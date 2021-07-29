@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'round_icon_button.dart';
 import 'single_post.dart';
-
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key key}) : super(key: key);
-
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }

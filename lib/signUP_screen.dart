@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mission_ed/home_screen.dart';
 import 'package:mission_ed/rounded_button.dart';
 import 'package:mission_ed/constsnts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mission_ed/authenticate/methods.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -9,12 +11,10 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  final _auth = FirebaseAuth.instance;
   String email;
   String password;
   String username;
   String confirmPassword;
-  bool validate = true;
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +60,7 @@ class _SignUpState extends State<SignUp> {
                 children: [
                   TextField(
                       onChanged: (value) {
-                        username = value;
+                        username = value.trim();
                       },
                       decoration: kDecoration.copyWith(
                           prefixIcon: Icon(Icons.person_outline_outlined),
@@ -71,7 +71,7 @@ class _SignUpState extends State<SignUp> {
                   TextField(
                     decoration: kDecoration,
                     onChanged: (value) {
-                      email = value;
+                      email = value.trim();
                     },
                   ),
                   SizedBox(
@@ -102,11 +102,16 @@ class _SignUpState extends State<SignUp> {
                     height: 16.0,
                   ),
                   RoundButton(
-                    onPressed: () {
-                      final newUser=_auth.signInWithEmailAndPassword(email: email, password: password);
-                      if(newUser!=null){
-
-                      }
+                    onPressed: () async {
+                      print("It runs");
+                      createAccount(username, email, password).then((user) {
+                        if (user != null) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomeScreen()));
+                        }
+                      });
                     },
                     colour: Color(0xff312C69),
                     text: 'Sign Up',
