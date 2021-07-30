@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mission_ed/constsnts.dart';
@@ -19,14 +20,14 @@ class _CreatePostState extends State<CreatePost> {
   String description;
   FirebaseAuth _auth = FirebaseAuth.instance;
   String username;
-  File _image;
+  XFile _image;
 
 
   Future getImage() async{
     final picker=  ImagePicker();
     final image= await picker.pickImage(source: ImageSource.gallery);
     setState(() {
-      _image=image as File;
+      _image=image ;
     });
   }
   /*
@@ -76,7 +77,7 @@ class _CreatePostState extends State<CreatePost> {
                       )
                     ],
                   ),
-                  child: _image==null?Text('post'):Image.file(_image)
+                  child: _image==null?Image.network('https://cdn.dribbble.com/users/2394908/screenshots/10514933/media/310130d08451ef9c41904af397e0667f.jpg'):Image.file(File(_image.path))
                   ),
                 ),
 
