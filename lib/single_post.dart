@@ -37,6 +37,7 @@ class SinglePost extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           Padding(
                             padding: const EdgeInsets.symmetric(
@@ -53,16 +54,37 @@ class SinglePost extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Text(
-                            'Username',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                          Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Username',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text('cate:Category'),
+                              ],
+                            ),
                           )
                         ],
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text('Category'),
-                      ),
+                        child: Row(
+                          textBaseline: TextBaseline.ideographic,
+                          children: [
+
+                            Icon(Icons.watch_later,color: Colors.blueAccent,
+                            size: 32,),
+                            SizedBox(width: 3.0,),
+                            Text('255',style: TextStyle(
+                                color: Color(0xff312C69)
+                            ),),
+                          ],
+                        ),
+                      )
+
                     ],
                   ),
                   Padding(
