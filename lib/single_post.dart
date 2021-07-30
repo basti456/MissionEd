@@ -1,13 +1,72 @@
 import 'package:flutter/material.dart';
+import 'package:mission_ed/Modals.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:intl/intl.dart';
+class SinglePost extends StatefulWidget {
+  @override
+  _SinglePostState createState() => _SinglePostState();
+}
 
-class SinglePost extends StatelessWidget {
+class _SinglePostState extends State<SinglePost> {
+  List<Posts> allPosts = [];
+  String readTimestamp(int timestamp) {
+    var now = DateTime.now();
+    var format = DateFormat('HH:mm a');
+    var date = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
+    var diff = now.difference(date);
+    var time = '';
+
+    if (diff.inSeconds <= 0 || diff.inSeconds > 0 && diff.inMinutes == 0 || diff.inMinutes > 0 && diff.inHours == 0 || diff.inHours > 0 && diff.inDays == 0) {
+      time = format.format(date);
+    } else if (diff.inDays > 0 && diff.inDays < 7) {
+      if (diff.inDays == 1) {
+        time = diff.inDays.toString() + ' DAY AGO';
+      } else {
+        time = diff.inDays.toString() + ' DAYS AGO';
+      }
+    } else {
+      if (diff.inDays == 7) {
+        time = (diff.inDays / 7).floor().toString() + ' WEEK AGO';
+      } else {
+
+        time = (diff.inDays / 7).floor().toString() + ' WEEKS AGO';
+      }
+    }
+
+    return time;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    DatabaseReference referenceData =
+        FirebaseDatabase.instance.reference().child('Posts');
+    referenceData.once().then((DataSnapshot snapshot) {
+      allPosts.clear();
+      var keys = snapshot.value.keys;
+      var values = snapshot.value;
+      for (var key in keys) {
+        Posts post = new Posts(
+            id: values[key]['id'],
+            title: values[key]['id'],
+            description: values[key]['id'],
+            category: values[key]['id'],
+            postedBy: values[key]['id'],
+            imgUrl: values[key]['imgUrl'],
+            username: values[key]['username']);
+        allPosts.add(post);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    var currentTime=DateTime.now().second;
     return Expanded(
       child: ListView.builder(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
-        itemCount: 5,
+        itemCount: allPosts.length,
         itemBuilder: (context, index) => Column(
           children: [
             Container(
@@ -47,8 +106,9 @@ class SinglePost extends StatelessWidget {
                                 shape: BoxShape.circle,
                                 image: DecorationImage(
                                     fit: BoxFit.fill,
-                                    image: NetworkImage(
-                                        "https://cdn.dribbble.com/users/533687/screenshots/3884681/attachments/882956/mikepiechota-howthey-design.jpg")),
+                                    image: allPosts[index].imgUrl == ""
+                                        ? AssetImage('images/dummy profile.png')
+                                        : NetworkImage(allPosts[index].imgUrl)),
                               ),
                             ),
                           ),
@@ -58,7 +118,7 @@ class SinglePost extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Username',
+                                  allPosts[index].username,
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 Text('cate:Category'),
@@ -72,17 +132,21 @@ class SinglePost extends StatelessWidget {
                         child: Row(
                           textBaseline: TextBaseline.ideographic,
                           children: [
-
-                            Icon(Icons.watch_later,color: Colors.blueAccent,
-                            size: 32,),
-                            SizedBox(width: 3.0,),
-                            Text('255',style: TextStyle(
-                                color: Color(0xff312C69)
-                            ),),
+                            Icon(
+                              Icons.watch_later,
+                              color: Colors.blueAccent,
+                              size: 32,
+                            ),
+                            SizedBox(
+                              width: 3.0,
+                            ),
+                            Text(
+                              readTimestamp(int.parse(allPosts[index].id)),
+                              style: TextStyle(color: Color(0xff312C69)),
+                            ),
                           ],
                         ),
                       )
-
                     ],
                   ),
                   Padding(

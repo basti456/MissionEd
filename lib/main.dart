@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mission_ed/create_post.dart';
 import 'package:mission_ed/screens/network.dart';
 import 'package:provider/provider.dart';
 import 'google_sign_in.dart';
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: Network(),
+        home: CreatePost(),
       ),
     );
   }

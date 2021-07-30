@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mission_ed/create_post.dart';
 import 'single_post.dart';
+
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -66,14 +68,22 @@ class _HomeScreenState extends State<HomeScreen> {
                         Expanded(
                           child: Padding(
                             padding: EdgeInsets.all(2.0),
-                            child: Container(
-                              child: Text(
-                                'Create +',
-                                style: TextStyle(
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                                textAlign: TextAlign.center,
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => CreatePost()));
+                              },
+                              child: Container(
+                                child: Text(
+                                  'Create +',
+                                  style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
                             ),
                           ),
@@ -83,7 +93,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 10.0,),
+              SizedBox(
+                height: 10.0,
+              ),
               SinglePost()
             ],
           ),

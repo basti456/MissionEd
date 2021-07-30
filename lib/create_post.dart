@@ -15,7 +15,15 @@ class _CreatePostState extends State<CreatePost> {
   String title;
   String description;
   FirebaseAuth _auth = FirebaseAuth.instance;
+  String username;
+  /*
+  @override
+  void initState() {
+    super.initState();
+    FirebaseDatabase.instance.reference().child('Users').child(_auth.currentUser.uid).once().then((DataSnapshot snapshot){
 
+    })
+  }*/
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -159,7 +167,7 @@ class _CreatePostState extends State<CreatePost> {
                   if (title.isNotEmpty && description.isNotEmpty) {
                     if (_dropDownValue != null) {
                       final user = _auth.currentUser;
-                      final time = DateTime.now().millisecondsSinceEpoch;
+                      final time = DateTime.now().microsecondsSinceEpoch;
                       final databaseRef = FirebaseDatabase.instance
                           .reference()
                           .child('Posts')
@@ -169,7 +177,9 @@ class _CreatePostState extends State<CreatePost> {
                         'title': title,
                         'description': description,
                         'category': _dropDownValue,
-                        'postedBy': user.uid.toString()
+                        'postedBy': user.uid.toString(),
+                        'imgUrl':user.photoURL==null?"":user.photoURL,
+                        'username':""
                       });
                       Navigator.push(
                           context,
