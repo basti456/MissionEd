@@ -1,13 +1,19 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mission_ed/authenticate/methods.dart';
+import 'package:mission_ed/home_screen.dart';
 import 'package:mission_ed/profile_screen.dart';
 import 'package:mission_ed/rounded_button.dart';
 import 'package:mission_ed/constsnts.dart';
+import 'package:mission_ed/signUP_screen.dart';
 import 'package:provider/provider.dart';
 import 'google_sign_in.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key key}) : super(key: key);
+  final _auth = FirebaseAuth.instance;
+  String email;
+  String password;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +27,17 @@ class LoginScreen extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           } else if (snapshot.hasData) {
-            return ProfileScreen();
+            final user = FirebaseAuth.instance.currentUser;
+            final databaseRef = FirebaseDatabase.instance
+                .reference()
+                .child('Users')
+                .child(user.uid)
+                .set({
+              'id': user.uid,
+              'username': user.displayName,
+              'email': user.email
+            });
+            return HomeScreen();
           } else if (snapshot.hasError) {
             return Center(
               child: Text('Something Went Wrong'),
@@ -65,19 +81,38 @@ class LoginScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        TextField(decoration: kDecoration),
+                        TextField(
+                          decoration: kDecoration,
+                          onChanged: (value) {
+                            email = value;
+                          },
+                        ),
                         SizedBox(
                           height: 24.0,
                         ),
                         TextField(
+                            obscureText: true,
+                            onChanged: (value) {
+                              password = value;
+                            },
                             decoration: kDecoration.copyWith(
-                          prefixIcon: Icon(Icons.vpn_key_outlined),
-                          hintText: 'Enter your password',
-                        )),
+                              prefixIcon: Icon(Icons.vpn_key_outlined),
+                              hintText: 'Enter your password',
+                            )),
                         SizedBox(
                           height: 16.0,
                         ),
                         RoundButton(
+                          onPressed: () async {
+                            logIn(email, password).then((user) {
+                              if (user != null) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => HomeScreen()));
+                              }
+                            });
+                          },
                           colour: Color(0xff312C69),
                           text: 'Log In',
                         ),
@@ -94,29 +129,35 @@ class LoginScreen extends StatelessWidget {
                     SizedBox(
                       height: 120,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.baseline,
-                      textBaseline: TextBaseline.ideographic,
-                      children: [
-                        Text(
-                          ' Don\'t have Account ?',
-                          style: TextStyle(
-                            textBaseline: TextBaseline.ideographic,
-                            color: Color(0xff4D3AA4),
-                            fontSize: 14.0,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        Text(
-                          'SignUp',
-                          style: TextStyle(
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => SignUp()));
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.baseline,
+                        textBaseline: TextBaseline.ideographic,
+                        children: [
+                          Text(
+                            ' Don\'t have Account ?',
+                            style: TextStyle(
+                              textBaseline: TextBaseline.ideographic,
                               color: Color(0xff4D3AA4),
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
+                              fontSize: 14.0,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          Text(
+                            'SignUp',
+                            style: TextStyle(
+                                color: Color(0xff4D3AA4),
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
                     ),
                     SizedBox(
                       height: 8,

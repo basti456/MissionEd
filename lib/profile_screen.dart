@@ -1,5 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import 'package:firebase_database/firebase_database.dart';
 class ProfileScreen extends StatefulWidget {
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -8,6 +9,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
+    final user=FirebaseAuth.instance.currentUser;
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -34,7 +36,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: CircleAvatar(
                       radius: 40.0,
                       backgroundColor: Colors.white,
-                      backgroundImage: AssetImage('images/goog.png'),
+                      backgroundImage: user.photoURL==null?AssetImage('images/dummy profile.png'):NetworkImage(user.photoURL)
 
                     ),
                   ),
@@ -47,7 +49,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         padding: EdgeInsets.symmetric(
                             horizontal: 4.0, vertical: 3.0),
                         child: Text(
-                          'Ekagra Agrawal',
+                          user.displayName==null?'Anonmyous':user.displayName,
                           textAlign: TextAlign.start,
                           style: TextStyle(
                             fontSize: 22.0,
@@ -60,7 +62,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         padding: EdgeInsets.symmetric(
                             horizontal: 4.0, vertical: 3.0),
                         child: Text(
-                          'akagraagrawal89@gmail.com',
+                          user.email,
                           textAlign: TextAlign.start,
                           style: TextStyle(
                             fontSize: 18.0,
@@ -73,7 +75,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
               SizedBox(height: 25.0,),
-              ProfileCard(text: 'General',),
+              GestureDetector(child: ProfileCard(text: 'General',),onTap: (){
+                /*final provider = Provider.of<GoogleSignInProvider>(
+                    context,
+                    listen: false);
+                provider.logout();*/
+                print(user);
+              },),
               ProfileCard(text: 'Rewards',),
               ProfileCard(text: 'Accounts',)
             ],
