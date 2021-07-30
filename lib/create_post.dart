@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mission_ed/constsnts.dart';
 import 'package:mission_ed/home_screen.dart';
 import 'package:mission_ed/rounded_button.dart';
@@ -16,6 +19,16 @@ class _CreatePostState extends State<CreatePost> {
   String description;
   FirebaseAuth _auth = FirebaseAuth.instance;
   String username;
+  File _image;
+
+
+  Future getImage() async{
+    final picker=  ImagePicker();
+    final image= await picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _image=image as File;
+    });
+  }
   /*
   @override
   void initState() {
@@ -42,35 +55,31 @@ class _CreatePostState extends State<CreatePost> {
                       fontWeight: FontWeight.w700),
                 ),
               ),
-              Container(
-                height: 180,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(5.0),
-                  border: Border.all(
-                    color: Color(0xff4D3AA4),
-                    width: 1.0,
+              GestureDetector(
+                onTap: getImage,
+                child: Container(
+                  height: 180,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5.0),
+                    border: Border.all(
+                      color: Color(0xff4D3AA4),
+                      width: 1.0,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey,
+                        blurRadius: 2.0,
+                        spreadRadius: 0.0,
+                        offset:
+                            Offset(2.0, 2.0), // shadow direction: bottom right
+                      )
+                    ],
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey,
-                      blurRadius: 2.0,
-                      spreadRadius: 0.0,
-                      offset:
-                          Offset(2.0, 2.0), // shadow direction: bottom right
-                    )
-                  ],
+                  child: _image==null?Text('post'):Image.file(_image)
+                  ),
                 ),
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Image.network(
-                        "https://cdn.dribbble.com/users/533687/screenshots/3884681/attachments/882956/mikepiechota-howthey-design.jpg"),
-                    Image.network(
-                        'https://cdn.dribbble.com/users/2394908/screenshots/10514933/media/310130d08451ef9c41904af397e0667f.jpg')
-                  ],
-                ),
-              ),
+
               SizedBox(
                 height: 20.0,
               ),
