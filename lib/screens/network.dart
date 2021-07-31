@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mission_ed/SingleFFS.dart';
+import 'package:mission_ed/SingleSearch.dart';
+import 'package:mission_ed/constsnts.dart';
 
 class Network extends StatefulWidget {
   @override
@@ -9,16 +12,15 @@ class _NetworkState extends State<Network> {
   bool button1 = true;
   bool button2 = false;
   bool button3 = false;
+  Widget fFs;
+  Widget _search;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white
-
-          ),
+          decoration: BoxDecoration(color: Colors.white),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -42,10 +44,9 @@ class _NetworkState extends State<Network> {
               Container(
                 height: 62,
                 width: 400,
-
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 8.0, vertical: 2.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
@@ -56,6 +57,16 @@ class _NetworkState extends State<Network> {
                               button1 = true;
                               button2 = false;
                               button3 = false;
+                              fFs = Expanded(
+                                child: ListView.builder(
+                                    scrollDirection: Axis.vertical,
+                                    shrinkWrap: true,
+                                    itemCount: 10,
+                                    itemBuilder: (_, index) {
+                                      return SingleFFS();
+                                    }),
+                              );
+                              _search = null;
                             });
                           },
                           child: NetworkItems(
@@ -72,6 +83,17 @@ class _NetworkState extends State<Network> {
                               button1 = false;
                               button2 = true;
                               button3 = false;
+                              button3 = false;
+                              fFs = Expanded(
+                                child: ListView.builder(
+                                    scrollDirection: Axis.vertical,
+                                    shrinkWrap: true,
+                                    itemCount: 10,
+                                    itemBuilder: (_, index) {
+                                      return SingleFFS();
+                                    }),
+                              );
+                              _search = null;
                             });
                           },
                           child: NetworkItems(
@@ -88,6 +110,24 @@ class _NetworkState extends State<Network> {
                               button1 = false;
                               button2 = false;
                               button3 = true;
+                              fFs = Expanded(
+                                child: ListView.builder(
+                                    scrollDirection: Axis.vertical,
+                                    shrinkWrap: true,
+                                    itemCount: 10,
+                                    itemBuilder: (_, index) {
+                                      return SingleSearch();
+                                    }),
+                              );
+                              _search = Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: TextField(
+                                    decoration: kDecoration.copyWith(
+                                        prefixIcon: Icon(
+                                            Icons.youtube_searched_for_rounded),
+                                        hintText: 'Enter username')),
+                              );
                             });
                           },
                           child: NetworkItems(
@@ -100,7 +140,28 @@ class _NetworkState extends State<Network> {
                     ],
                   ),
                 ),
-              )
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              /* Expanded(
+                child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: 10,
+                    itemBuilder: (_, index) {
+                      return SingleFFS();
+                    }),
+              ),*/
+              _search == null ? Container() : _search,
+              SizedBox(
+                height: 5.0,
+              ),
+              fFs == null
+                  ? Container(
+                      color: Colors.white,
+                    )
+                  : fFs
             ],
           ),
         ),
@@ -119,21 +180,25 @@ class NetworkItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: isPressed ? BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(5.0),
-
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey,
-            blurRadius: 2.0,
-            spreadRadius: 0.0,
-            offset: Offset(4.0, 4.0), // shadow direction: bottom right
-          )
-        ],
-      ) : BoxDecoration(
-        color: Colors.white,
-      ),
+      decoration: isPressed
+          ? BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(5.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey,
+                  blurRadius: 2.0,
+                  spreadRadius: 0.0,
+                  offset: Offset(4.0, 4.0), // shadow direction: bottom right
+                )
+              ],
+              /*  border: Border.all(color: Color(0xff312C69),
+             width: 0.2
+             )*/
+            )
+          : BoxDecoration(
+              color: Colors.white,
+            ),
       child: Padding(
         padding: EdgeInsets.all(4.0),
         child: Column(
