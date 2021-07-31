@@ -1,16 +1,52 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:mission_ed/ModalFFs.dart';
 
+bool isFollowing;
+List<Ffs> _search=[];
+FirebaseAuth _auth = FirebaseAuth.instance;
 class SingleSearch extends StatelessWidget {
   SingleSearch({this.imageUrl,this.name,this.id});
   final String imageUrl;
   final String name;
   final String id;
 
+  void getFData() async {
+    DatabaseReference refFData = FirebaseDatabase.instance
+        .reference()
+        .child('Users')
+        .child(_auth.currentUser.uid)
+        .child('Following');
+    refFData.once().then((DataSnapshot snapshot) {
+      _search.clear();
+
+      var keys = snapshot.value.keys;
+      var values = snapshot.value;
+      for (var key in keys) {
+        Ffs data = new Ffs(
+          uid: values[key]['id'],
+          name: values[key]['username'],
+          image: values[key]['imageUrl'],
+        );
+        if(data.name.contains(id)){
+          isFollowing = true;
+        }else{
+          isFollowing = false;
+        }
+
+      }
+
+
+    });
+
+  }
 
   @override
   Widget build(BuildContext context) {
+    getFData();
     return Column(
       children: [
         Padding(
@@ -63,11 +99,11 @@ class SingleSearch extends StatelessWidget {
                   ),
                 ),
                 Expanded(child: GestureDetector(
-                  onTap: addToFollwing(id,name,imageUrl),
+                  onTap:isFollowing?SnackBar(content: content) :addToFollwing(id,name,imageUrl),
                   child: Text(
-                    'Follow',
+                    isFollowing?'Following':'Follow',
                     style: TextStyle(
-                        color: Color(0xff312C69),
+                        color: isFollowing?Colors.lightGreen:Color(0xff312C69),
                         fontSize: 16.0,
                         fontWeight: FontWeight.w400),
                   ),
