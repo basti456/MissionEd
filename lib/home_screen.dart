@@ -12,11 +12,10 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   List<Posts> allPosts = [];
   int size;
+  DatabaseReference referenceData =
+      FirebaseDatabase.instance.reference().child('Posts');
 
   List<Posts> getData() {
-    print("It runs");
-    DatabaseReference referenceData =
-        FirebaseDatabase.instance.reference().child('Posts');
     referenceData.once().then((DataSnapshot snapshot) {
       allPosts.clear();
       var keys = snapshot.value.keys;
@@ -48,6 +47,46 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    referenceData.onChildRemoved.listen((event) {
+      setState(() {
+        referenceData.once().then((DataSnapshot snapshot) {
+          allPosts.clear();
+          var keys = snapshot.value.keys;
+          var values = snapshot.value;
+          for (var key in keys) {
+            Posts post = new Posts(
+                id: values[key]['id'],
+                title: values[key]['title'],
+                description: values[key]['description'],
+                category: values[key]['category'],
+                postedBy: values[key]['postedBy'],
+                imgUrl: values[key]['imgUrl'],
+                username: values[key]['username']);
+            allPosts.add(post);
+          }
+        });
+      });
+    });
+    referenceData.onChildAdded.listen((event) {
+      setState(() {
+        referenceData.once().then((DataSnapshot snapshot) {
+          allPosts.clear();
+          var keys = snapshot.value.keys;
+          var values = snapshot.value;
+          for (var key in keys) {
+            Posts post = new Posts(
+                id: values[key]['id'],
+                title: values[key]['title'],
+                description: values[key]['description'],
+                category: values[key]['category'],
+                postedBy: values[key]['postedBy'],
+                imgUrl: values[key]['imgUrl'],
+                username: values[key]['username']);
+            allPosts.add(post);
+          }
+        });
+      });
+    });
     return Scaffold(
       backgroundColor: Color(0xfffcfcfc),
       body: SafeArea(
@@ -145,21 +184,21 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     )
                   : Expanded(
-                    child: ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        itemCount: allPosts.length,
-                        itemBuilder: (_, index) {
-                          return SinglePost(
-                              id: allPosts[index].id,
-                              title: allPosts[index].title,
-                              description: allPosts[index].description,
-                              category: allPosts[index].category,
-                              postedBy: allPosts[index].postedBy,
-                              imgUrl: allPosts[index].imgUrl,
-                              username: allPosts[index].username);
-                        }),
-                  )
+                      child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: allPosts.length,
+                          itemBuilder: (_, index) {
+                            return SinglePost(
+                                id: allPosts[index].id,
+                                title: allPosts[index].title,
+                                description: allPosts[index].description,
+                                category: allPosts[index].category,
+                                postedBy: allPosts[index].postedBy,
+                                imgUrl: allPosts[index].imgUrl,
+                                username: allPosts[index].username);
+                          }),
+                    )
             ],
           ),
         ),
