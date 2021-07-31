@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:mission_ed/ModalFFs.dart';
 import 'package:mission_ed/SingleFFS.dart';
 import 'package:mission_ed/SingleSearch.dart';
 import 'package:mission_ed/constsnts.dart';
@@ -9,11 +12,107 @@ class Network extends StatefulWidget {
 }
 
 class _NetworkState extends State<Network> {
+  List<Ffs> _followerFollowingSearch = [];
   bool button1 = true;
   bool button2 = false;
   bool button3 = false;
   Widget fFs;
   Widget _search;
+  int size;
+  FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future<List<Ffs>> getFData(String text) async {
+    DatabaseReference refFData = FirebaseDatabase.instance
+        .reference()
+        .child('Users')
+        .child(_auth.currentUser.uid)
+        .child(text);
+    refFData.once().then((DataSnapshot snapshot) {
+      _followerFollowingSearch.clear();
+      var keys = snapshot.value.keys;
+      var values = snapshot.value;
+      for (var key in keys) {
+        Ffs fFollowing = new Ffs(
+          uid: values[key]['uid'],
+          name: values[key]['username'],
+          image: values[key]['image'],
+        );
+        _followerFollowingSearch.add(fFollowing);
+      }
+      setState(() {
+        size = _followerFollowingSearch.length;
+      });
+    });
+    return _followerFollowingSearch;
+  }
+
+  Future<List<Ffs>> getAllData() async {
+    DatabaseReference refFData =
+        FirebaseDatabase.instance.reference().child('Users');
+    refFData.once().then((DataSnapshot snapshot) {
+      _followerFollowingSearch.clear();
+      var keys = snapshot.value.keys;
+      var values = snapshot.value;
+      for (var key in keys) {
+        Ffs fFollowing = new Ffs(
+          uid: values[key]['id'],
+          name: values[key]['username'],
+          image: values[key]['imageUrl'],
+        );
+        _followerFollowingSearch.add(fFollowing);
+      }
+      setState(() {
+        size = _followerFollowingSearch.length;
+      });
+    });
+    return _followerFollowingSearch;
+  }
+
+
+  Future<List<Ffs>> searchMethod(String text) async {
+    DatabaseReference refFData =
+    FirebaseDatabase.instance.reference().child('Users');
+    refFData.once().then((DataSnapshot snapshot) {
+      _followerFollowingSearch.clear();
+      var keys = snapshot.value.keys;
+      var values = snapshot.value;
+      for (var key in keys) {
+        Ffs searchData = new Ffs(
+          uid: values[key]['id'],
+          name: values[key]['username'],
+          image: values[key]['imageUrl'],
+        );
+        if(searchData.name.contains(text)){
+          _followerFollowingSearch.add(searchData);
+        }
+
+      }
+      setState(() {
+        size = _followerFollowingSearch.length;
+      });
+    });
+    return _followerFollowingSearch;
+  }
+
+  @override
+  void initState() async {
+    super.initState();
+    await getFData('Followers');
+    setState(() {
+      fFs = Expanded(
+        child: ListView.builder(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemCount: _followerFollowingSearch.length,
+            itemBuilder: (_, index) {
+              return SingleFFS(
+                name: _followerFollowingSearch[index].name,
+                imageUrl: _followerFollowingSearch[index].image,
+              );
+            }),
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +151,8 @@ class _NetworkState extends State<Network> {
                     children: <Widget>[
                       Expanded(
                         child: GestureDetector(
-                          onTap: () {
+                          onTap: () async {
+                            await getFData('Followers');
                             setState(() {
                               button1 = true;
                               button2 = false;
@@ -61,9 +161,15 @@ class _NetworkState extends State<Network> {
                                 child: ListView.builder(
                                     scrollDirection: Axis.vertical,
                                     shrinkWrap: true,
-                                    itemCount: 10,
+                                    itemCount: _followerFollowingSearch.length,
                                     itemBuilder: (_, index) {
-                                      return SingleFFS();
+                                      return SingleFFS(
+                                        name: _followerFollowingSearch[index]
+                                            .name,
+                                        imageUrl:
+                                            _followerFollowingSearch[index]
+                                                .image,
+                                      );
                                     }),
                               );
                               _search = null;
@@ -78,7 +184,8 @@ class _NetworkState extends State<Network> {
                       ),
                       Expanded(
                         child: GestureDetector(
-                          onTap: () {
+                          onTap: () async {
+                            await getFData('Following');
                             setState(() {
                               button1 = false;
                               button2 = true;
@@ -88,9 +195,15 @@ class _NetworkState extends State<Network> {
                                 child: ListView.builder(
                                     scrollDirection: Axis.vertical,
                                     shrinkWrap: true,
-                                    itemCount: 10,
+                                    itemCount: _followerFollowingSearch.length,
                                     itemBuilder: (_, index) {
-                                      return SingleFFS();
+                                      return SingleFFS(
+                                        name: _followerFollowingSearch[index]
+                                            .name,
+                                        imageUrl:
+                                            _followerFollowingSearch[index]
+                                                .image,
+                                      );
                                     }),
                               );
                               _search = null;
@@ -105,7 +218,8 @@ class _NetworkState extends State<Network> {
                       ),
                       Expanded(
                         child: GestureDetector(
-                          onTap: () {
+                          onTap: () async {
+                            await getAllData();
                             setState(() {
                               button1 = false;
                               button2 = false;
@@ -114,15 +228,24 @@ class _NetworkState extends State<Network> {
                                 child: ListView.builder(
                                     scrollDirection: Axis.vertical,
                                     shrinkWrap: true,
-                                    itemCount: 10,
+                                    itemCount: _followerFollowingSearch.length,
                                     itemBuilder: (_, index) {
-                                      return SingleSearch();
+                                      return SingleSearch(
+                                        name: _followerFollowingSearch[index]
+                                            .name,
+                                        imageUrl:
+                                        _followerFollowingSearch[index]
+                                            .image,
+                                      );
                                     }),
                               );
                               _search = Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: TextField(
+                                    onChanged: (value) {
+                                      searchMethod(value);
+                                    },
                                     decoration: kDecoration.copyWith(
                                         prefixIcon: Icon(
                                             Icons.youtube_searched_for_rounded),

@@ -41,13 +41,13 @@ class SingleFFS extends StatelessWidget {
                       shape: BoxShape.circle,
                       image: DecorationImage(
                         fit: BoxFit.fill,
-                        image: AssetImage('images/dummy profile.png'),
+                        image: NetworkImage(imageUrl),
                       ),
                     ),
                   ),
                 ),
                 Text(
-                  'Ratnakar Chaurasiya',
+                  name,
                   style: TextStyle(
                       color: Color(0xff312C69),
                       fontSize: 20.0,
