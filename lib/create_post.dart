@@ -24,23 +24,23 @@ class _CreatePostState extends State<CreatePost> {
   String imgUrl;
   XFile _image;
 
-
-  Future getImage() async{
-    final picker=  ImagePicker();
-    final image= await picker.pickImage(source: ImageSource.gallery);
+  Future getImage() async {
+    final picker = ImagePicker();
+    final image = await picker.pickImage(source: ImageSource.gallery);
     setState(() {
-      _image=image ;
+      _image = image;
     });
   }
-  Future uploadImageToFirebase(BuildContext context) async{
+
+  Future uploadImageToFirebase(BuildContext context) async {
     final timeStamp = DateTime.now().microsecondsSinceEpoch.toString();
-   firebase_storage.Reference ref= firebase_storage.FirebaseStorage.instance.ref('images/$timeStamp');
-   firebase_storage.UploadTask uploadTask =  ref.putFile(File(_image.path));
-   firebase_storage.TaskSnapshot snapshot = await uploadTask;
-   setState(() async {
-     imgUrl= await ref.getDownloadURL();
-   });
+    firebase_storage.Reference ref =
+        firebase_storage.FirebaseStorage.instance.ref('images/$timeStamp');
+    firebase_storage.UploadTask uploadTask = ref.putFile(File(_image.path));
+    firebase_storage.TaskSnapshot snapshot = await uploadTask;
+    imgUrl = await ref.getDownloadURL();
   }
+
   /*
   @override
   void initState() {
@@ -70,28 +70,29 @@ class _CreatePostState extends State<CreatePost> {
               GestureDetector(
                 onTap: getImage,
                 child: Container(
-                  height: 180,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(5.0),
-                    border: Border.all(
-                      color: Color(0xff4D3AA4),
-                      width: 1.0,
+                    height: 180,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(5.0),
+                      border: Border.all(
+                        color: Color(0xff4D3AA4),
+                        width: 1.0,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey,
+                          blurRadius: 2.0,
+                          spreadRadius: 0.0,
+                          offset: Offset(
+                              2.0, 2.0), // shadow direction: bottom right
+                        )
+                      ],
                     ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey,
-                        blurRadius: 2.0,
-                        spreadRadius: 0.0,
-                        offset:
-                            Offset(2.0, 2.0), // shadow direction: bottom right
-                      )
-                    ],
-                  ),
-                  child: _image==null?Image.network('https://cdn.dribbble.com/users/2394908/screenshots/10514933/media/310130d08451ef9c41904af397e0667f.jpg'):Image.file(File(_image.path))
-                  ),
-                ),
-
+                    child: _image == null
+                        ? Image.network(
+                            'https://cdn.dribbble.com/users/2394908/screenshots/10514933/media/310130d08451ef9c41904af397e0667f.jpg')
+                        : Image.file(File(_image.path))),
+              ),
               SizedBox(
                 height: 20.0,
               ),
@@ -184,8 +185,10 @@ class _CreatePostState extends State<CreatePost> {
                 height: 10,
               ),
               RoundButton(
-                onPressed: () {
-                  if (title.isNotEmpty && description.isNotEmpty) {
+                onPressed: () async {
+                  if (title.isNotEmpty &&
+                      description.isNotEmpty &&
+                      _image.path != null) {
                     if (_dropDownValue != null) {
                       final user = _auth.currentUser;
                       final time = DateTime.now().microsecondsSinceEpoch;
@@ -193,14 +196,16 @@ class _CreatePostState extends State<CreatePost> {
                           .reference()
                           .child('Posts')
                           .child(time.toString());
+                      await uploadImageToFirebase(context);
                       databaseRef.set({
                         'id': time.toString(),
                         'title': title,
                         'description': description,
                         'category': _dropDownValue,
                         'postedBy': user.uid.toString(),
-                        'imgUrl':user.photoURL==null?"":user.photoURL,
-                        'username':""
+                        'imgUrl': user.photoURL == null ? "" : user.photoURL,
+                        'imgPostUrl': imgUrl,
+                        'username': ""
                       });
                       Navigator.push(
                           context,

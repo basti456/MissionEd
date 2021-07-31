@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mission_ed/create_post.dart';
-import 'package:mission_ed/screens/network.dart';
+import 'package:mission_ed/authenticate/authenticate_firebase.dart';
 import 'package:provider/provider.dart';
 import 'google_sign_in.dart';
-import 'bottom_navigation.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
@@ -22,7 +20,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: CreatePost(),
+        home: AuthenticateFirebase(),
       ),
     );
   }
