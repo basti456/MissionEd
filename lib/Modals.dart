@@ -6,6 +6,7 @@ class Posts {
   String postedBy;
   String imgUrl;
   String username;
+  String imgPostUrl;
 
   Posts(
       {this.id,
@@ -14,5 +15,6 @@ class Posts {
       this.category,
       this.postedBy,
       this.imgUrl,
-      this.username});
+      this.username,
+      this.imgPostUrl});
 }

@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:mission_ed/create_post.dart';
 import 'single_post.dart';
 import 'Modals.dart';
+import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -12,6 +14,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   List<Posts> allPosts = [];
   int size;
+  String username;
+  FirebaseAuth _auth = FirebaseAuth.instance;
   DatabaseReference referenceData =
       FirebaseDatabase.instance.reference().child('Posts');
 
@@ -28,6 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
             category: values[key]['category'],
             postedBy: values[key]['postedBy'],
             imgUrl: values[key]['imgUrl'],
+            imgPostUrl: values[key]['imgPostUrl'],
             username: values[key]['username']);
         allPosts.add(post);
       }
@@ -61,6 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 category: values[key]['category'],
                 postedBy: values[key]['postedBy'],
                 imgUrl: values[key]['imgUrl'],
+                imgPostUrl: values[key]['imgPostUrl'],
                 username: values[key]['username']);
             allPosts.add(post);
           }
@@ -81,6 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 category: values[key]['category'],
                 postedBy: values[key]['postedBy'],
                 imgUrl: values[key]['imgUrl'],
+                imgPostUrl: values[key]['imgPostUrl'],
                 username: values[key]['username']);
             allPosts.add(post);
           }
@@ -174,13 +181,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 10.0,
               ),
               allPosts.length == 0
-                  ? Container(
-                      child: Text(
-                        'No posts yet',
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
-                        ),
+                  ? Center(
+                      child: Container(
+                        width: 40.0,
+                        height: 40.0,
+                        child: CircularProgressIndicator(),
                       ),
                     )
                   : Expanded(
@@ -196,6 +201,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 category: allPosts[index].category,
                                 postedBy: allPosts[index].postedBy,
                                 imgUrl: allPosts[index].imgUrl,
+                                imgPostUrl: allPosts[index].imgPostUrl,
                                 username: allPosts[index].username);
                           }),
                     )
