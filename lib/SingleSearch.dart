@@ -5,15 +5,22 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:mission_ed/ModalFFs.dart';
 
-bool isFollowing;
-List<Ffs> _search=[];
-FirebaseAuth _auth = FirebaseAuth.instance;
-class SingleSearch extends StatelessWidget {
-  SingleSearch({this.imageUrl,this.name,this.id});
+
+
+class SingleSearch extends StatefulWidget {
+  SingleSearch({this.imageUrl, this.name, this.id});
   final String imageUrl;
   final String name;
   final String id;
 
+  @override
+  _SingleSearchState createState() => _SingleSearchState();
+}
+
+class _SingleSearchState extends State<SingleSearch> {
+  bool isFollowing;
+  List<Ffs> _search = [];
+  FirebaseAuth _auth = FirebaseAuth.instance;
   void getFData() async {
     DatabaseReference refFData = FirebaseDatabase.instance
         .reference()
@@ -31,19 +38,25 @@ class SingleSearch extends StatelessWidget {
           name: values[key]['username'],
           image: values[key]['imageUrl'],
         );
-        if(data.name.contains(id)){
-          isFollowing = true;
-        }else{
-          isFollowing = false;
+        if (data.name.contains(widget.id)) {
+          setState(() {
+            isFollowing = true;
+          });
+        } else {
+          setState(() {
+            isFollowing = false;
+          });
+
         }
-
       }
-
-
     });
 
   }
-
+  @override
+  void initState() {
+    getFData();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     getFData();
@@ -74,7 +87,8 @@ class SingleSearch extends StatelessWidget {
               children: [
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     child: Container(
                       height: 60.0,
                       width: 60.0,
@@ -82,7 +96,7 @@ class SingleSearch extends StatelessWidget {
                         shape: BoxShape.circle,
                         image: DecorationImage(
                           fit: BoxFit.fill,
-                          image: NetworkImage(imageUrl),
+                          image: NetworkImage(widget.imageUrl),
                         ),
                       ),
                     ),
@@ -91,23 +105,29 @@ class SingleSearch extends StatelessWidget {
                 Expanded(
                   flex: 3,
                   child: Text(
-                   name,
+                    widget.name,
                     style: TextStyle(
                         color: Color(0xff312C69),
                         fontSize: 20.0,
                         fontWeight: FontWeight.w500),
                   ),
                 ),
-                Expanded(child: GestureDetector(
-                  onTap:isFollowing?SnackBar(content: content) :addToFollwing(id,name,imageUrl),
-                  child: Text(
-                    isFollowing?'Following':'Follow',
-                    style: TextStyle(
-                        color: isFollowing?Colors.lightGreen:Color(0xff312C69),
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w400),
+                Expanded(
+                  child: GestureDetector(
+                    onTap: isFollowing
+                        ? SnackBar(content: content)
+                        : addToFollwing(widget.id, widget.name, widget.imageUrl),
+                    child: Text(
+                      isFollowing ? 'Following' : 'Follow',
+                      style: TextStyle(
+                          color: isFollowing
+                              ? Colors.lightGreen
+                              : Color(0xff312C69),
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w400),
+                    ),
                   ),
-                ),)
+                )
               ],
             ),
           ),
@@ -117,8 +137,8 @@ class SingleSearch extends StatelessWidget {
   }
 }
 
-addToFollwing(String id,String username,String imageUrl) {
-  FirebaseAuth _auth=FirebaseAuth.instance;
+addToFollwing(String id, String username, String imageUrl) {
+  FirebaseAuth _auth = FirebaseAuth.instance;
   final databaseRef = FirebaseDatabase.instance
       .reference()
       .child('Users')
@@ -135,7 +155,7 @@ addToFollwing(String id,String username,String imageUrl) {
       .child(id)
       .child('Following');
   databaseFollowerRef.child(_auth.currentUser.uid).set({
-    'id': _auth.currentUser.uid ,
+    'id': _auth.currentUser.uid,
     'imgUrl': imageUrl,
     'username': username,
   });
