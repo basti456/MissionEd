@@ -8,6 +8,7 @@ import 'package:mission_ed/home_screen.dart';
 import 'package:mission_ed/rounded_button.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class CreatePost extends StatefulWidget {
   @override
@@ -20,6 +21,7 @@ class _CreatePostState extends State<CreatePost> {
   String description;
   FirebaseAuth _auth = FirebaseAuth.instance;
   String username;
+  String imgUrl;
   XFile _image;
 
 
@@ -29,6 +31,15 @@ class _CreatePostState extends State<CreatePost> {
     setState(() {
       _image=image ;
     });
+  }
+  Future uploadImageToFirebase() async{
+    final timeStamp = DateTime.now().microsecondsSinceEpoch.toString();
+   firebase_storage.Reference ref= firebase_storage.FirebaseStorage.instance.ref('images/$timeStamp');
+   firebase_storage.UploadTask uploadTask =  ref.putFile(File(_image.path));
+   firebase_storage.TaskSnapshot snapshot = await uploadTask;
+   setState(() async {
+     imgUrl= await ref.getDownloadURL();
+   });
   }
   /*
   @override
