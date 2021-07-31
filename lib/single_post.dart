@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mission_ed/Modals.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:intl/intl.dart';
 
 class SinglePost extends StatelessWidget {
@@ -37,7 +35,6 @@ class SinglePost extends StatelessWidget {
         time = (diff.inDays / 7).floor().toString() + ' WEEKS AGO';
       }
     }
-    print(date);
     return time;
   }
 /*
