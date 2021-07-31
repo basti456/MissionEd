@@ -32,7 +32,7 @@ class _CreatePostState extends State<CreatePost> {
       _image=image ;
     });
   }
-  Future uploadImageToFirebase() async{
+  Future uploadImageToFirebase(BuildContext context) async{
     final timeStamp = DateTime.now().microsecondsSinceEpoch.toString();
    firebase_storage.Reference ref= firebase_storage.FirebaseStorage.instance.ref('images/$timeStamp');
    firebase_storage.UploadTask uploadTask =  ref.putFile(File(_image.path));
