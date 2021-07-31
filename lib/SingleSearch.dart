@@ -1,9 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 class SingleSearch extends StatelessWidget {
-  SingleSearch({this.imageUrl,this.name});
+  SingleSearch({this.imageUrl,this.name,this.id});
   final String imageUrl;
   final String name;
+  final String id;
 
 
   @override
@@ -59,12 +62,15 @@ class SingleSearch extends StatelessWidget {
                         fontWeight: FontWeight.w500),
                   ),
                 ),
-                Expanded(child: Text(
-                  'Follow',
-                  style: TextStyle(
-                      color: Color(0xff312C69),
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w400),
+                Expanded(child: GestureDetector(
+                  onTap: addToFollwing(id,name,imageUrl),
+                  child: Text(
+                    'Follow',
+                    style: TextStyle(
+                        color: Color(0xff312C69),
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w400),
+                  ),
                 ),)
               ],
             ),
@@ -73,4 +79,28 @@ class SingleSearch extends StatelessWidget {
       ],
     );
   }
+}
+
+addToFollwing(String id,String username,String imageUrl) {
+  FirebaseAuth _auth=FirebaseAuth.instance;
+  final databaseRef = FirebaseDatabase.instance
+      .reference()
+      .child('Users')
+      .child(_auth.currentUser.uid)
+      .child('Following');
+  databaseRef.child(id).set({
+    'id': id,
+    'imgUrl': imageUrl,
+    'username': username,
+  });
+  final databaseFollowerRef = FirebaseDatabase.instance
+      .reference()
+      .child('Users')
+      .child(id)
+      .child('Following');
+  databaseFollowerRef.child(_auth.currentUser.uid).set({
+    'id': _auth.currentUser.uid ,
+    'imgUrl': imageUrl,
+    'username': username,
+  });
 }

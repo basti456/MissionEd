@@ -33,9 +33,9 @@ class _NetworkState extends State<Network> {
       var values = snapshot.value;
       for (var key in keys) {
         Ffs fFollowing = new Ffs(
-          uid: values[key]['uid'],
+          uid: values[key]['id'],
           name: values[key]['username'],
-          image: values[key]['image'],
+          image: values[key]['imageUrl'],
         );
         _followerFollowingSearch.add(fFollowing);
       }
@@ -68,10 +68,9 @@ class _NetworkState extends State<Network> {
     return _followerFollowingSearch;
   }
 
-
   Future<List<Ffs>> searchMethod(String text) async {
     DatabaseReference refFData =
-    FirebaseDatabase.instance.reference().child('Users');
+        FirebaseDatabase.instance.reference().child('Users');
     refFData.once().then((DataSnapshot snapshot) {
       _followerFollowingSearch.clear();
       var keys = snapshot.value.keys;
@@ -82,10 +81,9 @@ class _NetworkState extends State<Network> {
           name: values[key]['username'],
           image: values[key]['imageUrl'],
         );
-        if(searchData.name.contains(text)){
+        if (searchData.name.contains(text)) {
           _followerFollowingSearch.add(searchData);
         }
-
       }
       setState(() {
         size = _followerFollowingSearch.length;
@@ -234,8 +232,9 @@ class _NetworkState extends State<Network> {
                                         name: _followerFollowingSearch[index]
                                             .name,
                                         imageUrl:
-                                        _followerFollowingSearch[index]
-                                            .image,
+                                            _followerFollowingSearch[index]
+                                                .image,
+                                        id: _followerFollowingSearch[index].uid,
                                       );
                                     }),
                               );
@@ -243,8 +242,33 @@ class _NetworkState extends State<Network> {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: TextField(
-                                    onChanged: (value) {
-                                      searchMethod(value);
+                                    onChanged: (value) async {
+                                      await searchMethod(value);
+                                      setState(() {
+                                        fFs = Expanded(
+                                          child: ListView.builder(
+                                              scrollDirection: Axis.vertical,
+                                              shrinkWrap: true,
+                                              itemCount:
+                                                  _followerFollowingSearch
+                                                      .length,
+                                              itemBuilder: (_, index) {
+                                                return SingleSearch(
+                                                  name:
+                                                      _followerFollowingSearch[
+                                                              index]
+                                                          .name,
+                                                  imageUrl:
+                                                      _followerFollowingSearch[
+                                                              index]
+                                                          .image,
+                                                  id: _followerFollowingSearch[
+                                                          index]
+                                                      .uid,
+                                                );
+                                              }),
+                                        );
+                                      });
                                     },
                                     decoration: kDecoration.copyWith(
                                         prefixIcon: Icon(
