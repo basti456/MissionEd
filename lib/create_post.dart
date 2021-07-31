@@ -32,6 +32,7 @@ class _CreatePostState extends State<CreatePost> {
     final image = await picker.pickImage(source: ImageSource.gallery);
     setState(() {
       _image = image;
+
     });
   }
 
