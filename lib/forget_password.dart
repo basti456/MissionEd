@@ -42,6 +42,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                   ),
                 ],
               ),
+
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
