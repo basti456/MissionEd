@@ -1,9 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 Future<void> sendPostNotification(notificationTitle, sendersName, message,
     notificationType, String topic) async {
-  final data = {
+  final data = jsonEncode(<String,dynamic>{
     "notification": {
       "body": "$message",
       "title": "$notificationTitle",
@@ -17,7 +19,7 @@ Future<void> sendPostNotification(notificationTitle, sendersName, message,
       "sendersUserId": "$sendersName",
     },
     "to": "$topic",
-  };
+  });
 
   final headers = {
     'content-type': 'application/json',
