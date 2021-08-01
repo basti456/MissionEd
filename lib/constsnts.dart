@@ -78,3 +78,6 @@ const kSendButtonTextStyle = TextStyle(
   fontWeight: FontWeight.bold,
   fontSize: 18.0,
 );
+
+const kDarkPurple=Color(0xff312C69);
+const kLightPurple=Color(0xff4D3AA4);

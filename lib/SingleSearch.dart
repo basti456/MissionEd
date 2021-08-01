@@ -115,7 +115,7 @@ class _SingleSearchState extends State<SingleSearch> {
                 Expanded(
                   child: GestureDetector(
                     onTap: isFollowing
-                        ? SnackBar(content: content)
+                        ? SnackBar(content: Text('Done'))
                         : addToFollwing(widget.id, widget.name, widget.imageUrl),
                     child: Text(
                       isFollowing ? 'Following' : 'Follow',
