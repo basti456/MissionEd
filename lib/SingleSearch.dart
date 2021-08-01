@@ -1,14 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:mission_ed/ModalFFs.dart';
 
-
-
 class SingleSearch extends StatefulWidget {
   SingleSearch({this.imageUrl, this.name, this.id});
+
   final String imageUrl;
   final String name;
   final String id;
@@ -21,6 +18,7 @@ class _SingleSearchState extends State<SingleSearch> {
   bool isFollowing;
   List<Ffs> _search = [];
   FirebaseAuth _auth = FirebaseAuth.instance;
+
   void getFData() async {
     DatabaseReference refFData = FirebaseDatabase.instance
         .reference()
@@ -28,34 +26,35 @@ class _SingleSearchState extends State<SingleSearch> {
         .child(_auth.currentUser.uid)
         .child('Following');
     refFData.once().then((DataSnapshot snapshot) {
-      _search.clear();
+      if (snapshot.value != null) {
+        _search.clear();
 
-      var keys = snapshot.value.keys;
-      var values = snapshot.value;
-      for (var key in keys) {
-        Ffs data = new Ffs(
-          uid: values[key]['id'],
-          name: values[key]['username'],
-          image: values[key]['imageUrl'],
-        );
-        if (data.name.contains(widget.id)) {
-          setState(() {
-            isFollowing = true;
-          });
-        } else {
-          setState(() {
-            isFollowing = false;
-          });
-
+        var keys = snapshot.value.keys;
+        var values = snapshot.value;
+        for (var key in keys) {
+          Ffs data = new Ffs(
+            uid: values[key]['id'],
+            name: values[key]['username'],
+            image: values[key]['imgUrl'],
+          );
+          if (data.name.contains(widget.id)) {
+            setState(() {
+              isFollowing = true;
+            });
+          } else {
+            setState(() {
+              isFollowing = false;
+            });
+          }
         }
       }
     });
-
   }
+
   @override
   void initState() {
-    getFData();
     super.initState();
+    getFData();
   }
   @override
   Widget build(BuildContext context) {
@@ -96,7 +95,9 @@ class _SingleSearchState extends State<SingleSearch> {
                         shape: BoxShape.circle,
                         image: DecorationImage(
                           fit: BoxFit.fill,
-                          image: NetworkImage(widget.imageUrl),
+                          image: widget.imageUrl == ""
+                              ? AssetImage('images/dummy image.png')
+                              : NetworkImage(widget.imageUrl),
                         ),
                       ),
                     ),
@@ -114,9 +115,17 @@ class _SingleSearchState extends State<SingleSearch> {
                 ),
                 Expanded(
                   child: GestureDetector(
-                    onTap: isFollowing
-                        ? SnackBar(content: Text('Done'))
-                        : addToFollwing(widget.id, widget.name, widget.imageUrl),
+                    onTap: () {
+                      isFollowing!=null
+                          ? SnackBar(
+                              content: Text("Already Following"),
+                              duration: Duration(seconds: 1),
+                            )
+                          : setState(() {
+                              addToFollwing(
+                                  widget.id, widget.name, widget.imageUrl);
+                            });
+                    },
                     child: Text(
                       isFollowing ? 'Following' : 'Follow',
                       style: TextStyle(
@@ -153,7 +162,7 @@ addToFollwing(String id, String username, String imageUrl) {
       .reference()
       .child('Users')
       .child(id)
-      .child('Following');
+      .child('Followers');
   databaseFollowerRef.child(_auth.currentUser.uid).set({
     'id': _auth.currentUser.uid,
     'imgUrl': imageUrl,

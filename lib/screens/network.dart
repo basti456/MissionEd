@@ -5,6 +5,7 @@ import 'package:mission_ed/ModalFFs.dart';
 import 'package:mission_ed/SingleFFS.dart';
 import 'package:mission_ed/SingleSearch.dart';
 import 'package:mission_ed/constsnts.dart';
+import 'dart:async';
 
 class Network extends StatefulWidget {
   @override
@@ -13,6 +14,9 @@ class Network extends StatefulWidget {
 
 class _NetworkState extends State<Network> {
   List<Ffs> _followerFollowingSearch = [];
+  List<Ffs> _followerFollowingSearch1 = [];
+  List<Ffs> _followerFollowingSearch2 = [];
+  List<Ffs> _followerFollowingSearch3 = [];
   bool button1 = true;
   bool button2 = false;
   bool button3 = false;
@@ -21,94 +25,145 @@ class _NetworkState extends State<Network> {
   int size;
   FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<List<Ffs>> getFData(String text) async {
+  List<Ffs> getFData() {
     DatabaseReference refFData = FirebaseDatabase.instance
         .reference()
         .child('Users')
         .child(_auth.currentUser.uid)
-        .child(text);
+        .child('Followers');
     refFData.once().then((DataSnapshot snapshot) {
-      _followerFollowingSearch.clear();
-      var keys = snapshot.value.keys;
-      var values = snapshot.value;
-      for (var key in keys) {
-        Ffs fFollowing = new Ffs(
-          uid: values[key]['id'],
-          name: values[key]['username'],
-          image: values[key]['imageUrl'],
-        );
-        _followerFollowingSearch.add(fFollowing);
-      }
-      setState(() {
-        size = _followerFollowingSearch.length;
-      });
-    });
-    return _followerFollowingSearch;
-  }
-
-  Future<List<Ffs>> getAllData() async {
-    DatabaseReference refFData =
-        FirebaseDatabase.instance.reference().child('Users');
-    refFData.once().then((DataSnapshot snapshot) {
-      _followerFollowingSearch.clear();
-      var keys = snapshot.value.keys;
-      var values = snapshot.value;
-      for (var key in keys) {
-        Ffs fFollowing = new Ffs(
-          uid: values[key]['id'],
-          name: values[key]['username'],
-          image: values[key]['imageUrl'],
-        );
-        _followerFollowingSearch.add(fFollowing);
-      }
-      setState(() {
-        size = _followerFollowingSearch.length;
-      });
-    });
-    return _followerFollowingSearch;
-  }
-
-  Future<List<Ffs>> searchMethod(String text) async {
-    DatabaseReference refFData =
-        FirebaseDatabase.instance.reference().child('Users');
-    refFData.once().then((DataSnapshot snapshot) {
-      _followerFollowingSearch.clear();
-      var keys = snapshot.value.keys;
-      var values = snapshot.value;
-      for (var key in keys) {
-        Ffs searchData = new Ffs(
-          uid: values[key]['id'],
-          name: values[key]['username'],
-          image: values[key]['imageUrl'],
-        );
-        if (searchData.name.contains(text)) {
-          _followerFollowingSearch.add(searchData);
+      if (snapshot.value != null) {
+        _followerFollowingSearch.clear();
+        var keys = snapshot.value.keys;
+        var values = snapshot.value;
+        for (var key in keys) {
+          Ffs fFollowing = new Ffs(
+            uid: values[key]['id'],
+            name: values[key]['username'],
+            image: values[key]['imgUrl'],
+          );
+          _followerFollowingSearch.add(fFollowing);
         }
       }
-      setState(() {
+/*      setState(() {
         size = _followerFollowingSearch.length;
-      });
+      });*/
     });
     return _followerFollowingSearch;
+  }
+
+  List<Ffs> getfData() {
+    DatabaseReference refFData = FirebaseDatabase.instance
+        .reference()
+        .child('Users')
+        .child(_auth.currentUser.uid)
+        .child('Following');
+    refFData.once().then((DataSnapshot snapshot) {
+      if (snapshot.value != null) {
+        _followerFollowingSearch1.clear();
+        var keys = snapshot.value.keys;
+        var values = snapshot.value;
+        for (var key in keys) {
+          Ffs fFollowing = new Ffs(
+            uid: values[key]['id'],
+            name: values[key]['username'],
+            image: values[key]['imgUrl'],
+          );
+          _followerFollowingSearch1.add(fFollowing);
+        }
+      }
+/*      setState(() {
+        size = _followerFollowingSearch.length;
+      });*/
+    });
+    return _followerFollowingSearch1;
+  }
+
+  List<Ffs> getAllData() {
+    DatabaseReference refFData =
+        FirebaseDatabase.instance.reference().child('Users');
+    refFData.once().then((DataSnapshot snapshot) {
+      if (snapshot.value != null) {
+        _followerFollowingSearch2.clear();
+        var keys = snapshot.value.keys;
+        var values = snapshot.value;
+        for (var key in keys) {
+          Ffs fFollowing = new Ffs(
+            uid: values[key]['id'],
+            name: values[key]['username'],
+            image: values[key]['imgUrl'],
+          );
+          _followerFollowingSearch2.add(fFollowing);
+        }
+      }
+
+/*      setState(() {
+        size = _followerFollowingSearch.length;
+        print(size);
+        */ /*print(_followerFollowingSearch);*/ /*
+      });*/
+    });
+    return _followerFollowingSearch2;
+  }
+
+  List<Ffs> searchMethod(String text) {
+    DatabaseReference refFData =
+        FirebaseDatabase.instance.reference().child('Users');
+    refFData.once().then((DataSnapshot snapshot) {
+      if (snapshot.value != null) {
+        _followerFollowingSearch3.clear();
+        var keys = snapshot.value.keys;
+        var values = snapshot.value;
+        for (var key in keys) {
+          Ffs searchData = new Ffs(
+            uid: values[key]['id'],
+            name: values[key]['username'],
+            image: values[key]['imgUrl'],
+          );
+          if (searchData.name.contains(text)) {
+            print(searchData.name.contains(text));
+            _followerFollowingSearch3.add(searchData);
+          }
+        }
+        Timer(Duration(seconds: 1), () {
+          setState(() {});
+        });
+      }
+      /* setState(() {
+        size = _followerFollowingSearch.length;
+      });*/
+    });
+    return _followerFollowingSearch3;
   }
 
   @override
-  void initState() async {
+  void initState() {
     super.initState();
-    await getFData('Followers');
+    getFData;
     setState(() {
-      fFs = Expanded(
-        child: ListView.builder(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount: _followerFollowingSearch.length,
-            itemBuilder: (_, index) {
-              return SingleFFS(
-                name: _followerFollowingSearch[index].name,
-                imageUrl: _followerFollowingSearch[index].image,
-              );
-            }),
-      );
+      _followerFollowingSearch.length == 0
+          ? fFs = Container(
+              child: Center(
+                  child: Text(
+                'You have no followers yet',
+                style: TextStyle(
+                  fontSize: 30.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              )),
+            )
+          : fFs = Expanded(
+              child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: _followerFollowingSearch.length,
+                  itemBuilder: (_, index) {
+                    return SingleFFS(
+                      name: _followerFollowingSearch[index].name,
+                      imageUrl: _followerFollowingSearch[index].image,
+                    );
+                  }),
+            );
     });
   }
 
@@ -149,27 +204,41 @@ class _NetworkState extends State<Network> {
                     children: <Widget>[
                       Expanded(
                         child: GestureDetector(
-                          onTap: () async {
-                            await getFData('Followers');
+                          onTap: () {
+                            getFData;
                             setState(() {
                               button1 = true;
                               button2 = false;
                               button3 = false;
-                              fFs = Expanded(
-                                child: ListView.builder(
-                                    scrollDirection: Axis.vertical,
-                                    shrinkWrap: true,
-                                    itemCount: _followerFollowingSearch.length,
-                                    itemBuilder: (_, index) {
-                                      return SingleFFS(
-                                        name: _followerFollowingSearch[index]
-                                            .name,
-                                        imageUrl:
-                                            _followerFollowingSearch[index]
-                                                .image,
-                                      );
-                                    }),
-                              );
+                              _followerFollowingSearch.length == 0
+                                  ? fFs = Container(
+                                      child: Center(
+                                          child: Text(
+                                        'You have no followers yet',
+                                        style: TextStyle(
+                                          fontSize: 30.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      )),
+                                    )
+                                  : fFs = Expanded(
+                                      child: ListView.builder(
+                                          scrollDirection: Axis.vertical,
+                                          shrinkWrap: true,
+                                          itemCount:
+                                              _followerFollowingSearch.length,
+                                          itemBuilder: (_, index) {
+                                            return SingleFFS(
+                                              name: _followerFollowingSearch[
+                                                      index]
+                                                  .name,
+                                              imageUrl:
+                                                  _followerFollowingSearch[
+                                                          index]
+                                                      .image,
+                                            );
+                                          }),
+                                    );
                               _search = null;
                             });
                           },
@@ -182,28 +251,41 @@ class _NetworkState extends State<Network> {
                       ),
                       Expanded(
                         child: GestureDetector(
-                          onTap: () async {
-                            await getFData('Following');
+                          onTap: () {
+                            getfData;
                             setState(() {
                               button1 = false;
                               button2 = true;
                               button3 = false;
-                              button3 = false;
-                              fFs = Expanded(
-                                child: ListView.builder(
-                                    scrollDirection: Axis.vertical,
-                                    shrinkWrap: true,
-                                    itemCount: _followerFollowingSearch.length,
-                                    itemBuilder: (_, index) {
-                                      return SingleFFS(
-                                        name: _followerFollowingSearch[index]
-                                            .name,
-                                        imageUrl:
-                                            _followerFollowingSearch[index]
-                                                .image,
-                                      );
-                                    }),
-                              );
+                              _followerFollowingSearch1.length == 0
+                                  ? fFs = Container(
+                                      child: Center(
+                                          child: Text(
+                                        'You have no following yet',
+                                        style: TextStyle(
+                                          fontSize: 30.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      )),
+                                    )
+                                  : fFs = Expanded(
+                                      child: ListView.builder(
+                                          scrollDirection: Axis.vertical,
+                                          shrinkWrap: true,
+                                          itemCount:
+                                              _followerFollowingSearch1.length,
+                                          itemBuilder: (_, index) {
+                                            return SingleFFS(
+                                              name: _followerFollowingSearch1[
+                                                      index]
+                                                  .name,
+                                              imageUrl:
+                                                  _followerFollowingSearch1[
+                                                          index]
+                                                      .image,
+                                            );
+                                          }),
+                                    );
                               _search = null;
                             });
                           },
@@ -216,58 +298,84 @@ class _NetworkState extends State<Network> {
                       ),
                       Expanded(
                         child: GestureDetector(
-                          onTap: () async {
-                            await getAllData();
+                          onTap: () {
+                            print('runs');
+                            print(getAllData());
+                            /*print(_followerFollowingSearch[0]);*/
                             setState(() {
                               button1 = false;
                               button2 = false;
                               button3 = true;
-                              fFs = Expanded(
-                                child: ListView.builder(
-                                    scrollDirection: Axis.vertical,
-                                    shrinkWrap: true,
-                                    itemCount: _followerFollowingSearch.length,
-                                    itemBuilder: (_, index) {
-                                      return SingleSearch(
-                                        name: _followerFollowingSearch[index]
-                                            .name,
-                                        imageUrl:
-                                            _followerFollowingSearch[index]
-                                                .image,
-                                        id: _followerFollowingSearch[index].uid,
-                                      );
-                                    }),
-                              );
+                              _followerFollowingSearch2.length == 0
+                                  ? fFs = Container(
+                                      child: Center(
+                                          child: Text(
+                                        'No users available yet',
+                                        style: TextStyle(
+                                          fontSize: 30.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      )),
+                                    )
+                                  : fFs = Expanded(
+                                      child: ListView.builder(
+                                          scrollDirection: Axis.vertical,
+                                          shrinkWrap: true,
+                                          itemCount:
+                                              _followerFollowingSearch2.length,
+                                          itemBuilder: (_, index) {
+                                            return SingleSearch(
+                                              name: _followerFollowingSearch2[
+                                                      index]
+                                                  .name,
+                                              imageUrl:
+                                                  _followerFollowingSearch2[
+                                                          index]
+                                                      .image,
+                                              id: _followerFollowingSearch2[
+                                                      index]
+                                                  .uid,
+                                            );
+                                          }),
+                                    );
                               _search = Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: TextField(
-                                    onChanged: (value) async {
-                                      await searchMethod(value);
+                                    onChanged: (value) {
+                                      searchMethod(value);
                                       setState(() {
-                                        fFs = Expanded(
-                                          child: ListView.builder(
-                                              scrollDirection: Axis.vertical,
-                                              shrinkWrap: true,
-                                              itemCount:
-                                                  _followerFollowingSearch
-                                                      .length,
-                                              itemBuilder: (_, index) {
-                                                return SingleSearch(
-                                                  name:
-                                                      _followerFollowingSearch[
-                                                              index]
-                                                          .name,
-                                                  imageUrl:
-                                                      _followerFollowingSearch[
-                                                              index]
-                                                          .image,
-                                                  id: _followerFollowingSearch[
-                                                          index]
-                                                      .uid,
-                                                );
-                                              }),
-                                        );
+                                        _followerFollowingSearch3.length == 0
+                                            ? fFs = Container(
+                                                child: Center(
+                                                  child: Text(
+                                                      "No user exist with this username"),
+                                                ),
+                                              )
+                                            : fFs = Expanded(
+                                                child: ListView.builder(
+                                                    scrollDirection:
+                                                        Axis.vertical,
+                                                    shrinkWrap: true,
+                                                    itemCount:
+                                                        _followerFollowingSearch3
+                                                            .length,
+                                                    itemBuilder: (_, index) {
+                                                      return SingleSearch(
+                                                        name:
+                                                            _followerFollowingSearch3[
+                                                                    index]
+                                                                .name,
+                                                        imageUrl:
+                                                            _followerFollowingSearch3[
+                                                                    index]
+                                                                .image,
+                                                        id: _followerFollowingSearch3[
+                                                                index]
+                                                            .uid,
+                                                      );
+                                                    }),
+                                              );
                                       });
                                     },
                                     decoration: kDecoration.copyWith(

@@ -1,15 +1,37 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
+import 'package:mission_ed/change_password.dart';
+import 'package:mission_ed/login_screen.dart';
+import 'package:provider/provider.dart';
+import 'google_sign_in.dart';
+
 class ProfileScreen extends StatefulWidget {
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  String username;
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  DatabaseReference ref = FirebaseDatabase.instance.reference().child('Users');
+
+  @override
+  void initState() {
+    super.initState();
+    ref
+        .child(_auth.currentUser.uid.toString())
+        .once()
+        .then((DataSnapshot snapshot) {
+      if (snapshot.value != null) {
+        username = snapshot.value['username'];
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final user=FirebaseAuth.instance.currentUser;
+    final user = FirebaseAuth.instance.currentUser;
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -34,22 +56,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Padding(
                     padding: EdgeInsets.all(3.0),
                     child: CircleAvatar(
-                      radius: 40.0,
-                      backgroundColor: Colors.white,
-                      backgroundImage: user.photoURL==null?AssetImage('images/dummy profile.png'):NetworkImage(user.photoURL)
-
-                    ),
+                        radius: 40.0,
+                        backgroundColor: Colors.white,
+                        backgroundImage: user.photoURL == null
+                            ? AssetImage('images/dummy profile.png')
+                            : NetworkImage(user.photoURL)),
                   ),
-                  SizedBox(width: 3,),
+                  SizedBox(
+                    width: 3,
+                  ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-
                     children: [
                       Padding(
                         padding: EdgeInsets.symmetric(
                             horizontal: 4.0, vertical: 3.0),
                         child: Text(
-                          user.displayName==null?'Anonmyous':user.displayName,
+                          username,
                           textAlign: TextAlign.start,
                           style: TextStyle(
                             fontSize: 22.0,
@@ -74,16 +97,57 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 25.0,),
-              GestureDetector(child: ProfileCard(text: 'General',),onTap: (){
-                /*final provider = Provider.of<GoogleSignInProvider>(
+              SizedBox(
+                height: 25.0,
+              ),
+              GestureDetector(
+                child: ProfileCard(
+                  text: 'Edit Profile',
+                ),
+                onTap: () {
+                  /*final provider = Provider.of<GoogleSignInProvider>(
                     context,
                     listen: false);
                 provider.logout();*/
-                print(user);
-              },),
-              ProfileCard(text: 'Rewards',),
-              ProfileCard(text: 'Accounts',)
+                  print(user);
+                },
+              ),
+              GestureDetector(
+                child: ProfileCard(
+                  text: 'Change Password',
+                ),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ChangePassword()));
+                },
+              ),
+              GestureDetector(
+                child: ProfileCard(
+                  text: 'Logout',
+                ),
+                onTap: () async {
+                  for (var i in _auth.currentUser.providerData) {
+                    if (i.providerId == 'password') {
+                      await _auth.signOut();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoginScreen()));
+                    } else if (i.providerId == 'google.com') {
+                      final provider = Provider.of<GoogleSignInProvider>(
+                          context,
+                          listen: false);
+                      provider.logout();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoginScreen()));
+                    }
+                  }
+                },
+              )
             ],
           ),
         ),
@@ -96,6 +160,7 @@ class ProfileCard extends StatelessWidget {
   ProfileCard({@required this.text});
 
   final String text;
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -107,8 +172,10 @@ class ProfileCard extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10.0),
-                border: Border.all(color:Color(0xff4D3AA4),
-                width: 1.5,),
+                border: Border.all(
+                  color: Color(0xff4D3AA4),
+                  width: 1.5,
+                ),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey,

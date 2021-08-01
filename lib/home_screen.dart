@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:mission_ed/create_post.dart';
 import 'single_post.dart';
 import 'Modals.dart';
-import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -21,20 +20,22 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<Posts> getData() {
     referenceData.once().then((DataSnapshot snapshot) {
-      allPosts.clear();
-      var keys = snapshot.value.keys;
-      var values = snapshot.value;
-      for (var key in keys) {
-        Posts post = new Posts(
-            id: values[key]['id'],
-            title: values[key]['title'],
-            description: values[key]['description'],
-            category: values[key]['category'],
-            postedBy: values[key]['postedBy'],
-            imgUrl: values[key]['imgUrl'],
-            imgPostUrl: values[key]['imgPostUrl'],
-            username: values[key]['username']);
-        allPosts.add(post);
+      if (snapshot.value != null) {
+        allPosts.clear();
+        var keys = snapshot.value.keys;
+        var values = snapshot.value;
+        for (var key in keys) {
+          Posts post = new Posts(
+              id: values[key]['id'],
+              title: values[key]['title'],
+              description: values[key]['description'],
+              category: values[key]['category'],
+              postedBy: values[key]['postedBy'],
+              imgUrl: values[key]['imgUrl'],
+              imgPostUrl: values[key]['imgPostUrl'],
+              username: values[key]['username']);
+          allPosts.add(post);
+        }
       }
       setState(() {
         size = allPosts.length;

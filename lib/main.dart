@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mission_ed/authenticate/authenticate_firebase.dart';
-import 'package:mission_ed/screens/network.dart';
 import 'package:provider/provider.dart';
 import 'google_sign_in.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -21,7 +20,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: Network(),
+        home: AuthenticateFirebase(),
       ),
     );
   }

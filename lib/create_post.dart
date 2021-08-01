@@ -32,7 +32,6 @@ class _CreatePostState extends State<CreatePost> {
     final image = await picker.pickImage(source: ImageSource.gallery);
     setState(() {
       _image = image;
-
     });
   }
 
@@ -52,7 +51,9 @@ class _CreatePostState extends State<CreatePost> {
         .child(_auth.currentUser.uid.toString())
         .once()
         .then((DataSnapshot snapshot) {
-      username = snapshot.value['username'];
+      if (snapshot.value != null) {
+        username = snapshot.value['username'];
+      }
     });
   }
 

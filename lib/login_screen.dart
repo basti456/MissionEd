@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mission_ed/authenticate/authenticate_firebase.dart';
 import 'package:mission_ed/authenticate/methods.dart';
+import 'package:mission_ed/forget_password.dart';
 import 'package:mission_ed/home_screen.dart';
 import 'package:mission_ed/rounded_button.dart';
 import 'package:mission_ed/constsnts.dart';
@@ -136,13 +137,22 @@ class _LoginScreenState extends State<LoginScreen> {
                                 colour: Color(0xff312C69),
                                 text: 'Log In',
                               ),
-                              Text(
-                                ' Forget your password ?',
-                                style: TextStyle(
-                                  color: Color(0xff4D3AA4),
-                                  fontSize: 14.0,
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ForgetPassword()));
+                                },
+                                child: Text(
+                                  ' Forget your password ?',
+                                  style: TextStyle(
+                                    color: Color(0xff4D3AA4),
+                                    fontSize: 14.0,
+                                  ),
+                                  textAlign: TextAlign.start,
                                 ),
-                                textAlign: TextAlign.start,
                               ),
                             ],
                           ),

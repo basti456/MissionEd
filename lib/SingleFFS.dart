@@ -5,7 +5,6 @@ class SingleFFS extends StatelessWidget {
   final String imageUrl;
   final String name;
 
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -41,7 +40,7 @@ class SingleFFS extends StatelessWidget {
                       shape: BoxShape.circle,
                       image: DecorationImage(
                         fit: BoxFit.fill,
-                        image: NetworkImage(imageUrl),
+                        image: imageUrl==""?AssetImage('images/dummy profile.png'):NetworkImage(imageUrl),
                       ),
                     ),
                   ),
