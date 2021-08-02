@@ -11,7 +11,7 @@ Future<void> sendPostNotification(notificationTitle, sendersName, message,
       "title": "$notificationTitle",
     },
     "priority": "high",
-    "data": {
+    "data":<String, String> {
       "click_action": "FLUTTER_NOTIFICATION_CLICK",
       "id": "1",
       "status": "done",
@@ -21,10 +21,10 @@ Future<void> sendPostNotification(notificationTitle, sendersName, message,
     "to": "$topic",
   });
 
-  final headers = {
+  final headers =<String, String> {
     'content-type': 'application/json',
     'Authorization':
-        'key=AAAAsEWVmyY:APA91bFKBkB_9kNtFmDW6rEBtNcJUfuQ7CjwoMC3pzbTDhaIiiea0E2_3VHfSm3LfgPYs9h696nzfxccd9gJRsNIPriZ0PIrjxSRKJlUITxYTGJCXdWD4L7UJ_AkWstatnZZuoXgSEpA'
+        'key=AAAAsEWVmyY:APA91bHec56YMfUXYPopN_96kVpDIS8tjbITbo7qfccYDijakzeU0x2-worqN9dvE8ddrhUZUViLh7XgRGLhOO9INHxD0rmPBun7BtFrheBfN_GTedISH-LYQy34yAlmLmQxh6KgWW5S'
   };
 
   final url = 'https://fcm.googleapis.com/fcm/send';

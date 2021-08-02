@@ -13,7 +13,7 @@ class Network extends StatefulWidget {
 }
 
 class _NetworkState extends State<Network> {
-  List<Ffs> _followerFollowingSearch = [];
+   List<Ffs> _followerFollowingSearch = [];
   List<Ffs> _followerFollowingSearch1 = [];
   List<Ffs> _followerFollowingSearch2 = [];
   List<Ffs> _followerFollowingSearch3 = [];
