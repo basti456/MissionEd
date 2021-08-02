@@ -74,6 +74,7 @@ class _MyAppState extends State<MyApp> {
        });
       }
     });*/
+    getToken();
   }
   @override
   Widget build(BuildContext context) {
@@ -87,4 +88,9 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
+}
+
+Future getToken() async{
+  String token= await FirebaseMessaging.instance.getToken();
+  print('This is $token');
 }
