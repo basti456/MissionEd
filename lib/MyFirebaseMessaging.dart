@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class SendNotification{
-  Future<void> sendPostNotification(notificationTitle, sendersName, message,
+   Future<void> sendPostNotification(notificationTitle, sendersName, message,
       notificationType, String topic) async {
     final data = jsonEncode(<String,dynamic>{
       "notification": {
