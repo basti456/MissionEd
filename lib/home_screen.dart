@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:mission_ed/MyFirebaseMessaging.dart';
 import 'package:mission_ed/create_post.dart';
 import 'single_post.dart';
 import 'Modals.dart';
@@ -48,7 +49,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    getData();
+    print(getData());
+    print(allPosts);
   }
 
   @override
@@ -155,10 +157,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             padding: EdgeInsets.all(2.0),
                             child: GestureDetector(
                               onTap: () {
-                                Navigator.push(
+                                SendNotification().sendPostNotification("Hello", "sendersName", "message", "notificationType", 'csonMGODTymsMPbeWcx6m5:APA91bEPyVCRXdtdWi4jQOKsv20n-pdts1KI6xLZA2S0LwA-bobDFniQGWX0YWxxSzLcsRfs3xhoPTb0feDNOKWnDMmIwjL4JPsmxOdxEhUdKVtzLOdR3BU5xhzuHCRKKq6We9Z9EE1R');
+                                /*Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => CreatePost()));
+                                        builder: (context) => CreatePost()));*/
                               },
                               child: Container(
                                 child: Text(

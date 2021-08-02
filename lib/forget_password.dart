@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mission_ed/login_screen.dart';
 import 'package:mission_ed/rounded_button.dart';
-import 'constsnts.dart';
+import 'constants.dart';
 
 class ForgetPassword extends StatefulWidget {
   @override
@@ -52,7 +52,8 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                       onChanged: (value) {
                         email = value;
                       },
-                      decoration: kDecoration),
+                      decoration: kDecoration.copyWith(
+                          hintText: "Enter your registered email address")),
                   SizedBox(
                     height: 16.0,
                   ),
@@ -61,6 +62,11 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                       if (email == _auth.currentUser.email &&
                           !(_auth.currentUser.emailVerified)) {
                         _auth.sendPasswordResetEmail(email: email);
+                        SnackBar(
+                          content: Text(
+                              'An email has been sent to your registered email address'),
+                          duration: Duration(seconds: 1),
+                        );
                         Navigator.push(
                             context,
                             MaterialPageRoute(

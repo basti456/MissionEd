@@ -4,8 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:mission_ed/ModalFFs.dart';
 import 'package:mission_ed/SingleFFS.dart';
 import 'package:mission_ed/SingleSearch.dart';
-import 'package:mission_ed/constsnts.dart';
+import 'package:mission_ed/constants.dart';
 import 'dart:async';
+
+import 'package:mission_ed/screens/search.dart';
+
+import 'followers.dart';
 
 class Network extends StatefulWidget {
   @override
@@ -13,7 +17,7 @@ class Network extends StatefulWidget {
 }
 
 class _NetworkState extends State<Network> {
-   List<Ffs> _followerFollowingSearch = [];
+  List<Ffs> _followerFollowingSearch = [];
   List<Ffs> _followerFollowingSearch1 = [];
   List<Ffs> _followerFollowingSearch2 = [];
   List<Ffs> _followerFollowingSearch3 = [];
@@ -45,9 +49,10 @@ class _NetworkState extends State<Network> {
           _followerFollowingSearch.add(fFollowing);
         }
       }
-/*      setState(() {
+      setState(() {
         size = _followerFollowingSearch.length;
-      });*/
+        print('followers is $size');
+      });
     });
     return _followerFollowingSearch;
   }
@@ -72,9 +77,10 @@ class _NetworkState extends State<Network> {
           _followerFollowingSearch1.add(fFollowing);
         }
       }
-/*      setState(() {
-        size = _followerFollowingSearch.length;
-      });*/
+      setState(() {
+        size = _followerFollowingSearch1.length;
+        print('following is $size');
+      });
     });
     return _followerFollowingSearch1;
   }
@@ -96,17 +102,15 @@ class _NetworkState extends State<Network> {
           _followerFollowingSearch2.add(fFollowing);
         }
       }
-
-/*      setState(() {
-        size = _followerFollowingSearch.length;
-        print(size);
-        */ /*print(_followerFollowingSearch);*/ /*
-      });*/
+      setState(() {
+        size=(_followerFollowingSearch2.length);
+        print(' users is $size');
+      });
     });
     return _followerFollowingSearch2;
   }
 
-  List<Ffs> searchMethod(String text) {
+  void searchMethod(String text) {
     DatabaseReference refFData =
         FirebaseDatabase.instance.reference().child('Users');
     refFData.once().then((DataSnapshot snapshot) {
@@ -120,51 +124,43 @@ class _NetworkState extends State<Network> {
             name: values[key]['username'],
             image: values[key]['imgUrl'],
           );
-          if (searchData.name.contains(text)) {
-            print(searchData.name.contains(text));
-            _followerFollowingSearch3.add(searchData);
-          }
+          _followerFollowingSearch3.add(searchData);
         }
-        Timer(Duration(seconds: 1), () {
+/*        Timer(Duration(seconds: 1), () {
           setState(() {});
-        });
+        });*/
       }
-      /* setState(() {
-        size = _followerFollowingSearch.length;
-      });*/
+      setState(() {
+        size = _followerFollowingSearch3.length;
+        print('search is $size');
+      });
     });
-    return _followerFollowingSearch3;
   }
 
   @override
   void initState() {
     super.initState();
-    getFData;
-    setState(() {
-      _followerFollowingSearch.length == 0
-          ? fFs = Container(
-              child: Center(
-                  child: Text(
-                'You have no followers yet',
-                style: TextStyle(
-                  fontSize: 30.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              )),
-            )
-          : fFs = Expanded(
-              child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: _followerFollowingSearch.length,
-                  itemBuilder: (_, index) {
-                    return SingleFFS(
-                      name: _followerFollowingSearch[index].name,
-                      imageUrl: _followerFollowingSearch[index].image,
-                    );
-                  }),
-            );
-    });
+    getFData();
+    getfData();
+    getAllData();
+    _followerFollowingSearch.length == 0
+        ? fFs = Container(
+            child: Center(
+              child: Text('You have no followers yet'),
+            ),
+          )
+        : fFs = Expanded(
+            child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: _followerFollowingSearch.length,
+                itemBuilder: (_, index) {
+                  return SingleFFS(
+                    name: _followerFollowingSearch[index].name,
+                    imageUrl: _followerFollowingSearch[index].image,
+                  );
+                }),
+          );
   }
 
   @override
@@ -205,21 +201,17 @@ class _NetworkState extends State<Network> {
                       Expanded(
                         child: GestureDetector(
                           onTap: () {
-                            getFData;
+                            getFData();
                             setState(() {
                               button1 = true;
                               button2 = false;
                               button3 = false;
                               _followerFollowingSearch.length == 0
-                                  ? fFs = Container(
+                                  ? Container(
                                       child: Center(
-                                          child: Text(
-                                        'You have no followers yet',
-                                        style: TextStyle(
-                                          fontSize: 30.0,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      )),
+                                        child:
+                                            Text('You have no followers yet'),
+                                      ),
                                     )
                                   : fFs = Expanded(
                                       child: ListView.builder(
@@ -252,7 +244,7 @@ class _NetworkState extends State<Network> {
                       Expanded(
                         child: GestureDetector(
                           onTap: () {
-                            getfData;
+                            getfData();
                             setState(() {
                               button1 = false;
                               button2 = true;
@@ -300,8 +292,8 @@ class _NetworkState extends State<Network> {
                         child: GestureDetector(
                           onTap: () {
                             print('runs');
-                            print(getAllData());
-                            /*print(_followerFollowingSearch[0]);*/
+                            getAllData();
+                            print(_followerFollowingSearch2.length);
                             setState(() {
                               button1 = false;
                               button2 = false;

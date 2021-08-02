@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:mission_ed/constsnts.dart';
+import 'package:mission_ed/constants.dart';
 class Message extends StatefulWidget {
 
   @override

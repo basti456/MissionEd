@@ -127,9 +127,9 @@ class _SingleSearchState extends State<SingleSearch> {
                             });
                     },
                     child: Text(
-                      isFollowing ? 'Following' : 'Follow',
+                      isFollowing!=null ? 'Following' : 'Follow',
                       style: TextStyle(
-                          color: isFollowing
+                          color: isFollowing!=null
                               ? Colors.lightGreen
                               : Color(0xff312C69),
                           fontSize: 16.0,

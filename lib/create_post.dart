@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mission_ed/constsnts.dart';
+import 'package:mission_ed/constants.dart';
 import 'package:mission_ed/home_screen.dart';
 import 'package:mission_ed/rounded_button.dart';
 import 'package:firebase_database/firebase_database.dart';

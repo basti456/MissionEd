@@ -26,6 +26,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if (snapshot.value != null) {
         username = snapshot.value['username'];
       }
+
     });
   }
 

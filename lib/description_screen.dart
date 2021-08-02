@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:mission_ed/constsnts.dart';
+import 'package:mission_ed/constants.dart';
 import 'package:mission_ed/rounded_button.dart';
 
 import 'Modals.dart';
