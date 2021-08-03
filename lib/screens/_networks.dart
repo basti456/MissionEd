@@ -7,7 +7,6 @@ import 'package:mission_ed/SingleSearch.dart';
 import 'package:mission_ed/SingleFollowing.dart';
 import '../constants.dart';
 
-
 class NetworkSection extends StatefulWidget {
   const NetworkSection({Key key}) : super(key: key);
 
@@ -31,11 +30,11 @@ class _NetworkSectionState extends State<NetworkSection> {
   FirebaseAuth _auth = FirebaseAuth.instance;
 
   DatabaseReference _reference =
-  FirebaseDatabase.instance.reference().child('Users');
+      FirebaseDatabase.instance.reference().child('Users');
 
   List<Ffs> searchMethod(String text) {
     DatabaseReference refFData =
-    FirebaseDatabase.instance.reference().child('Users');
+        FirebaseDatabase.instance.reference().child('Users');
     refFData.once().then((DataSnapshot snapshot) {
       if (snapshot.value != null) {
         searchData.clear();
@@ -56,24 +55,25 @@ class _NetworkSectionState extends State<NetworkSection> {
           }
         }
       }
-      setState(() {
-        _allUsers = null;
-        _followers = null;
-        _following = null;
-        _Search = Expanded(
-          child: ListView.builder(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount: searchData.length,
-            itemBuilder: (_, index) {
-              return SingleSearch(
-                  id: searchData[index].uid,
-                  name: searchData[index].name,
-                  imageUrl: searchData[index].image);
-            },
-          ),
-        );
-      });
+      if (this.mounted)
+        setState(() {
+          _allUsers = null;
+          _followers = null;
+          _following = null;
+          _Search = Expanded(
+            child: ListView.builder(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: searchData.length,
+              itemBuilder: (_, index) {
+                return SingleSearch(
+                    id: searchData[index].uid,
+                    name: searchData[index].name,
+                    imageUrl: searchData[index].image);
+              },
+            ),
+          );
+        });
     });
     return searchData;
   }
@@ -95,21 +95,22 @@ class _NetworkSectionState extends State<NetworkSection> {
           allUsers.add(post);
         }
       }
-      setState(() {
-        _allUsers = Expanded(
-          child: ListView.builder(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount: allUsers.length,
-            itemBuilder: (_, index) {
-              return SingleSearch(
-                  id: allUsers[index].uid,
-                  name: allUsers[index].name,
-                  imageUrl: allUsers[index].image);
-            },
-          ),
-        );
-      });
+      if (this.mounted)
+        setState(() {
+          _allUsers = Expanded(
+            child: ListView.builder(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: allUsers.length,
+              itemBuilder: (_, index) {
+                return SingleSearch(
+                    id: allUsers[index].uid,
+                    name: allUsers[index].name,
+                    imageUrl: allUsers[index].image);
+              },
+            ),
+          );
+        });
     });
     return allUsers;
   }
@@ -136,20 +137,21 @@ class _NetworkSectionState extends State<NetworkSection> {
           followers.add(post);
         }
       }
-      setState(() {
-        _followers = Expanded(
-          child: ListView.builder(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount: followers.length,
-            itemBuilder: (_, index) {
-              return SingleFFS(
-                  name: followers[index].name,
-                  imageUrl: followers[index].image);
-            },
-          ),
-        );
-      });
+      if (this.mounted)
+        setState(() {
+          _followers = Expanded(
+            child: ListView.builder(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: followers.length,
+              itemBuilder: (_, index) {
+                return SingleFFS(
+                    name: followers[index].name,
+                    imageUrl: followers[index].image);
+              },
+            ),
+          );
+        });
     });
     return followers;
   }
@@ -176,20 +178,21 @@ class _NetworkSectionState extends State<NetworkSection> {
           following.add(post);
         }
       }
-      setState(() {
-        _following = Expanded(
-          child: ListView.builder(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount: following.length,
-            itemBuilder: (_, index) {
-              return SingleFollowing(
-                  name: following[index].name,
-                  imageUrl: following[index].image);
-            },
-          ),
-        );
-      });
+      if (this.mounted)
+        setState(() {
+          _following = Expanded(
+            child: ListView.builder(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: following.length,
+              itemBuilder: (_, index) {
+                return SingleFollowing(
+                    name: following[index].name,
+                    imageUrl: following[index].image);
+              },
+            ),
+          );
+        });
     });
     return following;
   }
@@ -297,7 +300,7 @@ class _NetworkSectionState extends State<NetworkSection> {
                               _Search = null;
                               _search = Padding(
                                 padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: TextField(
                                   decoration: kDecoration.copyWith(
                                       prefixIcon: Icon(
@@ -353,23 +356,23 @@ class NetworkItems extends StatelessWidget {
     return Container(
       decoration: isPressed
           ? BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(5.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey,
-            blurRadius: 2.0,
-            spreadRadius: 0.0,
-            offset: Offset(4.0, 4.0), // shadow direction: bottom right
-          )
-        ],
-        /*  border: Border.all(color: Color(0xff312C69),
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(5.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey,
+                  blurRadius: 2.0,
+                  spreadRadius: 0.0,
+                  offset: Offset(4.0, 4.0), // shadow direction: bottom right
+                )
+              ],
+              /*  border: Border.all(color: Color(0xff312C69),
              width: 0.2
              )*/
-      )
+            )
           : BoxDecoration(
-        color: Colors.white,
-      ),
+              color: Colors.white,
+            ),
       child: Padding(
         padding: EdgeInsets.all(4.0),
         child: Column(
