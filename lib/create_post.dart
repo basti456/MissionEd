@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -210,8 +209,7 @@ class _CreatePostState extends State<CreatePost> {
                 RoundButton(
                   onPressed: () async {
                     if (titleController.text.isNotEmpty &&
-                        descriptionController.text.isNotEmpty &&
-                        _image.path != null) {
+                        descriptionController.text.isNotEmpty) {
                       if (_dropDownValue != null) {
                         setState(() {
                           showSpinner = true;
@@ -230,7 +228,10 @@ class _CreatePostState extends State<CreatePost> {
                           'category': _dropDownValue,
                           'postedBy': user.uid.toString(),
                           'imgUrl': user.photoURL == null ? "" : user.photoURL,
-                          'imgPostUrl': imgUrl,
+                          'imgPostUrl': imgUrl == null
+                              ? "https://i.pinimg.com/564x/7a/9a/41/7a9a417cb1312623abff4921e2f364f9.jpg"
+                              : imgUrl,
+                          'likes': "0",
                           'username': username
                         });
                         SendNotification().sendPostNotification(

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -34,9 +35,20 @@ class SinglePost extends StatefulWidget {
 class _SinglePostState extends State<SinglePost> {
   bool isLiked = false;
   bool showHeartOverlay = false;
-  void getLiked(){
-    DatabaseReference ref=FirebaseDatabase.instance.reference().child('Posts').child(widget.id);
-  }
+  FirebaseAuth _auth = FirebaseAuth.instance;
+
+/*  void getLiked() {
+    DatabaseReference ref =
+        FirebaseDatabase.instance.reference().child('Posts').child(widget.id);
+    ref.once().then((DataSnapshot snapshot) {
+      var values = snapshot.value;
+      var likes = values['likes'];
+      var newLike = int.parse(likes) + 1;
+      ref.update({'likes': newLike.toString()});
+      ref.child('LikedBy').child('UserIds').set(_auth.currentUser.uid);
+    });
+  }*/
+
   _pressed() {
     setState(() {
       isLiked = !isLiked;
@@ -47,6 +59,7 @@ class _SinglePostState extends State<SinglePost> {
     setState(() {
       showHeartOverlay = true;
       isLiked = true;
+/*      getLiked();*/
       if (showHeartOverlay) {
         Timer(const Duration(milliseconds: 500), () {
           setState(() {
@@ -92,6 +105,11 @@ class _SinglePostState extends State<SinglePost> {
       time = 'Few Seconds Ago';
     }
     return time;
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -221,22 +239,22 @@ class _SinglePostState extends State<SinglePost> {
                                     children: [
                                       isLiked
                                           ? Icon(
-                                        Icons.favorite,
-                                        size: 30,
-                                        color: Colors.red,
-                                      )
+                                              Icons.favorite,
+                                              size: 30,
+                                              color: Colors.red,
+                                            )
                                           : Icon(
-                                        Icons.favorite_border_outlined,
-                                        size: 30.0,
-                                        color: Colors.blueGrey,
-                                      ),
+                                              Icons.favorite_border_outlined,
+                                              size: 30.0,
+                                              color: Colors.blueGrey,
+                                            ),
                                     ],
                                   ),
                                   SizedBox(
                                     height: 5.0,
                                   ),
                                   Text(
-                                    '389',
+                                    '',
                                     style: TextStyle(color: kDarkPurple),
                                   ),
                                 ],
@@ -246,10 +264,10 @@ class _SinglePostState extends State<SinglePost> {
                         ),
                         showHeartOverlay
                             ? Icon(
-                          Icons.favorite,
-                          color: Colors.red,
-                          size: 80.0,
-                        )
+                                Icons.favorite,
+                                color: Colors.red,
+                                size: 80.0,
+                              )
                             : Container()
                       ],
                     ),
