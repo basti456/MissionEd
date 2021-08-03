@@ -194,7 +194,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     )
                   : Expanded(
                       child: ListView.builder(
-                          reverse: true,
+                          /*reverse: true,*/
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,
                           itemCount: allPosts.length,
