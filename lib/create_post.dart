@@ -10,6 +10,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:mission_ed/MyFirebaseMessaging.dart';
 
 class CreatePost extends StatefulWidget {
   @override
@@ -18,8 +19,8 @@ class CreatePost extends StatefulWidget {
 
 class _CreatePostState extends State<CreatePost> {
   String _dropDownValue;
-  final titleController=TextEditingController();
-  final descriptionController=TextEditingController();
+  final titleController = TextEditingController();
+  final descriptionController = TextEditingController();
   String title;
   String description;
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -57,6 +58,13 @@ class _CreatePostState extends State<CreatePost> {
         username = snapshot.value['username'];
       }
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    titleController.dispose();
+    descriptionController.dispose();
   }
 
   @override
@@ -187,6 +195,7 @@ class _CreatePostState extends State<CreatePost> {
                   height: 18.0,
                 ),
                 TextField(
+                  controller: descriptionController,
                   maxLines: 8,
                   onChanged: (val) {
                     description = val;
@@ -224,6 +233,12 @@ class _CreatePostState extends State<CreatePost> {
                           'imgPostUrl': imgUrl,
                           'username': username
                         });
+                        SendNotification().sendPostNotification(
+                            "A new post arrived",
+                            user.uid.toString(),
+                            title,
+                            "Post Created",
+                            'MissionEd');
                         Navigator.push(
                             context,
                             MaterialPageRoute(

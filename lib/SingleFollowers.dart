@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class SingleFFS extends StatelessWidget {
-  SingleFFS({this.imageUrl,this.name});
+class SingleFollowers extends StatelessWidget {
+  SingleFollowers({this.imageUrl,this.name});
   final String imageUrl;
   final String name;
 

@@ -108,7 +108,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                         },
                         decoration: kDecoration.copyWith(
                           prefixIcon: Icon(Icons.vpn_key_outlined),
-                          hintText: 'old password',
+                          hintText: 'Old Password',
                         )),
                     SizedBox(
                       height: 24.0,
@@ -121,7 +121,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                         },
                         decoration: kDecoration.copyWith(
                           prefixIcon: Icon(Icons.vpn_key_outlined),
-                          hintText: 'new password',
+                          hintText: 'New Password',
                         )),
                     SizedBox(
                       height: 24.0,
@@ -134,7 +134,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                         },
                         decoration: kDecoration.copyWith(
                           prefixIcon: Icon(Icons.vpn_key_outlined),
-                          hintText: 'confirm new password',
+                          hintText: 'Confirm New Password',
                         )),
                     SizedBox(
                       height: 16.0,

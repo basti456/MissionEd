@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:mission_ed/ModalFFs.dart';
-import 'package:mission_ed/SingleFFS.dart';
+import 'package:mission_ed/SingleFollowers.dart';
 import 'package:mission_ed/SingleSearch.dart';
 import 'package:mission_ed/SingleFollowing.dart';
 import '../constants.dart';
@@ -145,7 +145,7 @@ class _NetworkSectionState extends State<NetworkSection> {
               shrinkWrap: true,
               itemCount: followers.length,
               itemBuilder: (_, index) {
-                return SingleFFS(
+                return SingleFollowers(
                     name: followers[index].name,
                     imageUrl: followers[index].image);
               },
