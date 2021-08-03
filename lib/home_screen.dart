@@ -115,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   style: TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,
-                      color:kPrimaryColor,
+                      color: kPrimaryColor,
                       letterSpacing: 3.0),
                 ),
               ),
@@ -194,6 +194,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     )
                   : Expanded(
                       child: ListView.builder(
+                          reverse: true,
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,
                           itemCount: allPosts.length,
