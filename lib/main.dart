@@ -2,6 +2,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:mission_ed/screens/notifications.dart';
 import 'package:mission_ed/screens/splash.dart';
 import 'package:provider/provider.dart';
 import 'description_screen.dart';
@@ -104,7 +105,7 @@ class _MyAppState extends State<MyApp> {
         theme: ThemeData(
           primarySwatch: Colors.deepPurple,
         ),
-        home:SplashScreen(),
+        home:Notifications(),
       ),
     );
   }

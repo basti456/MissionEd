@@ -12,6 +12,7 @@ class SingleNotificationSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        SizedBox(height: 5.0,),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
@@ -51,14 +52,14 @@ class SingleNotificationSection extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      postTitle,
+                      'this',
                       style: TextStyle(
                           color: kPrimaryColor,
                           fontSize: 20.0,
                           fontWeight: FontWeight.w500),
                     ),
                     Text(
-                      username,
+                      'that',
                       style: TextStyle(
                           color: kPrimaryColor,
                           fontSize: 14.0,
