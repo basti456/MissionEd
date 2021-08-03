@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mission_ed/constants.dart';
-class Message extends StatefulWidget {
+import 'package:firebase_database/firebase_database.dart';
 
+DatabaseReference ref = FirebaseDatabase.instance.reference().child('Users');
+final _auth = FirebaseAuth.instance;
+var id = 't4V2HBES3FclQTwSvyBPOeFjsKv1';
+
+class Message extends StatefulWidget {
   @override
   _MessageState createState() => _MessageState();
 }
 
 class _MessageState extends State<Message> {
   final messageTextController = TextEditingController();
-  final _auth = FirebaseAuth.instance;
+
   String message;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,6 +29,7 @@ class _MessageState extends State<Message> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            MessageStream(),
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
@@ -32,7 +39,7 @@ class _MessageState extends State<Message> {
                     child: TextField(
                       controller: messageTextController,
                       onChanged: (value) {
-                         message= value;
+                        message = value;
                       },
                       decoration: kMessageTextFieldDecoration,
                     ),
@@ -40,6 +47,22 @@ class _MessageState extends State<Message> {
                   FlatButton(
                     onPressed: () {
                       messageTextController.clear();
+                      var timestamp = DateTime.now().millisecondsSinceEpoch;
+                      //id is uid of person through which he chats
+                      ref
+                          .child(_auth.currentUser.uid)
+                          .child("Messages")
+                          .child(id)
+                          .child(timestamp.toString())
+                          .set(
+                              {'id': timestamp.toString(), 'message': message,'sendBy':_auth.currentUser.uid});
+                      ref
+                          .child(id)
+                          .child("Messages")
+                          .child(_auth.currentUser.uid)
+                          .child(timestamp.toString())
+                          .set(
+                              {'id': timestamp.toString(), 'message': message,'sendBy':_auth.currentUser.uid});
                     },
                     child: Text(
                       'Send',
@@ -51,6 +74,97 @@ class _MessageState extends State<Message> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class MessageStream extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: ref
+          .child(_auth.currentUser.uid)
+          .child("Messages")
+          .child(id)
+          .onValue,
+      builder: (context, AsyncSnapshot<Event> snapshot) {
+        if (!snapshot.hasData) {
+          return Center(
+            child: CircularProgressIndicator(
+              backgroundColor: Colors.lightBlueAccent,
+            ),
+          );
+        }
+        final messages = snapshot.data.snapshot;
+        List<MessageBubble> messageBubbles = [];
+        print(messages);
+        Map<dynamic, dynamic> values = messages.value;
+
+        values.forEach((key, value) {
+          print(value);
+          var messageBubble=MessageBubble(sender: value['id'],text: value['message'],isMe: _auth.currentUser.uid==value['sendBy']);
+          messageBubbles.add(messageBubble);
+        });
+        return Expanded(
+          child: ListView(
+            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
+            children: messageBubbles,
+          ),
+        );
+      },
+    );
+  }
+}
+
+class MessageBubble extends StatelessWidget {
+  MessageBubble({this.sender, this.text, this.isMe});
+
+  final String text;
+  final String sender;
+  final bool isMe;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(10.0),
+      child: Column(
+        crossAxisAlignment:
+            isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            sender,
+            style: TextStyle(
+              fontSize: 12.0,
+              color: Colors.black54,
+            ),
+          ),
+          Material(
+            borderRadius: isMe
+                ? BorderRadius.only(
+                    topLeft: Radius.circular(30.0),
+                    bottomLeft: Radius.circular(30.0),
+                    bottomRight: Radius.circular(30.0),
+                  )
+                : BorderRadius.only(
+                    bottomLeft: Radius.circular(30.0),
+                    bottomRight: Radius.circular(30.0),
+                    topRight: Radius.circular(30.0),
+                  ),
+            color: isMe ? Colors.lightBlueAccent : Colors.white,
+            elevation: 5.0,
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+              child: Text(
+                '$text',
+                style: TextStyle(
+                  fontSize: 15.0,
+                  color: isMe ? Colors.white : Colors.black54,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
