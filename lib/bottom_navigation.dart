@@ -12,11 +12,10 @@ class BottomNavigation extends StatefulWidget {
 }
 
 class _BottomNavigationState extends State<BottomNavigation> {
-  int pageIndex=0;
-  List<Widget>pageList = <Widget>[
+  int pageIndex = 0;
+  List<Widget> pageList = <Widget>[
     HomeScreen(),
     NetworkSection(),
-    Message(),
     Notifications(),
     ProfileScreen()
   ];
@@ -24,16 +23,16 @@ class _BottomNavigationState extends State<BottomNavigation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:pageList[pageIndex],
+      body: pageList[pageIndex],
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: kPrimaryColor,
         selectedIconTheme: IconThemeData(color: Colors.white),
         selectedItemColor: Colors.white,
         unselectedItemColor: kSecondaryColor,
         currentIndex: pageIndex,
-        onTap: (value){
+        onTap: (value) {
           setState(() {
-            pageIndex=value;
+            pageIndex = value;
           });
         },
         type: BottomNavigationBarType.fixed,
@@ -41,7 +40,6 @@ class _BottomNavigationState extends State<BottomNavigation> {
           BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: 'Home'),
           BottomNavigationBarItem(
               icon: Icon(Icons.people_rounded), label: 'Network'),
-          BottomNavigationBarItem(icon: Icon(Icons.message), label: 'Message'),
           BottomNavigationBarItem(
               icon: Icon(Icons.notifications), label: 'Notification'),
           BottomNavigationBarItem(

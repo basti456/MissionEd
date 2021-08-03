@@ -146,6 +146,7 @@ class _NetworkSectionState extends State<NetworkSection> {
               itemCount: followers.length,
               itemBuilder: (_, index) {
                 return SingleFollowers(
+                    id:followers[index].uid,
                     name: followers[index].name,
                     imageUrl: followers[index].image);
               },
@@ -187,6 +188,7 @@ class _NetworkSectionState extends State<NetworkSection> {
               itemCount: following.length,
               itemBuilder: (_, index) {
                 return SingleFollowing(
+                    id:followers[index].uid,
                     name: following[index].name,
                     imageUrl: following[index].image);
               },

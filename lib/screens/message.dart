@@ -5,9 +5,14 @@ import 'package:firebase_database/firebase_database.dart';
 
 DatabaseReference ref = FirebaseDatabase.instance.reference().child('Users');
 final _auth = FirebaseAuth.instance;
-var id = 't4V2HBES3FclQTwSvyBPOeFjsKv1';
+/*var id = 't4V2HBES3FclQTwSvyBPOeFjsKv1';*/
 
 class Message extends StatefulWidget {
+  Message({this.id, this.name});
+
+  final String id;
+  final String name;
+
   @override
   _MessageState createState() => _MessageState();
 }
@@ -21,7 +26,7 @@ class _MessageState extends State<Message> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('⚡️Chat Room'),
+        title: Text('⚡️Chat Room (${widget.name})'),
         backgroundColor: Color(0xff312C69),
       ),
       body: SafeArea(
@@ -29,7 +34,9 @@ class _MessageState extends State<Message> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            MessageStream() == null ? Container() : MessageStream(),
+            MessageStream(
+              id: widget.id,
+            ),
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
@@ -52,7 +59,7 @@ class _MessageState extends State<Message> {
                       ref
                           .child(_auth.currentUser.uid)
                           .child("Messages")
-                          .child(id)
+                          .child(widget.id)
                           .child(timestamp.toString())
                           .set({
                         'id': timestamp.toString(),
@@ -60,7 +67,7 @@ class _MessageState extends State<Message> {
                         'sendBy': _auth.currentUser.uid
                       });
                       ref
-                          .child(id)
+                          .child(widget.id)
                           .child("Messages")
                           .child(_auth.currentUser.uid)
                           .child(timestamp.toString())
@@ -86,6 +93,10 @@ class _MessageState extends State<Message> {
 }
 
 class MessageStream extends StatelessWidget {
+  MessageStream({this.id});
+
+  final String id;
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -140,13 +151,6 @@ class MessageBubble extends StatelessWidget {
         crossAxisAlignment:
             isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            sender,
-            style: TextStyle(
-              fontSize: 12.0,
-              color: Colors.black54,
-            ),
-          ),
           Material(
             borderRadius: isMe
                 ? BorderRadius.only(
@@ -159,7 +163,7 @@ class MessageBubble extends StatelessWidget {
                     bottomRight: Radius.circular(30.0),
                     topRight: Radius.circular(30.0),
                   ),
-            color: isMe ? Colors.lightBlueAccent : Colors.white,
+            color: isMe ? kPrimaryColor : Colors.white,
             elevation: 5.0,
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),

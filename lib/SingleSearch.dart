@@ -97,7 +97,7 @@ class _SingleSearchState extends State<SingleSearch> {
                         image: DecorationImage(
                           fit: BoxFit.fill,
                           image: widget.imageUrl == ""
-                              ? AssetImage('images/dummy image.png')
+                              ? AssetImage('images/dummy profile.png')
                               : NetworkImage(widget.imageUrl),
                         ),
                       ),
