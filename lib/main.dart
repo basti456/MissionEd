@@ -70,6 +70,9 @@ class _MyAppState extends State<MyApp> {
             ));
       }
     });
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+
+    });
    /* FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification notification=message.notification;
       AndroidNotification androidNotification=message.notification?.android;

@@ -18,12 +18,26 @@ class _SignUpState extends State<SignUp> {
   String password;
   String username;
   String confirmPassword;
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final usernameController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
   bool isLoading = false;
   String token;
+
   void subscribeToMissionEd() async {
     await FirebaseMessaging.instance
         .subscribeToTopic('MissionEd')
         .then((value) => print('Mission Ed subscribed'));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    usernameController.dispose();
+    confirmPasswordController.dispose();
   }
 
   @override
@@ -71,6 +85,7 @@ class _SignUpState extends State<SignUp> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     TextField(
+                        controller: usernameController,
                         onChanged: (value) {
                           username = value.trim();
                         },
@@ -81,6 +96,7 @@ class _SignUpState extends State<SignUp> {
                       height: 16.0,
                     ),
                     TextField(
+                      controller: emailController,
                       decoration: kDecoration,
                       onChanged: (value) {
                         email = value.trim();
@@ -90,6 +106,7 @@ class _SignUpState extends State<SignUp> {
                       height: 16.0,
                     ),
                     TextField(
+                        controller: passwordController,
                         obscureText: true,
                         onChanged: (value) {
                           password = value;
@@ -102,6 +119,7 @@ class _SignUpState extends State<SignUp> {
                       height: 16.0,
                     ),
                     TextField(
+                        controller: confirmPasswordController,
                         obscureText: true,
                         onChanged: (value) {
                           confirmPassword = value;
@@ -115,18 +133,18 @@ class _SignUpState extends State<SignUp> {
                     ),
                     RoundButton(
                       onPressed: () async {
-                        if (username.isNotEmpty &&
-                            email.isNotEmpty &&
-                            password.isNotEmpty &&
-                            confirmPassword.isNotEmpty &&
+                        if (usernameController.text.isNotEmpty &&
+                            emailController.text.isNotEmpty &&
+                            passwordController.text.isNotEmpty &&
+                            confirmPasswordController.text.isNotEmpty &&
                             password.length >= 6) {
                           if (password == confirmPassword) {
                             setState(() {
                               isLoading = true;
                             });
-                            token=await SendNotification().getToken();
-                            createAccount(username, email, password,token)
-                                .then((user){
+                            token = await SendNotification().getToken();
+                            createAccount(username, email, password, token)
+                                .then((user) {
                               if (user != null) {
                                 subscribeToMissionEd();
                                 Navigator.push(

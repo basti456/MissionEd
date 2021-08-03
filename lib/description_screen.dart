@@ -52,7 +52,6 @@ class _DescriptionState extends State<Description> {
     super.initState();
     getData(widget.postId);
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

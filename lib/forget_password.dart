@@ -13,7 +13,11 @@ class _ForgetPasswordState extends State<ForgetPassword> {
   String email;
   final emailController = TextEditingController();
   FirebaseAuth _auth = FirebaseAuth.instance;
-
+@override
+  void dispose() {
+    super.dispose();
+    emailController.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

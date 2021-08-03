@@ -21,9 +21,9 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   String email;
-
+  final emailController = TextEditingController();
   String password;
-
+  final passwordController = TextEditingController();
   bool isLoading = false;
 
   void subscribeToMissionEd() async {
@@ -31,7 +31,12 @@ class _LoginScreenState extends State<LoginScreen> {
         .subscribeToTopic('MissionEd')
         .then((value) => print('Mission Ed subscribed'));
   }
-
+  @override
+  void dispose() {
+    super.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
               'id': user.uid,
               'username': user.displayName,
               'email': user.email,
-              'imgUrl':user.photoURL,
+              'imgUrl': user.photoURL,
               'token': token
             });
             return HomeScreen();
@@ -104,6 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           TextField(
+                            controller: emailController,
                             decoration: kDecoration,
                             onChanged: (value) {
                               email = value;
@@ -113,6 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             height: 24.0,
                           ),
                           TextField(
+                              controller: passwordController,
                               obscureText: true,
                               onChanged: (value) {
                                 password = value;
@@ -126,34 +133,37 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           RoundButton(
                             onPressed: () async {
-                              setState(() {
-                                isLoading = true;
-                              });
-                              logIn(email, password).then((user) async {
-                                if (user != null) {
-                                  final ref = FirebaseDatabase.instance
-                                      .reference()
-                                      .child('Users')
-                                      .child(user.uid);
-                                  final token =
-                                      await SendNotification().getToken();
-                                  ref.update({'token': token});
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              AuthenticateFirebase()));
-                                  setState(() {
-                                    isLoading = false;
-                                  });
-                                } else {
-                                  SnackBar(
-                                    content:
-                                        Text('Wrong Email/Password entered'),
-                                    duration: Duration(seconds: 1),
-                                  );
-                                }
-                              });
+                              if (emailController.text.isNotEmpty &&
+                                  passwordController.text.isNotEmpty) {
+                                setState(() {
+                                  isLoading = true;
+                                });
+                                logIn(email, password).then((user) async {
+                                  if (user != null) {
+                                    final ref = FirebaseDatabase.instance
+                                        .reference()
+                                        .child('Users')
+                                        .child(user.uid);
+                                    final token =
+                                        await SendNotification().getToken();
+                                    ref.update({'token': token});
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                AuthenticateFirebase()));
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                  } else {
+                                    SnackBar(
+                                      content:
+                                          Text('Wrong Email/Password entered'),
+                                      duration: Duration(seconds: 1),
+                                    );
+                                  }
+                                });
+                              }
                             },
                             colour: Color(0xff312C69),
                             text: 'Log In',

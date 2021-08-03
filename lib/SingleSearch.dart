@@ -37,7 +37,7 @@ class _SingleSearchState extends State<SingleSearch> {
             name: values[key]['username'],
             image: values[key]['imgUrl'],
           );
-          if (data.name.contains(widget.id)) {
+          if (data.uid.contains(widget.id)) {
             setState(() {
               isFollowing = true;
             });

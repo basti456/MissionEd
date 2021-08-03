@@ -183,8 +183,9 @@ class _SinglePostState extends State<SinglePost> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  Description(postId: widget.id,)));
+                              builder: (context) => Description(
+                                    postId: widget.id,
+                                  )));
                     },
                     child: Stack(
                       alignment: Alignment.center,
