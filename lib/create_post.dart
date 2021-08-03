@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mission_ed/authenticate/authenticate_firebase.dart';
 import 'package:mission_ed/constants.dart';
 import 'package:mission_ed/home_screen.dart';
 import 'package:mission_ed/rounded_button.dart';
@@ -37,87 +36,163 @@ class _CreatePostState extends State<CreatePost> {
       _image = image;
     });
   }
+  Future<void> withImageUrl() async{
+    if (titleController.text.isNotEmpty &&
+        descriptionController.text.isNotEmpty) {
+      if (_dropDownValue != null) {
+        setState(() {
+          showSpinner = true;
+        });
+        final user = _auth.currentUser;
+        final time = DateTime.now().millisecondsSinceEpoch;
+        final databaseRef = FirebaseDatabase.instance
+            .reference()
+            .child('Posts')
+            .child(time.toString());
+        await uploadImageToFirebase(context);
+        databaseRef.set({
+          'id': time.toString(),
+          'title': title,
+          'description': description,
+          'category': _dropDownValue,
+          'postedBy': user.uid.toString(),
+          'imgUrl': user.photoURL == null ? "" : user.photoURL,
+          'imgPostUrl': imgUrl ,
+          'likes': "0",
+          'username': username
+        });
+        SendNotification().sendPostNotification(
+            "A new post arrived",
+            user.uid.toString(),
+            title,
+            "Post Created",
+            time.toString(),
+            'MissionEd');
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => HomeScreen()));
+        setState(() {
+          showSpinner = false;
+        });
+      } else {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text('Alert'),
+                content: Text('Please select a category'),
+                actions: <Widget>[
+                  FlatButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text('Ok'))
+                ],
+              );
+            });
+      }
+    } else {
+      showDialog(
+          context: this.context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text('Alert'),
+              content: Text('Please fill all fields'),
+              actions: <Widget>[
+                FlatButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('Ok'))
+              ],
+            );
+          });
+    }
+  }
+
+  Future<void> withoutImageUrl() async{
+    if (titleController.text.isNotEmpty &&
+        descriptionController.text.isNotEmpty) {
+      if (_dropDownValue != null) {
+        setState(() {
+          showSpinner = true;
+        });
+        final user = _auth.currentUser;
+        final time = DateTime.now().millisecondsSinceEpoch;
+        final databaseRef = FirebaseDatabase.instance
+            .reference()
+            .child('Posts')
+            .child(time.toString());
+        await uploadImageToFirebase(context);
+        databaseRef.set({
+          'id': time.toString(),
+          'title': title,
+          'description': description,
+          'category': _dropDownValue,
+          'postedBy': user.uid.toString(),
+          'imgUrl': user.photoURL == null ? "" : user.photoURL,
+          'imgPostUrl': "https://i.pinimg.com/564x/7a/9a/41/7a9a417cb1312623abff4921e2f364f9.jpg",
+          'likes': "0",
+          'username': username
+        });
+        SendNotification().sendPostNotification(
+            "A new post arrived",
+            user.uid.toString(),
+            title,
+            "Post Created",
+            time.toString(),
+            'MissionEd');
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => HomeScreen()));
+        setState(() {
+          showSpinner = false;
+        });
+      } else {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text('Alert'),
+                content: Text('Please select a category'),
+                actions: <Widget>[
+                  FlatButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text('Ok'))
+                ],
+              );
+            });
+      }
+    } else {
+      showDialog(
+          context: this.context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text('Alert'),
+              content: Text('Please fill all fields'),
+              actions: <Widget>[
+                FlatButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('Ok'))
+              ],
+            );
+          });
+    }
+  }
 
   Future uploadImageToFirebase(BuildContext context) async {
     final timeStamp = DateTime.now().microsecondsSinceEpoch.toString();
     firebase_storage.Reference ref =
-        firebase_storage.FirebaseStorage.instance.ref('images/$timeStamp');
+    firebase_storage.FirebaseStorage.instance.ref('images/$timeStamp');
     firebase_storage.UploadTask uploadTask = ref.putFile(File(_image.path));
     firebase_storage.TaskSnapshot snapshot = await uploadTask;
     imgUrl = await ref.getDownloadURL();
-  }
-
-  Future<void> withImageFirebase() async {
-    setState(() {
-      showSpinner = true;
-    });
-    final user = _auth.currentUser;
-    final time = DateTime.now().millisecondsSinceEpoch;
-    final databaseRef = FirebaseDatabase.instance
-        .reference()
-        .child('Posts')
-        .child(time.toString());
-    await uploadImageToFirebase(context);
-    databaseRef.set({
-      'id': time.toString(),
-      'title': title,
-      'description': description,
-      'category': _dropDownValue,
-      'postedBy': user.uid.toString(),
-      'imgUrl': user.photoURL == null ? "" : user.photoURL,
-      'imgPostUrl': imgUrl,
-      'likes': "0",
-      'username': username
-    });
-    SendNotification().sendPostNotification(
-        "A new post arrived",
-        user.uid.toString(),
-        title,
-        "Post Created",
-        time.toString(),
-        'MissionEd');
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => AuthenticateFirebase()));
-    setState(() {
-      showSpinner = false;
-    });
-  }
-
-  void withoutImageFirebase() {
-    setState(() {
-      showSpinner = true;
-    });
-    final user = _auth.currentUser;
-    final time = DateTime.now().millisecondsSinceEpoch;
-    final databaseRef = FirebaseDatabase.instance
-        .reference()
-        .child('Posts')
-        .child(time.toString());
-    databaseRef.set({
-      'id': time.toString(),
-      'title': title,
-      'description': description,
-      'category': _dropDownValue,
-      'postedBy': user.uid.toString(),
-      'imgUrl': user.photoURL == null ? "" : user.photoURL,
-      'imgPostUrl': imgUrl == null
-          ? "https://i.pinimg.com/564x/7a/9a/41/7a9a417cb1312623abff4921e2f364f9.jpg"
-          : imgUrl,
-      'likes': "0",
-      'username': username
-    });
-    SendNotification().sendPostNotification(
-        "A new post arrived",
-        user.uid.toString(),
-        title,
-        "Post Created",
-        time.toString(),
-        'MissionEd');
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => HomeScreen()));
-    setState(() {
-      showSpinner = false;
-    });
   }
 
   @override
@@ -183,7 +258,7 @@ class _CreatePostState extends State<CreatePost> {
                       ),
                       child: _image == null
                           ? Image.network(
-                              'https://cdn.dribbble.com/users/2394908/screenshots/10514933/media/310130d08451ef9c41904af397e0667f.jpg')
+                          'https://cdn.dribbble.com/users/2394908/screenshots/10514933/media/310130d08451ef9c41904af397e0667f.jpg')
                           : Image.file(File(_image.path))),
                 ),
                 SizedBox(
@@ -203,7 +278,7 @@ class _CreatePostState extends State<CreatePost> {
                         blurRadius: 2.0,
                         spreadRadius: 0.0,
                         offset:
-                            Offset(2.0, 2.0), // shadow direction: bottom right
+                        Offset(2.0, 2.0), // shadow direction: bottom right
                       )
                     ],
                   ),
@@ -213,19 +288,19 @@ class _CreatePostState extends State<CreatePost> {
                     child: DropdownButton(
                       hint: _dropDownValue == null
                           ? Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                'Choose A Category',
-                                style: TextStyle(color: kSecondaryColor),
-                              ),
-                            )
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Choose A Category',
+                          style: TextStyle(color: kSecondaryColor),
+                        ),
+                      )
                           : Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                _dropDownValue,
-                                style: TextStyle(color: kSecondaryColor),
-                              ),
-                            ),
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          _dropDownValue,
+                          style: TextStyle(color: kSecondaryColor),
+                        ),
+                      ),
                       isExpanded: true,
                       icon: Icon(Icons.arrow_circle_down),
                       style: TextStyle(color: kSecondaryColor),
@@ -236,7 +311,7 @@ class _CreatePostState extends State<CreatePost> {
                         'Placement',
                         'Project'
                       ].map(
-                        (val) {
+                            (val) {
                           return DropdownMenuItem<String>(
                             value: val,
                             child: Text(val),
@@ -245,7 +320,7 @@ class _CreatePostState extends State<CreatePost> {
                       ).toList(),
                       onChanged: (val) {
                         setState(
-                          () {
+                              () {
                             _dropDownValue = val;
                           },
                         );
@@ -275,55 +350,18 @@ class _CreatePostState extends State<CreatePost> {
                   },
                   textAlign: TextAlign.start,
                   decoration:
-                      kPostDecoration.copyWith(labelText: 'Description'),
+                  kPostDecoration.copyWith(labelText: 'Description'),
                 ),
                 SizedBox(
                   height: 10,
                 ),
                 RoundButton(
                   onPressed: () async {
-                    if (titleController.text.isNotEmpty &&
-                        descriptionController.text.isNotEmpty) {
-                      if (_dropDownValue != null) {
-                        if (imgUrl != null) {
-                          await withImageFirebase();
-                        } else {
-                          withoutImageFirebase();
-                        }
-                      } else {
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: Text('Alert'),
-                                content: Text('Please select a category'),
-                                actions: <Widget>[
-                                  FlatButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text('Ok'))
-                                ],
-                              );
-                            });
-                      }
-                    } else {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: Text('Alert'),
-                              content: Text('Please fill all fields'),
-                              actions: <Widget>[
-                                FlatButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: Text('Ok'))
-                              ],
-                            );
-                          });
-                    }
+                   if(File(_image.path)!=null){
+                     await withImageUrl();
+                   }else{
+                     withImageUrl();
+                   }
                   },
                   colour: Color(0xff312C69),
                   text: 'Post',
