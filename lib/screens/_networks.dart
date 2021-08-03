@@ -3,7 +3,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:mission_ed/ModalFFs.dart';
 import 'package:mission_ed/SingleFFS.dart';
-
+import 'package:mission_ed/SingleSearch.dart';
+import 'package:mission_ed/SingleFollowing.dart';
 import '../constants.dart';
 
 
@@ -22,18 +23,67 @@ class _NetworkSectionState extends State<NetworkSection> {
   Widget _followers;
   Widget _following;
   Widget _search;
+  Widget _Search;
   List<Ffs> allUsers = [];
+  List<Ffs> searchData = [];
   List<Ffs> followers = [];
   List<Ffs> following = [];
-  FirebaseAuth _auth =FirebaseAuth.instance;
+  FirebaseAuth _auth = FirebaseAuth.instance;
 
   DatabaseReference _reference =
-      FirebaseDatabase.instance.reference().child('Users');
+  FirebaseDatabase.instance.reference().child('Users');
 
+  List<Ffs> searchMethod(String text) {
+    DatabaseReference refFData =
+    FirebaseDatabase.instance.reference().child('Users');
+    refFData.once().then((DataSnapshot snapshot) {
+      if (snapshot.value != null) {
+        searchData.clear();
+        following.clear();
+        followers.clear();
+        allUsers.clear();
+        var keys = snapshot.value.keys;
+        var values = snapshot.value;
+        for (var key in keys) {
+          Ffs _searchData = new Ffs(
+            uid: values[key]['id'],
+            name: values[key]['username'],
+            image: values[key]['imgUrl'],
+          );
+          if (_searchData.name.contains(text)) {
+            print(_searchData.name.contains(text));
+            searchData.add(_searchData);
+          }
+        }
+      }
+      setState(() {
+        _allUsers = null;
+        _followers = null;
+        _following = null;
+        _Search = Expanded(
+          child: ListView.builder(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemCount: searchData.length,
+            itemBuilder: (_, index) {
+              return SingleSearch(
+                  id: searchData[index].uid,
+                  name: searchData[index].name,
+                  imageUrl: searchData[index].image);
+            },
+          ),
+        );
+      });
+    });
+    return searchData;
+  }
 
   List<Ffs> getAllData() {
     _reference.once().then((DataSnapshot snapshot) {
       if (snapshot.value != null) {
+        searchData.clear();
+        following.clear();
+        followers.clear();
         allUsers.clear();
         var keys = snapshot.value.keys;
         var values = snapshot.value;
@@ -46,13 +96,14 @@ class _NetworkSectionState extends State<NetworkSection> {
         }
       }
       setState(() {
-        _allUsers=Expanded(
+        _allUsers = Expanded(
           child: ListView.builder(
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
             itemCount: allUsers.length,
             itemBuilder: (_, index) {
-              return SingleFFS(
+              return SingleSearch(
+                  id: allUsers[index].uid,
                   name: allUsers[index].name,
                   imageUrl: allUsers[index].image);
             },
@@ -64,11 +115,17 @@ class _NetworkSectionState extends State<NetworkSection> {
   }
 
   List<Ffs> getFollowersData() {
-    DatabaseReference reference =
-    FirebaseDatabase.instance.reference().child('Users').child(_auth.currentUser.uid).child('Followers');
+    DatabaseReference reference = FirebaseDatabase.instance
+        .reference()
+        .child('Users')
+        .child(_auth.currentUser.uid)
+        .child('Followers');
     reference.once().then((DataSnapshot snapshot) {
       if (snapshot.value != null) {
+        searchData.clear();
+        following.clear();
         followers.clear();
+        allUsers.clear();
         var keys = snapshot.value.keys;
         var values = snapshot.value;
         for (var key in keys) {
@@ -80,7 +137,7 @@ class _NetworkSectionState extends State<NetworkSection> {
         }
       }
       setState(() {
-        _followers=Expanded(
+        _followers = Expanded(
           child: ListView.builder(
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
@@ -97,30 +154,36 @@ class _NetworkSectionState extends State<NetworkSection> {
     return followers;
   }
 
-  List<Ffs> getFollowingData() {
-    DatabaseReference reference =
-    FirebaseDatabase.instance.reference().child('Users').child(_auth.currentUser.uid).child('Following');
-    reference.once().then((DataSnapshot snapshot) {
+  Future<List<Ffs>> getFollowingData() async {
+    DatabaseReference referenceF = FirebaseDatabase.instance
+        .reference()
+        .child('Users')
+        .child(_auth.currentUser.uid)
+        .child('Following');
+    referenceF.once().then((DataSnapshot snapshot) {
       if (snapshot.value != null) {
+        searchData.clear();
         following.clear();
+        followers.clear();
+        allUsers.clear();
         var keys = snapshot.value.keys;
         var values = snapshot.value;
         for (var key in keys) {
           Ffs post = new Ffs(
-              uid: values[key]['id'],
+              uid: values[key]['id'].toString(),
               name: values[key]['username'],
               image: values[key]['imgUrl']);
           following.add(post);
         }
       }
       setState(() {
-        _following=Expanded(
+        _following = Expanded(
           child: ListView.builder(
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
             itemCount: following.length,
             itemBuilder: (_, index) {
-              return SingleFFS(
+              return SingleFollowing(
                   name: following[index].name,
                   imageUrl: following[index].image);
             },
@@ -135,7 +198,7 @@ class _NetworkSectionState extends State<NetworkSection> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getAllData();
+    getFollowersData();
     print(followers);
   }
 
@@ -177,45 +240,17 @@ class _NetworkSectionState extends State<NetworkSection> {
                       Expanded(
                         child: GestureDetector(
                           onTap: () {
-
                             getFollowersData();
                             setState(() {
                               button1 = true;
                               button2 = false;
                               button3 = false;
-                              _following=null;
-                              _allUsers=null;
+
+                              _allUsers = null;
+                              _following = null;
+                              _Search = null;
 
                               print(followers);
-                              /*  _followerFollowingSearch.length == 0
-                                  ? fFs = Container(
-                                child: Center(
-                                    child: Text(
-                                      'You have no followers yet',
-                                      style: TextStyle(
-                                        fontSize: 30.0,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    )),
-                              )
-                                  : fFs = Expanded(
-                                child: ListView.builder(
-                                    scrollDirection: Axis.vertical,
-                                    shrinkWrap: true,
-                                    itemCount:
-                                    _followerFollowingSearch.length,
-                                    itemBuilder: (_, index) {
-                                      return SingleFFS(
-                                        name: _followerFollowingSearch[
-                                        index]
-                                            .name,
-                                        imageUrl:
-                                        _followerFollowingSearch[
-                                        index]
-                                            .image,
-                                      );
-                                    }),
-                              );*/
                               _search = null;
                             });
                           },
@@ -231,40 +266,13 @@ class _NetworkSectionState extends State<NetworkSection> {
                           onTap: () {
                             getFollowingData();
                             setState(() {
-                              _followers=null;
-                              _allUsers=null;
+                              _followers = null;
+                              _allUsers = null;
+                              _Search = null;
                               button1 = false;
                               button2 = true;
                               button3 = false;
-                              /*_followerFollowingSearch1.length == 0
-                                  ? fFs = Container(
-                                child: Center(
-                                    child: Text(
-                                      'You have no following yet',
-                                      style: TextStyle(
-                                        fontSize: 30.0,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    )),
-                              )
-                                  : fFs = Expanded(
-                                child: ListView.builder(
-                                    scrollDirection: Axis.vertical,
-                                    shrinkWrap: true,
-                                    itemCount:
-                                    _followerFollowingSearch1.length,
-                                    itemBuilder: (_, index) {
-                                      return SingleFFS(
-                                        name: _followerFollowingSearch1[
-                                        index]
-                                            .name,
-                                        imageUrl:
-                                        _followerFollowingSearch1[
-                                        index]
-                                            .image,
-                                      );
-                                    }),
-                              );*/
+                              print(following);
                               _search = null;
                             });
                           },
@@ -280,53 +288,24 @@ class _NetworkSectionState extends State<NetworkSection> {
                           onTap: () {
                             getAllData();
                             print('runs');
-                            /*print(_followerFollowingSearch[0]);*/
                             setState(() {
                               button1 = false;
                               button2 = false;
                               button3 = true;
-                              _following=null;
-                              _followers=null;
-                              /* _followerFollowingSearch2.length == 0
-                                  ? fFs = Container(
-                                child: Center(
-                                    child: Text(
-                                      'No users available yet',
-                                      style: TextStyle(
-                                        fontSize: 30.0,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    )),
-                              )
-                                  : fFs = Expanded(
-                                child: ListView.builder(
-                                    scrollDirection: Axis.vertical,
-                                    shrinkWrap: true,
-                                    itemCount:
-                                    _followerFollowingSearch2.length,
-                                    itemBuilder: (_, index) {
-                                      return SingleSearch(
-                                        name: _followerFollowingSearch2[
-                                        index]
-                                            .name,
-                                        imageUrl:
-                                        _followerFollowingSearch2[
-                                        index]
-                                            .image,
-                                        id: _followerFollowingSearch2[
-                                        index]
-                                            .uid,
-                                      );
-                                    }),
-                              );*/
+                              _following = null;
+                              _followers = null;
+                              _Search = null;
                               _search = Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: TextField(
                                   decoration: kDecoration.copyWith(
                                       prefixIcon: Icon(
                                           Icons.youtube_searched_for_rounded),
                                       hintText: 'Enter username'),
+                                  onChanged: (value) {
+                                    searchMethod(value);
+                                  },
                                 ),
                               );
                             });
@@ -345,23 +324,15 @@ class _NetworkSectionState extends State<NetworkSection> {
               SizedBox(
                 height: 15,
               ),
-              /* Expanded(
-                child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemCount: 10,
-                    itemBuilder: (_, index) {
-                      return SingleFFS();
-                    }),
-              ),*/
-              _search==null?Container():_search,
-
+              _search == null ? Container() : _search,
               SizedBox(
                 height: 5.0,
               ),
-              _allUsers!=null?_allUsers:Container(),
-              _followers!=null?_followers:Container(),
-              _following!=null?_following:Container(),
+              _allUsers != null ? _allUsers : Container(),
+              _followers != null ? _followers : Container(),
+              _following != null ? _following : Container(),
+              _Search != null ? _Search : Container(),
+              /*   _allUsers==null&&_followers==null&&_following==null&& _Search==null?*/
             ],
           ),
         ),
@@ -382,23 +353,23 @@ class NetworkItems extends StatelessWidget {
     return Container(
       decoration: isPressed
           ? BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(5.0),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey,
-                  blurRadius: 2.0,
-                  spreadRadius: 0.0,
-                  offset: Offset(4.0, 4.0), // shadow direction: bottom right
-                )
-              ],
-              /*  border: Border.all(color: Color(0xff312C69),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(5.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey,
+            blurRadius: 2.0,
+            spreadRadius: 0.0,
+            offset: Offset(4.0, 4.0), // shadow direction: bottom right
+          )
+        ],
+        /*  border: Border.all(color: Color(0xff312C69),
              width: 0.2
              )*/
-            )
+      )
           : BoxDecoration(
-              color: Colors.white,
-            ),
+        color: Colors.white,
+      ),
       child: Padding(
         padding: EdgeInsets.all(4.0),
         child: Column(
