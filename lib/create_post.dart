@@ -125,7 +125,6 @@ class _CreatePostState extends State<CreatePost> {
             .reference()
             .child('Posts')
             .child(time.toString());
-        await uploadImageToFirebase(context);
         databaseRef.set({
           'id': time.toString(),
           'title': title,
@@ -358,13 +357,9 @@ class _CreatePostState extends State<CreatePost> {
                 ),
                 RoundButton(
                   onPressed: () async {
-                   if(File(_image.path)!=null){
-                     await withImageUrl();
-                   }else{
-                     withImageUrl();
-                   }
+                    _image!=null?await withoutImageUrl():await withoutImageUrl();
                   },
-                  colour: Color(0xff312C69),
+                  colour:kPrimaryColor,
                   text: 'Post',
                 ),
               ],
