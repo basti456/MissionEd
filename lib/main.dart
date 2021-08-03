@@ -4,6 +4,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mission_ed/authenticate/authenticate_firebase.dart';
 import 'package:mission_ed/home_screen.dart';
 import 'package:provider/provider.dart';
+import 'description_screen.dart';
 import 'google_sign_in.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -13,16 +14,17 @@ import 'package:firebase_core/firebase_core.dart';
   contentTitle: 'flutter devs',
   summaryText: 'summaryText',
 );*/
-const AndroidNotificationChannel channel= AndroidNotificationChannel(
-'high_importance_channel', // id
-'High Importance Notifications', // title
-'This channel is used for important notifications.', // description
-importance: Importance.high,
+const AndroidNotificationChannel channel = AndroidNotificationChannel(
+  'high_importance_channel', // id
+  'High Importance Notifications', // title
+  'This channel is used for important notifications.', // description
+  importance: Importance.high,
   playSound: true,
 );
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin=FlutterLocalNotificationsPlugin();
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async{
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
 }
 
@@ -30,8 +32,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
-  ?.createNotificationChannel(channel);
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
     alert: true,
     badge: true,
@@ -49,12 +53,11 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void initState() {
-
     super.initState();
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      RemoteNotification notification=message.notification;
-      AndroidNotification androidNotification=message.notification?.android;
-      if(notification!=null&& androidNotification!=null){
+      RemoteNotification notification = message.notification;
+      AndroidNotification androidNotification = message.notification?.android;
+      if (notification != null && androidNotification != null) {
         flutterLocalNotificationsPlugin.show(
             notification.hashCode,
             notification.title,
@@ -71,9 +74,16 @@ class _MyAppState extends State<MyApp> {
       }
     });
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-
+      if (message.data['type'] == 'Post Created') {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => Description(
+                      postId: message.data['id'],
+                    )));
+      }
     });
-   /* FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    /* FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification notification=message.notification;
       AndroidNotification androidNotification=message.notification?.android;
       if(notification!=null&& androidNotification!=null){
@@ -85,6 +95,7 @@ class _MyAppState extends State<MyApp> {
       }
     });*/
   }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(

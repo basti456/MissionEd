@@ -238,6 +238,7 @@ class _CreatePostState extends State<CreatePost> {
                             user.uid.toString(),
                             title,
                             "Post Created",
+                            time.toString(),
                             'MissionEd');
                         Navigator.push(
                             context,

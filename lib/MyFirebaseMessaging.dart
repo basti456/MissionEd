@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class SendNotification {
-  Future<void> sendPostNotification(notificationTitle, sendersName, message,
+  Future<void> sendPostNotification(notificationTitle, sendersName, message,String id,
       notificationType, String topic) async {
     final data = jsonEncode(<String, dynamic>{
       "notification": {
@@ -14,7 +14,7 @@ class SendNotification {
       "priority": "high",
       "data": <String, String>{
         "click_action": "FLUTTER_NOTIFICATION_CLICK",
-        "id": "1",
+        "id": id,
         "status": "done",
         "type": "$notificationType",
         "sendersUserId": "$sendersName",
