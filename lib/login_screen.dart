@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:mission_ed/MyFirebaseMessaging.dart';
 import 'package:mission_ed/authenticate/authenticate_firebase.dart';
 import 'package:mission_ed/authenticate/methods.dart';
 import 'package:mission_ed/forget_password.dart';
@@ -24,6 +26,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool isLoading = false;
 
+  void subscribeToMissionEd() async {
+    await FirebaseMessaging.instance
+        .subscribeToTopic('MissionEd')
+        .then((value) => print('Mission Ed subscribed'));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,6 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
             );
           } else if (snapshot.hasData) {
             final user = FirebaseAuth.instance.currentUser;
+            final token = SendNotification().getToken();
             final databaseRef = FirebaseDatabase.instance
                 .reference()
                 .child('Users')
@@ -44,7 +53,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 .set({
               'id': user.uid,
               'username': user.displayName,
-              'email': user.email
+              'email': user.email,
+              'imgUrl':user.photoURL,
+              'token': token
             });
             return HomeScreen();
           } else if (snapshot.hasError) {
@@ -118,8 +129,15 @@ class _LoginScreenState extends State<LoginScreen> {
                               setState(() {
                                 isLoading = true;
                               });
-                              logIn(email, password).then((user) {
+                              logIn(email, password).then((user) async {
                                 if (user != null) {
+                                  final ref = FirebaseDatabase.instance
+                                      .reference()
+                                      .child('Users')
+                                      .child(user.uid);
+                                  final token =
+                                      await SendNotification().getToken();
+                                  ref.update({'token': token});
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -212,6 +230,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           final provider = Provider.of<GoogleSignInProvider>(
                               context,
                               listen: false);
+                          subscribeToMissionEd();
                           provider.googleLogin();
                         },
                         child: Container(

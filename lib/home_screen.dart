@@ -157,11 +157,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             padding: EdgeInsets.all(2.0),
                             child: GestureDetector(
                               onTap: () {
-                                SendNotification().sendPostNotification("Hello", "sendersName", "message", "notificationType", 'csonMGODTymsMPbeWcx6m5:APA91bEPyVCRXdtdWi4jQOKsv20n-pdts1KI6xLZA2S0LwA-bobDFniQGWX0YWxxSzLcsRfs3xhoPTb0feDNOKWnDMmIwjL4JPsmxOdxEhUdKVtzLOdR3BU5xhzuHCRKKq6We9Z9EE1R');
-                                /*Navigator.push(
+                                /*SendNotification().sendPostNotification("Hello", "sendersName", "message", "notificationType", 'csonMGODTymsMPbeWcx6m5:APA91bEPyVCRXdtdWi4jQOKsv20n-pdts1KI6xLZA2S0LwA-bobDFniQGWX0YWxxSzLcsRfs3xhoPTb0feDNOKWnDMmIwjL4JPsmxOdxEhUdKVtzLOdR3BU5xhzuHCRKKq6We9Z9EE1R');*/
+                                Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => CreatePost()));*/
+                                        builder: (context) => CreatePost()));
                               },
                               child: Container(
                                 child: Text(

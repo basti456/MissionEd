@@ -6,6 +6,12 @@ import 'package:provider/provider.dart';
 import 'google_sign_in.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+/*var bigPictureStyleInformation = BigPictureStyleInformation(
+  DrawableResourceAndroidBitmap("flutter_devs"),
+  largeIcon: DrawableResourceAndroidBitmap("flutter_devs"),
+  contentTitle: 'flutter devs',
+  summaryText: 'summaryText',
+);*/
 const AndroidNotificationChannel channel= AndroidNotificationChannel(
 'high_importance_channel', // id
 'High Importance Notifications', // title
@@ -74,7 +80,6 @@ class _MyAppState extends State<MyApp> {
        });
       }
     });*/
-    getToken();
   }
   @override
   Widget build(BuildContext context) {
@@ -88,9 +93,4 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
-}
-
-Future getToken() async{
-  String token= await FirebaseMessaging.instance.getToken();
-  print('This is $token');
 }

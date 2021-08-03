@@ -11,6 +11,7 @@ class ForgetPassword extends StatefulWidget {
 
 class _ForgetPasswordState extends State<ForgetPassword> {
   String email;
+  final emailController = TextEditingController();
   FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
@@ -49,6 +50,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   TextField(
+                      controller: emailController,
                       onChanged: (value) {
                         email = value;
                       },
@@ -59,8 +61,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                   ),
                   RoundButton(
                     onPressed: () {
-                      if (email == _auth.currentUser.email &&
-                          !(_auth.currentUser.emailVerified)) {
+                      if (emailController.text.isNotEmpty) {
                         _auth.sendPasswordResetEmail(email: email);
                         SnackBar(
                           content: Text(
@@ -71,11 +72,6 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => LoginScreen()));
-                      } else {
-                        SnackBar(
-                          content: Text('Email does not exist'),
-                          duration: Duration(seconds: 1),
-                        );
                       }
                     },
                     colour: Color(0xff312C69),

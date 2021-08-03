@@ -19,14 +19,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    ref
-        .child(_auth.currentUser.uid.toString())
-        .once()
-        .then((DataSnapshot snapshot) {
-      if (snapshot.value != null) {
-        username = snapshot.value['username'];
-      }
-
+    setState(() {
+      ref
+          .child(_auth.currentUser.uid.toString())
+          .once()
+          .then((DataSnapshot snapshot)   {
+        if (snapshot.value != null) {
+          setState(() {
+            username =  snapshot.value['username'];
+          });
+        }
+      });
     });
   }
 
@@ -73,7 +76,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         padding: EdgeInsets.symmetric(
                             horizontal: 4.0, vertical: 3.0),
                         child: Text(
-                          username,
+                          username==null?"":username,
                           textAlign: TextAlign.start,
                           style: TextStyle(
                             fontSize: 22.0,

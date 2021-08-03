@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mission_ed/screens/_networks.dart';
 import 'home_screen.dart';
-import 'package:mission_ed/screens/network.dart';
 import 'package:mission_ed/screens/message.dart';
 import 'package:mission_ed/screens/notifications.dart';
 import 'profile_screen.dart';
@@ -14,7 +14,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   int pageIndex=0;
   List<Widget>pageList = <Widget>[
     HomeScreen(),
-    Network(),
+    NetworkSection(),
     Message(),
     Notifications(),
     ProfileScreen()

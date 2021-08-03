@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
 
+import 'package:mission_ed/description_screen.dart';
+
 class SinglePost extends StatefulWidget {
   SinglePost(
       {this.id,
@@ -175,6 +177,13 @@ class _SinglePostState extends State<SinglePost> {
                   padding: const EdgeInsets.all(2.0),
                   child: GestureDetector(
                     onDoubleTap: () => _doubleTapped(),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  Description(postId: widget.id,)));
+                    },
                     child: Stack(
                       alignment: Alignment.center,
                       children: <Widget>[

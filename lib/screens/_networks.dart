@@ -199,7 +199,6 @@ class _NetworkSectionState extends State<NetworkSection> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getFollowersData();
     print(followers);

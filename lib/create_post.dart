@@ -18,6 +18,8 @@ class CreatePost extends StatefulWidget {
 
 class _CreatePostState extends State<CreatePost> {
   String _dropDownValue;
+  final titleController=TextEditingController();
+  final descriptionController=TextEditingController();
   String title;
   String description;
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -174,6 +176,7 @@ class _CreatePostState extends State<CreatePost> {
                   height: 18.0,
                 ),
                 TextField(
+                  controller: titleController,
                   textAlign: TextAlign.start,
                   onChanged: (val) {
                     title = val;
@@ -197,8 +200,8 @@ class _CreatePostState extends State<CreatePost> {
                 ),
                 RoundButton(
                   onPressed: () async {
-                    if (title.isNotEmpty &&
-                        description.isNotEmpty &&
+                    if (titleController.text.isNotEmpty &&
+                        descriptionController.text.isNotEmpty &&
                         _image.path != null) {
                       if (_dropDownValue != null) {
                         setState(() {
@@ -229,30 +232,38 @@ class _CreatePostState extends State<CreatePost> {
                           showSpinner = false;
                         });
                       } else {
-                        AlertDialog(
-                          title: Text('Alert'),
-                          content: Text('Please select a category'),
-                          actions: <Widget>[
-                            FlatButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Text('Ok'))
-                          ],
-                        );
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text('Alert'),
+                                content: Text('Please select a category'),
+                                actions: <Widget>[
+                                  FlatButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text('Ok'))
+                                ],
+                              );
+                            });
                       }
                     } else {
-                      AlertDialog(
-                        title: Text('Alert'),
-                        content: Text('Please fill all fields'),
-                        actions: <Widget>[
-                          FlatButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: Text('Ok'))
-                        ],
-                      );
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Text('Alert'),
+                              content: Text('Please fill all fields'),
+                              actions: <Widget>[
+                                FlatButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text('Ok'))
+                              ],
+                            );
+                          });
                     }
                   },
                   colour: Color(0xff312C69),

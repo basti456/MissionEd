@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:mission_ed/login_screen.dart';
+import 'package:mission_ed/authenticate/authenticate_firebase.dart';
 import 'package:mission_ed/rounded_button.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'constants.dart';
@@ -11,24 +11,56 @@ class ChangePassword extends StatefulWidget {
 }
 
 class _ChangePasswordState extends State<ChangePassword> {
+  final oldPasswordController = TextEditingController();
+  final newPasswordController = TextEditingController();
+  final confirmNewPasswordController = TextEditingController();
   String oldPassword;
   String newPassword;
   String confirmNewPassword;
   FirebaseAuth _auth = FirebaseAuth.instance;
   bool showSpinner = false;
 
-  Future<bool> validatePassword(String password) async {
+  void validatePassword(String password, String newPassword) async {
     var firebaseUser = _auth.currentUser;
     var authCredential = EmailAuthProvider.credential(
         email: _auth.currentUser.email, password: password);
-    var authResult =
-        await firebaseUser.reauthenticateWithCredential(authCredential);
-    return authResult.user != null;
+    firebaseUser.reauthenticateWithCredential(authCredential).then((value) {
+      setState(() {
+        showSpinner = true;
+      });
+      firebaseUser.updatePassword(newPassword).then((_) {
+        SnackBar(
+          content: Text('Password Updated Successfully'),
+          duration: Duration(seconds: 1),
+        );
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => AuthenticateFirebase()));
+        setState(() {
+          showSpinner = false;
+        });
+      }).catchError((err) {});
+    }).catchError((err) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text('Alert'),
+              content: Text('Please check your password'),
+              actions: <Widget>[
+                FlatButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('Ok'))
+              ],
+            );
+          });
+    });
   }
 
   Future<void> updatePassword(String password) async {
     var firebaseUser = _auth.currentUser;
-    await firebaseUser.updatePassword(newPassword);
+    await firebaseUser.updatePassword(password);
   }
 
   @override
@@ -69,6 +101,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     TextField(
+                        controller: oldPasswordController,
                         obscureText: true,
                         onChanged: (value) {
                           oldPassword = value;
@@ -81,6 +114,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                       height: 24.0,
                     ),
                     TextField(
+                        controller: newPasswordController,
                         obscureText: true,
                         onChanged: (value) {
                           newPassword = value;
@@ -93,6 +127,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                       height: 24.0,
                     ),
                     TextField(
+                        controller: confirmNewPasswordController,
                         obscureText: true,
                         onChanged: (value) {
                           confirmNewPassword = value;
@@ -106,49 +141,28 @@ class _ChangePasswordState extends State<ChangePassword> {
                     ),
                     RoundButton(
                       onPressed: () async {
-                        if (oldPassword.isNotEmpty &&
-                            newPassword.isNotEmpty &&
-                            confirmNewPassword.isNotEmpty) {
+                        if (oldPasswordController.text.isNotEmpty &&
+                            newPasswordController.text.isNotEmpty &&
+                            confirmNewPasswordController.text.isNotEmpty) {
                           if (newPassword == confirmNewPassword) {
-                            setState(() {
-                              showSpinner = true;
-                            });
-                            var isMatched = await validatePassword(oldPassword);
-                            if (isMatched) {
-                              updatePassword(newPassword);
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => LoginScreen()));
-                              setState(() {
-                                showSpinner = false;
-                              });
-                            } else {
-                              AlertDialog(
-                                title: Text('Alert'),
-                                content: Text('Please check your password'),
-                                actions: <Widget>[
-                                  FlatButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text('Ok'))
-                                ],
-                              );
-                            }
+                            validatePassword(oldPassword, newPassword);
                           }
                         } else {
-                          AlertDialog(
-                            title: Text('Alert'),
-                            content: Text('Please fill all the fields'),
-                            actions: <Widget>[
-                              FlatButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text('Ok'))
-                            ],
-                          );
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text('Alert'),
+                                  content: Text('Please fill all the fields'),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text('Ok'))
+                                  ],
+                                );
+                              });
                         }
                       },
                       colour: Color(0xff312C69),

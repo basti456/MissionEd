@@ -5,6 +5,8 @@ import 'package:mission_ed/rounded_button.dart';
 import 'package:mission_ed/constants.dart';
 import 'package:mission_ed/authenticate/methods.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'MyFirebaseMessaging.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -17,6 +19,12 @@ class _SignUpState extends State<SignUp> {
   String username;
   String confirmPassword;
   bool isLoading = false;
+  String token;
+  void subscribeToMissionEd() async {
+    await FirebaseMessaging.instance
+        .subscribeToTopic('MissionEd')
+        .then((value) => print('Mission Ed subscribed'));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -116,9 +124,11 @@ class _SignUpState extends State<SignUp> {
                             setState(() {
                               isLoading = true;
                             });
-                            createAccount(username, email, password)
-                                .then((user) {
+                            token=await SendNotification().getToken();
+                            createAccount(username, email, password,token)
+                                .then((user){
                               if (user != null) {
+                                subscribeToMissionEd();
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
