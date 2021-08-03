@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mission_ed/authenticate/authenticate_firebase.dart';
 import 'package:mission_ed/constants.dart';
 import 'package:mission_ed/home_screen.dart';
 import 'package:mission_ed/rounded_button.dart';
@@ -146,7 +147,7 @@ class _CreatePostState extends State<CreatePost> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => HomeScreen()));
+                builder: (context) => AuthenticateFirebase()));
         setState(() {
           showSpinner = false;
         });
