@@ -37,6 +37,18 @@ class _CreatePostState extends State<CreatePost> {
       _image = image;
     });
   }
+
+  Future<void> createPostFirebaseData(String postId,String title,String username,String uid, String imageUrl) async {
+    DatabaseReference reference=FirebaseDatabase.instance.reference().child('Notifications').child(postId);
+    reference.set({
+      'postId': postId,
+      'title': title,
+      'username': username,
+      'postedBy':uid,
+      'imgUrl':imgUrl == null ? "" : imgUrl,
+    });
+  }
+
   Future<void> withImageUrl() async{
     if (titleController.text.isNotEmpty &&
         descriptionController.text.isNotEmpty) {
@@ -62,6 +74,8 @@ class _CreatePostState extends State<CreatePost> {
           'likes': "0",
           'username': username
         });
+        await createPostFirebaseData(time.toString(), title, username,user.uid.toString(), user.photoURL);
+
         SendNotification().sendPostNotification(
             "A new post arrived",
             user.uid.toString(),
@@ -76,6 +90,8 @@ class _CreatePostState extends State<CreatePost> {
         setState(() {
           showSpinner = false;
         });
+
+
       } else {
         showDialog(
             context: context,
@@ -136,6 +152,7 @@ class _CreatePostState extends State<CreatePost> {
           'likes': "0",
           'username': username
         });
+        await createPostFirebaseData(time.toString(), title, username,user.uid.toString(), user.photoURL);
         SendNotification().sendPostNotification(
             "A new post arrived",
             user.uid.toString(),
