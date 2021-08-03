@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mission_ed/authenticate/authenticate_firebase.dart';
 import 'package:mission_ed/constants.dart';
 import 'package:mission_ed/home_screen.dart';
 import 'package:mission_ed/rounded_button.dart';
@@ -44,6 +45,79 @@ class _CreatePostState extends State<CreatePost> {
     firebase_storage.UploadTask uploadTask = ref.putFile(File(_image.path));
     firebase_storage.TaskSnapshot snapshot = await uploadTask;
     imgUrl = await ref.getDownloadURL();
+  }
+
+  Future<void> withImageFirebase() async {
+    setState(() {
+      showSpinner = true;
+    });
+    final user = _auth.currentUser;
+    final time = DateTime.now().millisecondsSinceEpoch;
+    final databaseRef = FirebaseDatabase.instance
+        .reference()
+        .child('Posts')
+        .child(time.toString());
+    await uploadImageToFirebase(context);
+    databaseRef.set({
+      'id': time.toString(),
+      'title': title,
+      'description': description,
+      'category': _dropDownValue,
+      'postedBy': user.uid.toString(),
+      'imgUrl': user.photoURL == null ? "" : user.photoURL,
+      'imgPostUrl': imgUrl,
+      'likes': "0",
+      'username': username
+    });
+    SendNotification().sendPostNotification(
+        "A new post arrived",
+        user.uid.toString(),
+        title,
+        "Post Created",
+        time.toString(),
+        'MissionEd');
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => AuthenticateFirebase()));
+    setState(() {
+      showSpinner = false;
+    });
+  }
+
+  void withoutImageFirebase() {
+    setState(() {
+      showSpinner = true;
+    });
+    final user = _auth.currentUser;
+    final time = DateTime.now().millisecondsSinceEpoch;
+    final databaseRef = FirebaseDatabase.instance
+        .reference()
+        .child('Posts')
+        .child(time.toString());
+    databaseRef.set({
+      'id': time.toString(),
+      'title': title,
+      'description': description,
+      'category': _dropDownValue,
+      'postedBy': user.uid.toString(),
+      'imgUrl': user.photoURL == null ? "" : user.photoURL,
+      'imgPostUrl': imgUrl == null
+          ? "https://i.pinimg.com/564x/7a/9a/41/7a9a417cb1312623abff4921e2f364f9.jpg"
+          : imgUrl,
+      'likes': "0",
+      'username': username
+    });
+    SendNotification().sendPostNotification(
+        "A new post arrived",
+        user.uid.toString(),
+        title,
+        "Post Created",
+        time.toString(),
+        'MissionEd');
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => HomeScreen()));
+    setState(() {
+      showSpinner = false;
+    });
   }
 
   @override
@@ -211,43 +285,11 @@ class _CreatePostState extends State<CreatePost> {
                     if (titleController.text.isNotEmpty &&
                         descriptionController.text.isNotEmpty) {
                       if (_dropDownValue != null) {
-                        setState(() {
-                          showSpinner = true;
-                        });
-                        final user = _auth.currentUser;
-                        final time = DateTime.now().millisecondsSinceEpoch;
-                        final databaseRef = FirebaseDatabase.instance
-                            .reference()
-                            .child('Posts')
-                            .child(time.toString());
-                        await uploadImageToFirebase(context);
-                        databaseRef.set({
-                          'id': time.toString(),
-                          'title': title,
-                          'description': description,
-                          'category': _dropDownValue,
-                          'postedBy': user.uid.toString(),
-                          'imgUrl': user.photoURL == null ? "" : user.photoURL,
-                          'imgPostUrl': imgUrl == null
-                              ? "https://i.pinimg.com/564x/7a/9a/41/7a9a417cb1312623abff4921e2f364f9.jpg"
-                              : imgUrl,
-                          'likes': "0",
-                          'username': username
-                        });
-                        SendNotification().sendPostNotification(
-                            "A new post arrived",
-                            user.uid.toString(),
-                            title,
-                            "Post Created",
-                            time.toString(),
-                            'MissionEd');
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => HomeScreen()));
-                        setState(() {
-                          showSpinner = false;
-                        });
+                        if (imgUrl != null) {
+                          await withImageFirebase();
+                        } else {
+                          withoutImageFirebase();
+                        }
                       } else {
                         showDialog(
                             context: context,
