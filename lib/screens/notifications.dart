@@ -35,18 +35,23 @@ class _NotificationsState extends State<Notifications> {
               imgUrl: values[key]['imgUrl']);
           notificationList.add(notification);
         }
+        setState(() {
+          print(notificationList);
+        });
       }
     });
     return notificationList;
   }
   @override
   Widget build(BuildContext context) {
+    getNotificationData();
     return Scaffold(
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
                 height: 50,
@@ -72,9 +77,9 @@ class _NotificationsState extends State<Notifications> {
                   itemCount: notificationList.length,
                   itemBuilder: (_, index) {
                     return SingleNotificationSection(
-                        imgUrl: notificationList[index].imgUrl,
-                        username: notificationList[index].postedBy,
-                        postTitle: notificationList[index].title,);
+                      imgUrl: notificationList[index].imgUrl,
+                      username: notificationList[index].username,
+                      postTitle: notificationList[index].title,);
                   },
                 ),
               )
