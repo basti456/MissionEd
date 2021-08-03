@@ -1,9 +1,10 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
 
 import 'package:mission_ed/description_screen.dart';
-
+import 'package:firebase_database/firebase_database.dart';
 import 'constants.dart';
 
 class SinglePost extends StatefulWidget {
@@ -33,7 +34,9 @@ class SinglePost extends StatefulWidget {
 class _SinglePostState extends State<SinglePost> {
   bool isLiked = false;
   bool showHeartOverlay = false;
-
+  void getLiked(){
+    DatabaseReference ref=FirebaseDatabase.instance.reference().child('Posts').child(widget.id);
+  }
   _pressed() {
     setState(() {
       isLiked = !isLiked;
