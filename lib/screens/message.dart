@@ -29,7 +29,7 @@ class _MessageState extends State<Message> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            MessageStream(),
+            MessageStream() == null ? Container() : MessageStream(),
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
@@ -54,15 +54,21 @@ class _MessageState extends State<Message> {
                           .child("Messages")
                           .child(id)
                           .child(timestamp.toString())
-                          .set(
-                              {'id': timestamp.toString(), 'message': message,'sendBy':_auth.currentUser.uid});
+                          .set({
+                        'id': timestamp.toString(),
+                        'message': message,
+                        'sendBy': _auth.currentUser.uid
+                      });
                       ref
                           .child(id)
                           .child("Messages")
                           .child(_auth.currentUser.uid)
                           .child(timestamp.toString())
-                          .set(
-                              {'id': timestamp.toString(), 'message': message,'sendBy':_auth.currentUser.uid});
+                          .set({
+                        'id': timestamp.toString(),
+                        'message': message,
+                        'sendBy': _auth.currentUser.uid
+                      });
                     },
                     child: Text(
                       'Send',
@@ -83,11 +89,8 @@ class MessageStream extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: ref
-          .child(_auth.currentUser.uid)
-          .child("Messages")
-          .child(id)
-          .onValue,
+      stream:
+          ref.child(_auth.currentUser.uid).child("Messages").child(id).onValue,
       builder: (context, AsyncSnapshot<Event> snapshot) {
         if (!snapshot.hasData) {
           return Center(
@@ -100,12 +103,17 @@ class MessageStream extends StatelessWidget {
         List<MessageBubble> messageBubbles = [];
         print(messages);
         Map<dynamic, dynamic> values = messages.value;
+        if (values != null) {
+          values.forEach((key, value) {
+            print(value);
+            var messageBubble = MessageBubble(
+                sender: value['id'],
+                text: value['message'],
+                isMe: _auth.currentUser.uid == value['sendBy']);
+            messageBubbles.add(messageBubble);
+          });
+        }
 
-        values.forEach((key, value) {
-          print(value);
-          var messageBubble=MessageBubble(sender: value['id'],text: value['message'],isMe: _auth.currentUser.uid==value['sendBy']);
-          messageBubbles.add(messageBubble);
-        });
         return Expanded(
           child: ListView(
             padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),

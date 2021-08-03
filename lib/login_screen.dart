@@ -62,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
               'imgUrl': user.photoURL,
               'token': token
             });
-            return HomeScreen();
+            return AuthenticateFirebase();
           } else if (snapshot.hasError) {
             return Center(
               child: Text('Something Went Wrong'),
