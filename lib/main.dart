@@ -103,7 +103,7 @@ class _MyAppState extends State<MyApp> {
       create: (context) => GoogleSignInProvider(),
       child: MaterialApp(
         theme: ThemeData(
-          primarySwatch: kPrimaryColor,
+          primarySwatch: Colors.deepPurple,
         ),
         home: AuthenticateFirebase(),
       ),
