@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mission_ed/constants.dart';
 
 class SingleFollowers extends StatelessWidget {
   SingleFollowers({this.imageUrl,this.name});
@@ -17,7 +18,7 @@ class SingleFollowers extends StatelessWidget {
               color: Colors.white,
               borderRadius: BorderRadius.circular(5.0),
               border: Border.all(
-                color: Color(0xff4D3AA4),
+                color: kSecondaryColor,
                 width: 1.0,
               ),
               boxShadow: [
@@ -48,7 +49,7 @@ class SingleFollowers extends StatelessWidget {
                 Text(
                   name,
                   style: TextStyle(
-                      color: Color(0xff312C69),
+                      color: kPrimaryColor,
                       fontSize: 20.0,
                       fontWeight: FontWeight.w500),
                 ),

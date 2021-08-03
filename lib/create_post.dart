@@ -81,7 +81,7 @@ class _CreatePostState extends State<CreatePost> {
                   child: Text(
                     'Create Post',
                     style: TextStyle(
-                        color: Color(0xff312C69),
+                        color: kPrimaryColor,
                         fontSize: 24.0,
                         fontWeight: FontWeight.w700),
                   ),
@@ -94,7 +94,7 @@ class _CreatePostState extends State<CreatePost> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(5.0),
                         border: Border.all(
-                          color: Color(0xff4D3AA4),
+                          color: kSecondaryColor,
                           width: 1.0,
                         ),
                         boxShadow: [
@@ -120,7 +120,7 @@ class _CreatePostState extends State<CreatePost> {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(5.0),
                     border: Border.all(
-                      color: Color(0xff4D3AA4),
+                      color: kSecondaryColor,
                       width: 1.0,
                     ),
                     boxShadow: [
@@ -142,19 +142,19 @@ class _CreatePostState extends State<CreatePost> {
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
                                 'Choose A Category',
-                                style: TextStyle(color: Color(0xff4D3AA4)),
+                                style: TextStyle(color: kSecondaryColor),
                               ),
                             )
                           : Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
                                 _dropDownValue,
-                                style: TextStyle(color: Color(0xff4D3AA4)),
+                                style: TextStyle(color: kSecondaryColor),
                               ),
                             ),
                       isExpanded: true,
                       icon: Icon(Icons.arrow_circle_down),
-                      style: TextStyle(color: Color(0xff4D3AA4)),
+                      style: TextStyle(color: kSecondaryColor),
                       items: [
                         'General',
                         'Internship',

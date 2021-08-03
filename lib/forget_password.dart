@@ -37,7 +37,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                   Text(
                     ' Forget Password',
                     style: TextStyle(
-                        color: Color(0xff312C69),
+                        color: kPrimaryColor,
                         fontSize: 28.0,
                         fontWeight: FontWeight.w700),
                   ),
@@ -78,7 +78,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                                 builder: (context) => LoginScreen()));
                       }
                     },
-                    colour: Color(0xff312C69),
+                    colour: kPrimaryColor,
                     text: 'Confirm',
                   ),
                 ],

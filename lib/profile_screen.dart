@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:mission_ed/change_password.dart';
+import 'package:mission_ed/constants.dart';
 import 'package:mission_ed/login_screen.dart';
 import 'package:provider/provider.dart';
 import 'google_sign_in.dart';
@@ -177,7 +178,7 @@ class ProfileCard extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10.0),
                 border: Border.all(
-                  color: Color(0xff4D3AA4),
+                  color: kSecondaryColor,
                   width: 1.5,
                 ),
                 boxShadow: [

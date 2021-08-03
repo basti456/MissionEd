@@ -84,7 +84,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     Text(
                       ' Change Password',
                       style: TextStyle(
-                          color: Color(0xff312C69),
+                          color: kPrimaryColor,
                           fontSize: 28.0,
                           fontWeight: FontWeight.w700),
                     ),
@@ -165,7 +165,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                               });
                         }
                       },
-                      colour: Color(0xff312C69),
+                      colour: kPrimaryColor,
                       text: 'Confirm',
                     ),
                   ],

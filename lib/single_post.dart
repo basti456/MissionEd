@@ -255,7 +255,7 @@ class _SinglePostState extends State<SinglePost> {
                                   ),
                                   Text(
                                     '',
-                                    style: TextStyle(color: kDarkPurple),
+                                    style: TextStyle(color: kPrimaryColor),
                                   ),
                                 ],
                               ),

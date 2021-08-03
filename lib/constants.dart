@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+const kPrimaryColor=Color(0xff312C69);
+const kSecondaryColor=Color(0xff4D3AA4);
 const kDecoration = InputDecoration(
   prefixIcon: Icon(Icons.email_outlined),
   hintText: 'Enter your Email.',
@@ -79,5 +81,3 @@ const kSendButtonTextStyle = TextStyle(
   fontSize: 18.0,
 );
 
-const kDarkPurple=Color(0xff312C69);
-const kLightPurple=Color(0xff4D3AA4);

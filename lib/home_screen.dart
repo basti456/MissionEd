@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:mission_ed/constants.dart';
 import 'package:mission_ed/create_post.dart';
 import 'single_post.dart';
 import 'Modals.dart';
@@ -114,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   style: TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xff312C69),
+                      color:kPrimaryColor,
                       letterSpacing: 3.0),
                 ),
               ),
@@ -133,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ' Latest Posts',
                             style: TextStyle(
                               textBaseline: TextBaseline.ideographic,
-                              color: Color(0xff4D3AA4),
+                              color: kSecondaryColor,
                               fontSize: 16.0,
                             ),
                           ),
@@ -147,7 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.black54),
                         borderRadius: BorderRadius.circular(16.0),
-                        color: Color(0xff312C69)),
+                        color: kPrimaryColor),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[

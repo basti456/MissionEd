@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mission_ed/constants.dart';
 import 'package:mission_ed/screens/_networks.dart';
 import 'home_screen.dart';
 import 'package:mission_ed/screens/message.dart';
@@ -25,7 +26,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
     return Scaffold(
       body:pageList[pageIndex],
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Color(0xff312C69),
+        backgroundColor: kPrimaryColor,
         selectedIconTheme: IconThemeData(color: Colors.white),
         selectedItemColor: Colors.white,
         unselectedItemColor: Color(0xFFEAEAEA),

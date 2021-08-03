@@ -74,7 +74,7 @@ class _DescriptionState extends State<Description> {
                         Text(
                           'Mission Ed',
                           style: TextStyle(
-                              color: kDarkPurple,
+                              color: kPrimaryColor,
                               fontWeight: FontWeight.w900,
                               fontSize: 26.0,
                               letterSpacing: 2.5),
@@ -89,7 +89,7 @@ class _DescriptionState extends State<Description> {
                         ? Text(
                             post[0].title,
                             style: TextStyle(
-                              color: kDarkPurple,
+                              color: kPrimaryColor,
                               fontSize: 20.0,
                               fontWeight: FontWeight.w500,
                             ),
@@ -97,7 +97,7 @@ class _DescriptionState extends State<Description> {
                         : Text(
                             'Android App Internship',
                             style: TextStyle(
-                              color: kDarkPurple,
+                              color: kPrimaryColor,
                               fontSize: 24.0,
                               fontWeight: FontWeight.bold,
                             ),
@@ -137,14 +137,14 @@ class _DescriptionState extends State<Description> {
                         Text(
                           post[0].category,
                           style: TextStyle(
-                              color: kLightPurple,
+                              color: kSecondaryColor,
                               fontSize: 18.0,
                               fontWeight: FontWeight.w400),
                         ),
                         Text(
                           getDate(int.parse(post[0].id)),
                           style: TextStyle(
-                              color: kLightPurple,
+                              color: kSecondaryColor,
                               fontSize: 16.0,
                               fontWeight: FontWeight.w400),
                         ),
@@ -172,7 +172,7 @@ class _DescriptionState extends State<Description> {
                       height: 50,
                     ),
                     RoundButton(
-                      colour: kDarkPurple,
+                      colour: kPrimaryColor,
                       text: 'Apply',
                     ),
                   ],

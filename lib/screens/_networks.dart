@@ -222,7 +222,7 @@ class _NetworkSectionState extends State<NetworkSection> {
                   'Network Section',
                   textAlign: TextAlign.start,
                   style: TextStyle(
-                      color: Color(0xff312C69),
+                      color: kPrimaryColor,
                       fontSize: 28.0,
                       fontWeight: FontWeight.w700),
                 ),
@@ -379,7 +379,7 @@ class NetworkItems extends StatelessWidget {
           children: [
             Icon(
               icon,
-              color: Color(0xff312C69),
+              color: kPrimaryColor,
             ),
             Text(
               label,
@@ -387,7 +387,7 @@ class NetworkItems extends StatelessWidget {
               style: TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
-                color: Color(0xff4D3AA4),
+                color: kPrimaryColor,
               ),
             ),
           ],

@@ -61,7 +61,7 @@ class _SignUpState extends State<SignUp> {
                     Text(
                       ' Welcome !',
                       style: TextStyle(
-                          color: Color(0xff312C69),
+                          color: kPrimaryColor,
                           fontSize: 24.0,
                           fontWeight: FontWeight.w700),
                     ),
@@ -71,7 +71,7 @@ class _SignUpState extends State<SignUp> {
                     Text(
                       ' SignUp here to explore',
                       style: TextStyle(
-                        color: Color(0xff4D3AA4),
+                        color:kSecondaryColor,
                         fontSize: 20.0,
                       ),
                     ),
@@ -180,7 +180,7 @@ class _SignUpState extends State<SignUp> {
                           );
                         }
                       },
-                      colour: Color(0xff312C69),
+                      colour: kPrimaryColor,
                       text: 'Sign Up',
                     ),
                   ],
@@ -202,7 +202,7 @@ class _SignUpState extends State<SignUp> {
                         ' Already have Account ?',
                         style: TextStyle(
                           textBaseline: TextBaseline.ideographic,
-                          color: Color(0xff4D3AA4),
+                          color: kSecondaryColor,
                           fontSize: 14.0,
                         ),
                         textAlign: TextAlign.center,
@@ -210,7 +210,7 @@ class _SignUpState extends State<SignUp> {
                       Text(
                         'LogIn',
                         style: TextStyle(
-                            color: Color(0xff4D3AA4),
+                            color: kSecondaryColor,
                             fontSize: 18.0,
                             fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,

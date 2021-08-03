@@ -85,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Text(
                             ' Welcome !',
                             style: TextStyle(
-                                color: Color(0xff312C69),
+                                color: kPrimaryColor,
                                 fontSize: 24.0,
                                 fontWeight: FontWeight.w700),
                           ),
@@ -95,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Text(
                             ' Sign In with your credentials',
                             style: TextStyle(
-                              color: Color(0xff4D3AA4),
+                              color: kSecondaryColor,
                               fontSize: 20.0,
                             ),
                           ),
@@ -165,7 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 });
                               }
                             },
-                            colour: Color(0xff312C69),
+                            colour: kPrimaryColor,
                             text: 'Log In',
                           ),
                           GestureDetector(
@@ -178,7 +178,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: Text(
                               ' Forget your password ?',
                               style: TextStyle(
-                                color: Color(0xff4D3AA4),
+                                color: kSecondaryColor,
                                 fontSize: 14.0,
                               ),
                               textAlign: TextAlign.start,
@@ -205,7 +205,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ' Don\'t have Account ?',
                               style: TextStyle(
                                 textBaseline: TextBaseline.ideographic,
-                                color: Color(0xff4D3AA4),
+                                color: kSecondaryColor,
                                 fontSize: 14.0,
                               ),
                               textAlign: TextAlign.center,
@@ -213,7 +213,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Text(
                               'SignUp',
                               style: TextStyle(
-                                  color: Color(0xff4D3AA4),
+                                  color: kSecondaryColor,
                                   fontSize: 18.0,
                                   fontWeight: FontWeight.bold),
                               textAlign: TextAlign.center,

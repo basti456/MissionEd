@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:mission_ed/ModalFFs.dart';
+import 'package:mission_ed/constants.dart';
 
 class SingleSearch extends StatefulWidget {
   SingleSearch({this.imageUrl, this.name, this.id});
@@ -69,7 +70,7 @@ class _SingleSearchState extends State<SingleSearch> {
               color: Colors.white,
               borderRadius: BorderRadius.circular(5.0),
               border: Border.all(
-                color: Color(0xff4D3AA4),
+                color: kSecondaryColor,
                 width: 1.0,
               ),
               boxShadow: [
@@ -108,7 +109,7 @@ class _SingleSearchState extends State<SingleSearch> {
                   child: Text(
                     widget.name,
                     style: TextStyle(
-                        color: Color(0xff312C69),
+                        color: kPrimaryColor,
                         fontSize: 20.0,
                         fontWeight: FontWeight.w500),
                   ),
