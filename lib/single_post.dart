@@ -4,6 +4,8 @@ import 'dart:async';
 
 import 'package:mission_ed/description_screen.dart';
 
+import 'constants.dart';
+
 class SinglePost extends StatefulWidget {
   SinglePost(
       {this.id,
@@ -187,28 +189,63 @@ class _SinglePostState extends State<SinglePost> {
                     child: Stack(
                       alignment: Alignment.center,
                       children: <Widget>[
-                        Container(
-                          height: 210.0,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(5.0),
-                              topRight: Radius.circular(5.0),
-                              bottomLeft: Radius.circular(10.0),
-                              bottomRight: Radius.circular(10.0),
+                        Stack(
+                          children: [
+                            Container(
+                              height: 210.0,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(5.0),
+                                  topRight: Radius.circular(5.0),
+                                  bottomLeft: Radius.circular(10.0),
+                                  bottomRight: Radius.circular(10.0),
+                                ),
+                                shape: BoxShape.rectangle,
+                                image: DecorationImage(
+                                    fit: BoxFit.fill,
+                                    image: NetworkImage(widget.imgPostUrl)),
+                              ),
                             ),
-                            shape: BoxShape.rectangle,
-                            image: DecorationImage(
-                                fit: BoxFit.fill,
-                                image: NetworkImage(widget.imgPostUrl)),
-                          ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      isLiked
+                                          ? Icon(
+                                        Icons.favorite,
+                                        size: 30,
+                                        color: Colors.red,
+                                      )
+                                          : Icon(
+                                        Icons.favorite_border_outlined,
+                                        size: 30.0,
+                                        color: Colors.blueGrey,
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 5.0,
+                                  ),
+                                  Text(
+                                    '389',
+                                    style: TextStyle(color: kDarkPurple),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                         showHeartOverlay
                             ? Icon(
-                                Icons.favorite,
-                                color: Colors.red,
-                                size: 80.0,
-                              )
+                          Icons.favorite,
+                          color: Colors.red,
+                          size: 80.0,
+                        )
                             : Container()
                       ],
                     ),
