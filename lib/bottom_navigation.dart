@@ -29,7 +29,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         backgroundColor: kPrimaryColor,
         selectedIconTheme: IconThemeData(color: Colors.white),
         selectedItemColor: Colors.white,
-        unselectedItemColor: Color(0xFFEAEAEA),
+        unselectedItemColor: kSecondaryColor,
         currentIndex: pageIndex,
         onTap: (value){
           setState(() {
