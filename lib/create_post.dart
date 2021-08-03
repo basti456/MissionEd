@@ -231,6 +231,7 @@ class _CreatePostState extends State<CreatePost> {
                           'postedBy': user.uid.toString(),
                           'imgUrl': user.photoURL == null ? "" : user.photoURL,
                           'imgPostUrl': imgUrl,
+                          'likes':"0",
                           'username': username
                         });
                         SendNotification().sendPostNotification(
