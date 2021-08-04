@@ -17,8 +17,28 @@ class SingleSearch extends StatefulWidget {
 
 class _SingleSearchState extends State<SingleSearch> {
   bool isFollowing;
+  String cUserImage;
+  String cUserName;
   List<Ffs> _search = [];
   FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future<void> getCurrentUserData() async{
+    DatabaseReference reference = FirebaseDatabase.instance
+        .reference()
+        .child('Users')
+        .child(_auth.currentUser.uid);
+    reference.once().then((DataSnapshot snapshot) {
+      if (snapshot.value != null) {
+        _search.clear();
+
+        var values = snapshot.value;
+        cUserImage=values['imgUrl'];
+        cUserName=values['username'];
+
+
+      }
+    });
+  }
 
   void getFData() async {
     DatabaseReference refFData = FirebaseDatabase.instance
@@ -122,9 +142,10 @@ class _SingleSearchState extends State<SingleSearch> {
                               content: Text("Already Following"),
                               duration: Duration(seconds: 1),
                             )
-                          : setState(() {
+                          : setState(() async {
+                              await getCurrentUserData();
                               addToFollwing(
-                                  widget.id, widget.name, widget.imageUrl);
+                                  widget.id, widget.name, widget.imageUrl,cUserImage,cUserName);
                             });
                     },
                     child: Text(
@@ -147,7 +168,7 @@ class _SingleSearchState extends State<SingleSearch> {
   }
 }
 
-addToFollwing(String id, String username, String imageUrl) {
+addToFollwing(String id, String username, String imageUrl ,String cUserImg ,String cUserName) {
   FirebaseAuth _auth = FirebaseAuth.instance;
   final databaseRef = FirebaseDatabase.instance
       .reference()
