@@ -374,7 +374,7 @@ class _CreatePostState extends State<CreatePost> {
                 ),
                 RoundButton(
                   onPressed: () async {
-                    _image!=null?await withoutImageUrl():await withoutImageUrl();
+                    _image!=null?await withImageUrl():await withoutImageUrl();
                   },
                   colour:kPrimaryColor,
                   text: 'Post',
