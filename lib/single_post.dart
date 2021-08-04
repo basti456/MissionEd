@@ -11,13 +11,13 @@ import 'constants.dart';
 class SinglePost extends StatefulWidget {
   SinglePost(
       {this.id,
-      this.title,
-      this.description,
-      this.category,
-      this.postedBy,
-      this.imgUrl,
-      this.imgPostUrl,
-      this.username});
+        this.title,
+        this.description,
+        this.category,
+        this.postedBy,
+        this.imgUrl,
+        this.imgPostUrl,
+        this.username});
 
   final String id;
   final String title;
@@ -165,10 +165,10 @@ class _SinglePostState extends State<SinglePost> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              widget.username,
+                              widget.username!=null?widget.username:'username',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
-                            Text(widget.category),
+                            Text(widget.category!=null?widget.category:'category'),
                           ],
                         ),
                       )
@@ -188,7 +188,7 @@ class _SinglePostState extends State<SinglePost> {
                           width: 3.0,
                         ),
                         Text(
-                          readTimestamp(int.parse(widget.id)),
+                          widget.id!=null?readTimestamp(int.parse(widget.id)):'13 days',
                           style: TextStyle(color: Color(0xff312C69)),
                         ),
                       ],
@@ -205,8 +205,8 @@ class _SinglePostState extends State<SinglePost> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => Description(
-                                    postId: widget.id,
-                                  )));
+                                postId: widget.id,
+                              )));
                     },
                     child: Stack(
                       alignment: Alignment.center,
@@ -239,15 +239,15 @@ class _SinglePostState extends State<SinglePost> {
                                     children: [
                                       isLiked
                                           ? Icon(
-                                              Icons.favorite,
-                                              size: 30,
-                                              color: Colors.red,
-                                            )
+                                        Icons.favorite,
+                                        size: 30,
+                                        color: Colors.red,
+                                      )
                                           : Icon(
-                                              Icons.favorite_border_outlined,
-                                              size: 30.0,
-                                              color: Colors.blueGrey,
-                                            ),
+                                        Icons.favorite_border_outlined,
+                                        size: 30.0,
+                                        color: Colors.blueGrey,
+                                      ),
                                     ],
                                   ),
                                   SizedBox(
@@ -264,10 +264,10 @@ class _SinglePostState extends State<SinglePost> {
                         ),
                         showHeartOverlay
                             ? Icon(
-                                Icons.favorite,
-                                color: Colors.red,
-                                size: 80.0,
-                              )
+                          Icons.favorite,
+                          color: Colors.red,
+                          size: 80.0,
+                        )
                             : Container()
                       ],
                     ),
