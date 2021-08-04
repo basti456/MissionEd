@@ -77,10 +77,10 @@ class _CreatePostState extends State<CreatePost> {
         await createPostFirebaseData(time.toString(), title, username,user.uid.toString(), user.photoURL);
 
         SendNotification().sendPostNotification(
-            "A new post arrived",
+            'A new post arrived',
             user.uid.toString(),
             title,
-            "Post Created",
+            'Post Created',
             time.toString(),
             'MissionEd');
         Navigator.push(
@@ -154,10 +154,10 @@ class _CreatePostState extends State<CreatePost> {
         });
         await createPostFirebaseData(time.toString(), title, username,user.uid.toString(), user.photoURL);
         SendNotification().sendPostNotification(
-            "A new post arrived",
+            'A new post arrived',
             user.uid.toString(),
             title,
-            "Post Created",
+            'Post Created',
             time.toString(),
             'MissionEd');
         Navigator.push(

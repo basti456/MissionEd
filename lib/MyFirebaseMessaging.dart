@@ -25,7 +25,7 @@ class SendNotification {
     final headers = <String, String>{
       'content-type': 'application/json',
       'Authorization':
-          'key=AAAA6cFyXKs:APA91bGjKAz_5qu4oacqwcrvL_7--D2buLUGPQrVcbTG8y5TtolqCbbZUrlj5Fa8lQ5MgIzFJcD94w-cZbibJdJ9aRr7Y7ClTZgqMtZxv2nKwxIkxyB6sbvJoPDjXPuBXY8eOgFczOUM'
+          'key=AAAAsEWVmyY:APA91bHec56YMfUXYPopN_96kVpDIS8tjbITbo7qfccYDijakzeU0x2-worqN9dvE8ddrhUZUViLh7XgRGLhOO9INHxD0rmPBun7BtFrheBfN_GTedISH-LYQy34yAlmLmQxh6KgWW5S'
     };
 
     final url = 'https://fcm.googleapis.com/fcm/send';

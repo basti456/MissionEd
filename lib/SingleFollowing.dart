@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mission_ed/constants.dart';
 import 'package:mission_ed/screens/message.dart';
+import 'package:mission_ed/screens/messagefollowing.dart';
 
 class SingleFollowing extends StatelessWidget {
   SingleFollowing({this.id,this.imageUrl,this.name});
@@ -14,7 +15,7 @@ class SingleFollowing extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => Message(
+                builder: (context) => MessageFollowing(
                   id: id,
                   name: name,
                 )));
