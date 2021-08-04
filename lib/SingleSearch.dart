@@ -16,7 +16,7 @@ class SingleSearch extends StatefulWidget {
 }
 
 class _SingleSearchState extends State<SingleSearch> {
-  bool isFollowing;
+  bool isFollowing=false;
   String cUserImage;
   String cUserName;
   List<Ffs> _search = [];
@@ -46,7 +46,7 @@ class _SingleSearchState extends State<SingleSearch> {
         .child('Users')
         .child(_auth.currentUser.uid)
         .child('Following');
-     refFData.once().then((DataSnapshot snapshot) {
+    refFData.once().then((DataSnapshot snapshot) {
       if (snapshot.value != null) {
         _search.clear();
 
@@ -59,13 +59,10 @@ class _SingleSearchState extends State<SingleSearch> {
             image: values[key]['imgUrl'],
           );
           if (data.uid.contains(widget.id)) {
-            setState(() {
-              isFollowing = true;
-            });
-          } else {
-            setState(() {
-              isFollowing = false;
-            });
+            if(this.mounted)
+              setState(() {
+                isFollowing = true;
+              });
           }
         }
       }
@@ -108,7 +105,7 @@ class _SingleSearchState extends State<SingleSearch> {
                 Expanded(
                   child: Padding(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     child: Container(
                       height: 60.0,
                       width: 60.0,
@@ -137,21 +134,21 @@ class _SingleSearchState extends State<SingleSearch> {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      isFollowing!=null
+                      isFollowing
                           ? SnackBar(
-                              content: Text("Already Following"),
-                              duration: Duration(seconds: 1),
-                            )
+                        content: Text("Already Following"),
+                        duration: Duration(seconds: 1),
+                      )
                           : setState(() {
-                              getCurrentUserData();
-                              addToFollwing(
-                                  widget.id, widget.name, widget.imageUrl,cUserImage,cUserName);
-                            });
+                        getCurrentUserData();
+                        addToFollwing(
+                            widget.id, widget.name, widget.imageUrl,cUserImage,cUserName);
+                      });
                     },
                     child: Text(
-                      isFollowing!=null ? 'Following' : 'Follow',
+                      isFollowing? 'Following' : 'Follow',
                       style: TextStyle(
-                          color: isFollowing!=null
+                          color: isFollowing
                               ? Colors.lightGreen
                               : Color(0xff312C69),
                           fontSize: 16.0,
