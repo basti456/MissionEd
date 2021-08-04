@@ -1,17 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:mission_ed/MyFirebaseMessaging.dart';
+import 'package:mission_ed/utils/MyFirebaseMessaging.dart';
 import 'package:mission_ed/authenticate/authenticate_firebase.dart';
 import 'package:mission_ed/authenticate/methods.dart';
-import 'package:mission_ed/forget_password.dart';
-import 'package:mission_ed/home_screen.dart';
-import 'package:mission_ed/rounded_button.dart';
-import 'package:mission_ed/constants.dart';
-import 'package:mission_ed/signUP_screen.dart';
+import 'package:mission_ed/screens/forget_password.dart';
+import 'package:mission_ed/screens/home_screen.dart';
+import 'package:mission_ed/components/rounded_button.dart';
+import 'package:mission_ed/components/constants.dart';
+import 'package:mission_ed/screens/signUP_screen.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:provider/provider.dart';
-import 'google_sign_in.dart';
+import '../authenticate/google_sign_in.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -85,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Text(
-                            ' Welcome !',
+                            ' Welcome To MissionEd!',
                             style: TextStyle(
                                 color: kPrimaryColor,
                                 fontSize: 24.0,
@@ -181,7 +181,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ' Forget your password ?',
                               style: TextStyle(
                                 color: kSecondaryColor,
-                                fontSize: 14.0,
+                                fontSize: 16.0,
                               ),
                               textAlign: TextAlign.start,
                             ),

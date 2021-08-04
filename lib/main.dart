@@ -5,8 +5,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mission_ed/screens/notifications.dart';
 import 'package:mission_ed/screens/splash.dart';
 import 'package:provider/provider.dart';
-import 'description_screen.dart';
-import 'google_sign_in.dart';
+import 'screens/description_screen.dart';
+import 'authenticate/google_sign_in.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 /*var bigPictureStyleInformation = BigPictureStyleInformation(
@@ -76,6 +76,7 @@ class _MyAppState extends State<MyApp> {
     });
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       if (message.data['type'] == 'Post Created') {
+        print(message.data);
         Navigator.push(
             context,
             MaterialPageRoute(

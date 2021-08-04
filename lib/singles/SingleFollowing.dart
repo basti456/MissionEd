@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mission_ed/constants.dart';
+import 'package:mission_ed/components/constants.dart';
 import 'package:mission_ed/screens/message.dart';
 import 'package:mission_ed/screens/messagefollowing.dart';
 

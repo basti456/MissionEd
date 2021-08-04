@@ -1,9 +1,9 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:mission_ed/NotifacationModel.dart';
-import 'package:mission_ed/screens/SingleNotification.dart';
+import 'package:mission_ed/modals/NotificationModel.dart';
+import 'package:mission_ed/singles/SingleNotification.dart';
 
-import '../constants.dart';
+import '../components/constants.dart';
 
 class Notifications extends StatefulWidget {
   const Notifications({Key key}) : super(key: key);
@@ -59,7 +59,7 @@ class _NotificationsState extends State<Notifications> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
-                  'Notification',
+                  'Notification Section',
                   textAlign: TextAlign.start,
                   style: TextStyle(
                       color: kPrimaryColor,

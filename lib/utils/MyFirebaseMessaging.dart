@@ -19,7 +19,7 @@ class SendNotification {
         "type": "$notificationType",
         "sendersUserId": "$sendersName",
       },
-      "to": '$topic',
+      "to": '/topics/$topic',
     });
 
     final headers = <String, String>{

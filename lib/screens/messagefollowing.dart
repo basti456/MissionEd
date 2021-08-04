@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:mission_ed/constants.dart';
+import 'package:mission_ed/components/constants.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 DatabaseReference ref = FirebaseDatabase.instance.reference().child('Users');
 final _auth = FirebaseAuth.instance;
-/*var id = 't4V2HBES3FclQTwSvyBPOeFjsKv1';*/
+
 
 class MessageFollowing extends StatefulWidget {
   MessageFollowing({this.id, this.name});

@@ -3,14 +3,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mission_ed/authenticate/authenticate_firebase.dart';
-import 'package:mission_ed/constants.dart';
-import 'package:mission_ed/home_screen.dart';
-import 'package:mission_ed/rounded_button.dart';
+import 'package:mission_ed/components/constants.dart';
+import 'package:mission_ed/screens/home_screen.dart';
+import 'package:mission_ed/components/rounded_button.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:modal_progress_hud/modal_progress_hud.dart';
-import 'package:mission_ed/MyFirebaseMessaging.dart';
+import 'package:mission_ed/utils/MyFirebaseMessaging.dart';
 
 class CreatePost extends StatefulWidget {
   @override
@@ -86,7 +86,7 @@ class _CreatePostState extends State<CreatePost> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => HomeScreen()));
+                builder: (context) => AuthenticateFirebase()));
         setState(() {
           showSpinner = false;
         });
@@ -148,7 +148,7 @@ class _CreatePostState extends State<CreatePost> {
           'category': _dropDownValue,
           'postedBy': user.uid.toString(),
           'imgUrl': user.photoURL == null ? "" : user.photoURL,
-          'imgPostUrl': "https://i.pinimg.com/564x/7a/9a/41/7a9a417cb1312623abff4921e2f364f9.jpg",
+          'imgPostUrl': "https://i.pinimg.com/564x/03/2d/b5/032db574a23b523b79481d8d222a41ca.jpg",
           'likes': "0",
           'username': username
         });
@@ -157,8 +157,8 @@ class _CreatePostState extends State<CreatePost> {
             'A new post arrived',
             user.uid.toString(),
             title,
-            'Post Created',
             time.toString(),
+            'Post Created',
             'MissionEd');
         Navigator.push(
             context,
@@ -245,7 +245,7 @@ class _CreatePostState extends State<CreatePost> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 30, 0, 12),
                   child: Text(
-                    'Create Post',
+                    'Create New Post',
                     style: TextStyle(
                         color: kPrimaryColor,
                         fontSize: 24.0,
@@ -275,8 +275,8 @@ class _CreatePostState extends State<CreatePost> {
                       ),
                       child: _image == null
                           ? Image.network(
-                          'https://cdn.dribbble.com/users/2394908/screenshots/10514933/media/310130d08451ef9c41904af397e0667f.jpg')
-                          : Image.file(File(_image.path))),
+                          'https://i.stack.imgur.com/y9DpT.jpg',fit: BoxFit.fill,)
+                          : Image.file(File(_image.path),fit: BoxFit.fill,)),
                 ),
                 SizedBox(
                   height: 20.0,

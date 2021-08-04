@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:mission_ed/ModalFFs.dart';
-import 'package:mission_ed/SingleFollowers.dart';
-import 'package:mission_ed/SingleSearch.dart';
-import 'package:mission_ed/SingleFollowing.dart';
-import '../constants.dart';
+import 'package:mission_ed/modals/ModalFFs.dart';
+import 'package:mission_ed/singles/SingleFollowers.dart';
+import 'package:mission_ed/singles/SingleSearch.dart';
+import 'package:mission_ed/singles/SingleFollowing.dart';
+import '../components/constants.dart';
 
 class NetworkSection extends StatefulWidget {
   const NetworkSection({Key key}) : super(key: key);
@@ -306,7 +306,7 @@ class _NetworkSectionState extends State<NetworkSection> {
                                   decoration: kDecoration.copyWith(
                                       prefixIcon: Icon(
                                           Icons.youtube_searched_for_rounded),
-                                      hintText: 'Enter username'),
+                                      hintText: 'Enter a username'),
                                   onChanged: (value) {
                                     searchMethod(value);
                                   },

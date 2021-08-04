@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:mission_ed/ModalFFs.dart';
-import 'package:mission_ed/constants.dart';
+import 'package:mission_ed/modals/ModalFFs.dart';
+import 'package:mission_ed/components/constants.dart';
 
 class SingleSearch extends StatefulWidget {
   SingleSearch({this.imageUrl, this.name, this.id});

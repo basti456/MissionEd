@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:mission_ed/constants.dart';
-import 'package:mission_ed/rounded_button.dart';
+import 'package:mission_ed/components/constants.dart';
+import 'package:mission_ed/components/rounded_button.dart';
 import 'package:intl/intl.dart';
-import 'Modals.dart';
+import '../modals/Modals.dart';
 
 class Description extends StatefulWidget {
   Description({@required this.postId});

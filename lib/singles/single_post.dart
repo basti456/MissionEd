@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
 
-import 'package:mission_ed/description_screen.dart';
+import 'package:mission_ed/screens/description_screen.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'constants.dart';
+import '../components/constants.dart';
 
 class SinglePost extends StatefulWidget {
   SinglePost(

@@ -1,29 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:mission_ed/description_screen.dart';
+import 'package:mission_ed/components/constants.dart';
+import 'package:mission_ed/screens/message.dart';
 
-import '../constants.dart';
+class SingleFollowers extends StatelessWidget {
+  SingleFollowers({this.id, this.imageUrl, this.name});
 
-class SingleNotificationSection extends StatelessWidget {
-  SingleNotificationSection(
-      {this.id, this.postTitle, this.username, this.imgUrl});
-
-  final String imgUrl;
-  final String postTitle;
-  final String username;
+  final String imageUrl;
+  final String name;
   final String id;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => Description(postId: id)));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => Message(
+                      id: id,
+                      name: name,
+                    )));
       },
       child: Column(
         children: [
-          SizedBox(
-            height: 5.0,
-          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
@@ -45,7 +44,6 @@ class SingleNotificationSection extends StatelessWidget {
                 ],
               ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Padding(
                     padding:
@@ -57,32 +55,19 @@ class SingleNotificationSection extends StatelessWidget {
                         shape: BoxShape.circle,
                         image: DecorationImage(
                           fit: BoxFit.fill,
-                          image: imgUrl == ""
+                          image: imageUrl == ""
                               ? AssetImage('images/dummy profile.png')
-                              : NetworkImage(imgUrl),
+                              : NetworkImage(imageUrl),
                         ),
                       ),
                     ),
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        postTitle != null ? postTitle : 'Internship',
-                        style: TextStyle(
-                            color: kPrimaryColor,
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      Text(
-                        username != null ? username : 'Shaquib Khan',
-                        style: TextStyle(
-                            color: kPrimaryColor,
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ],
+                  Text(
+                    name,
+                    style: TextStyle(
+                        color: kPrimaryColor,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w500),
                   ),
                 ],
               ),

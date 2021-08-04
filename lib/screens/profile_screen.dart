@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:mission_ed/change_password.dart';
-import 'package:mission_ed/constants.dart';
-import 'package:mission_ed/login_screen.dart';
+import 'package:mission_ed/screens/change_password.dart';
+import 'package:mission_ed/components/constants.dart';
+import 'package:mission_ed/screens/login_screen.dart';
 import 'package:provider/provider.dart';
-import 'google_sign_in.dart';
+import '../authenticate/google_sign_in.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -28,6 +28,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         if (snapshot.value != null) {
           setState(() {
             username =  snapshot.value['username'];
+            print(username);
           });
         }
       });

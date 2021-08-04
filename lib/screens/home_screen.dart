@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:mission_ed/constants.dart';
-import 'package:mission_ed/create_post.dart';
-import 'single_post.dart';
-import 'Modals.dart';
+import 'package:mission_ed/components/constants.dart';
+import 'package:mission_ed/screens/create_post.dart';
+import '../singles/single_post.dart';
+import '../modals/Modals.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -40,7 +40,6 @@ class _HomeScreenState extends State<HomeScreen> {
       }
       setState(() {
         size = allPosts.length;
-        print(size);
       });
     });
     return allPosts;
@@ -49,8 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    print(getData());
-    print(allPosts);
+    getData();
   }
 
   @override
@@ -185,29 +183,41 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 10.0,
               ),
               allPosts.length == 0
-                  ? Center(
-                      child: Container(
-                        width: 40.0,
-                        height: 40.0,
-                        child: CircularProgressIndicator(),
+                  ? Expanded(
+                    child: Center(
+                        child: Container(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('No posts yet',style: TextStyle(
+                                fontSize: 21.0,
+                                fontWeight: FontWeight.bold
+                              ),),
+                              Text('Click Create + to create a post',style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 24.0
+                              ),)
+                            ],
+                          ),
+                        ),
                       ),
-                    )
+                  )
                   : Expanded(
                       child: ListView.builder(
-                          reverse: true,
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,
                           itemCount: allPosts.length,
                           itemBuilder: (_, index) {
                             return SinglePost(
-                                id: allPosts[index].id,
-                                title: allPosts[index].title,
-                                description: allPosts[index].description,
-                                category: allPosts[index].category,
-                                postedBy: allPosts[index].postedBy,
-                                imgUrl: allPosts[index].imgUrl,
-                                imgPostUrl: allPosts[index].imgPostUrl,
-                                username: allPosts[index].username);
+                                id: allPosts[allPosts.length-1-index].id,
+                                title: allPosts[allPosts.length-1-index].title,
+                                description: allPosts[allPosts.length-1-index].description,
+                                category: allPosts[allPosts.length-1-index].category,
+                                postedBy: allPosts[allPosts.length-1-index].postedBy,
+                                imgUrl: allPosts[allPosts.length-1-index].imgUrl,
+                                imgPostUrl: allPosts[allPosts.length-1-index].imgPostUrl,
+                                username: allPosts[allPosts.length-1-index].username);
                           }),
                     )
             ],

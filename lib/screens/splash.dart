@@ -24,6 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
       color: Colors.white,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(30, 0, 10, 0),

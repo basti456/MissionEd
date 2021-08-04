@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mission_ed/constants.dart';
-import 'package:mission_ed/screens/_networks.dart';
-import 'home_screen.dart';
-import 'package:mission_ed/screens/message.dart';
+import 'package:mission_ed/components/constants.dart';
+import 'package:mission_ed/screens/network_screen.dart';
+import '../screens/home_screen.dart';
 import 'package:mission_ed/screens/notifications.dart';
-import 'profile_screen.dart';
+import '../screens/profile_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class BottomNavigation extends StatefulWidget {
   @override
@@ -12,6 +12,8 @@ class BottomNavigation extends StatefulWidget {
 }
 
 class _BottomNavigationState extends State<BottomNavigation> {
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  final user = FirebaseAuth.instance.currentUser;
   int pageIndex = 0;
   List<Widget> pageList = <Widget>[
     HomeScreen(),
@@ -43,7 +45,13 @@ class _BottomNavigationState extends State<BottomNavigation> {
           BottomNavigationBarItem(
               icon: Icon(Icons.notifications), label: 'Notification'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.person_rounded), label: 'Profile'),
+              icon: user.photoURL == null
+                  ? Icon(Icons.person_rounded)
+                  : CircleAvatar(
+                      radius: 16,
+                      backgroundImage: NetworkImage(user.photoURL),
+                    ),
+              label: 'Profile'),
         ],
       ),
     );

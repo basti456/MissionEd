@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mission_ed/authenticate/authenticate_firebase.dart';
-import 'package:mission_ed/login_screen.dart';
-import 'package:mission_ed/rounded_button.dart';
-import 'package:mission_ed/constants.dart';
+import 'package:mission_ed/screens/login_screen.dart';
+import 'package:mission_ed/components/rounded_button.dart';
+import 'package:mission_ed/components/constants.dart';
 import 'package:mission_ed/authenticate/methods.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'MyFirebaseMessaging.dart';
+import '../utils/MyFirebaseMessaging.dart';
 
 class SignUp extends StatefulWidget {
   @override

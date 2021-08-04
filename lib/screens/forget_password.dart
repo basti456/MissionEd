@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:mission_ed/login_screen.dart';
-import 'package:mission_ed/rounded_button.dart';
-import 'constants.dart';
+import 'package:mission_ed/screens/login_screen.dart';
+import 'package:mission_ed/components/rounded_button.dart';
+import '../components/constants.dart';
 
 class ForgetPassword extends StatefulWidget {
   @override
