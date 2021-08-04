@@ -77,6 +77,7 @@ class _NotificationsState extends State<Notifications> {
                   itemCount: notificationList.length,
                   itemBuilder: (_, index) {
                     return SingleNotificationSection(
+                      id:notificationList[notificationList.length-1-index].postId,
                       imgUrl: notificationList[notificationList.length-1-index].imgUrl,
                       username: notificationList[notificationList.length-1-index].username,
                       postTitle: notificationList[notificationList.length-1-index].title,);

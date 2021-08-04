@@ -241,7 +241,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           final provider = Provider.of<GoogleSignInProvider>(
                               context,
                               listen: false);
-                          /*subscribeToMissionEd();*/
+                          subscribeToMissionEd();
                           provider.googleLogin();
                         },
                         child: Container(
