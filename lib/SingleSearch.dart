@@ -46,7 +46,7 @@ class _SingleSearchState extends State<SingleSearch> {
         .child('Users')
         .child(_auth.currentUser.uid)
         .child('Following');
-    refFData.once().then((DataSnapshot snapshot) {
+     refFData.once().then((DataSnapshot snapshot) {
       if (snapshot.value != null) {
         _search.clear();
 
