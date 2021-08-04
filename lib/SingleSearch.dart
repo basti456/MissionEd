@@ -29,13 +29,12 @@ class _SingleSearchState extends State<SingleSearch> {
         .child(_auth.currentUser.uid);
     reference.once().then((DataSnapshot snapshot) {
       if (snapshot.value != null) {
-        _search.clear();
-
-        var values = snapshot.value;
-        cUserImage=values['imgUrl'];
-        cUserName=values['username'];
-
-
+        setState(() {
+          _search.clear();
+          var values = snapshot.value;
+          cUserImage=values['imgUrl'];
+          cUserName=values['username'];
+        });
       }
     });
   }
@@ -73,6 +72,7 @@ class _SingleSearchState extends State<SingleSearch> {
   void initState() {
     super.initState();
     getFData();
+    getCurrentUserData();
   }
   @override
   Widget build(BuildContext context) {
@@ -124,7 +124,7 @@ class _SingleSearchState extends State<SingleSearch> {
                 Expanded(
                   flex: 3,
                   child: Text(
-                    widget.name,
+                    widget.name==null?"":widget.name,
                     style: TextStyle(
                         color: kPrimaryColor,
                         fontSize: 20.0,
