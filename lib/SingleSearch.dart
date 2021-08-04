@@ -22,7 +22,7 @@ class _SingleSearchState extends State<SingleSearch> {
   List<Ffs> _search = [];
   FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<void> getCurrentUserData() async{
+  void getCurrentUserData() {
     DatabaseReference reference = FirebaseDatabase.instance
         .reference()
         .child('Users')
@@ -142,8 +142,8 @@ class _SingleSearchState extends State<SingleSearch> {
                               content: Text("Already Following"),
                               duration: Duration(seconds: 1),
                             )
-                          : setState(() async {
-                              await getCurrentUserData();
+                          : setState(() {
+                              getCurrentUserData();
                               addToFollwing(
                                   widget.id, widget.name, widget.imageUrl,cUserImage,cUserName);
                             });
@@ -187,7 +187,7 @@ addToFollwing(String id, String username, String imageUrl ,String cUserImg ,Stri
       .child('Followers');
   databaseFollowerRef.child(_auth.currentUser.uid).set({
     'id': _auth.currentUser.uid,
-    'imgUrl': imageUrl,
-    'username': username,
+    'imgUrl': cUserImg,
+    'username': cUserName,
   });
 }
