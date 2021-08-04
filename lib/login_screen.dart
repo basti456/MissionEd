@@ -50,7 +50,8 @@ class _LoginScreenState extends State<LoginScreen> {
             );
           } else if (snapshot.hasData) {
             final user = FirebaseAuth.instance.currentUser;
-            final token = SendNotification().getToken();
+            /*final token = SendNotification().getToken();*/
+            /*print('This is $token');*/
             final databaseRef = FirebaseDatabase.instance
                 .reference()
                 .child('Users')
@@ -59,8 +60,8 @@ class _LoginScreenState extends State<LoginScreen> {
               'id': user.uid,
               'username': user.displayName,
               'email': user.email,
-              'imgUrl': user.photoURL,
-              'token': token
+              'imgUrl': user.photoURL==null?"":user.photoURL,
+              'token': "token"
             });
             return AuthenticateFirebase();
           } else if (snapshot.hasError) {
@@ -240,7 +241,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           final provider = Provider.of<GoogleSignInProvider>(
                               context,
                               listen: false);
-                          subscribeToMissionEd();
+                          /*subscribeToMissionEd();*/
                           provider.googleLogin();
                         },
                         child: Container(
