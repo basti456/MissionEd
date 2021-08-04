@@ -34,6 +34,7 @@ class SingleNotificationSection extends StatelessWidget {
               ],
             ),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
@@ -50,16 +51,18 @@ class SingleNotificationSection extends StatelessWidget {
                   ),
                 ),
                 Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'this',
+                      postTitle!=null?postTitle:'Internship',
                       style: TextStyle(
                           color: kPrimaryColor,
                           fontSize: 20.0,
                           fontWeight: FontWeight.w500),
                     ),
                     Text(
-                      'that',
+                      username!=null?username:'Shaquib Khan',
                       style: TextStyle(
                           color: kPrimaryColor,
                           fontSize: 14.0,
