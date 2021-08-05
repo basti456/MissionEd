@@ -139,19 +139,39 @@ class _NetworkSectionState extends State<NetworkSection> {
       }
       if (this.mounted)
         setState(() {
-          _followers = Expanded(
-            child: ListView.builder(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemCount: followers.length,
-              itemBuilder: (_, index) {
-                return SingleFollowers(
-                    id:followers[index].uid,
-                    name: followers[index].name,
-                    imageUrl: followers[index].image);
-              },
-            ),
-          );
+          followers.length == 0
+              ? _followers = Expanded(
+                  child: Center(
+                    child: Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'No followers yet',
+                            style: TextStyle(
+                                fontSize: 22.0,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 2.0),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              : _followers = Expanded(
+                  child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: followers.length,
+                    itemBuilder: (_, index) {
+                      return SingleFollowers(
+                          id: followers[index].uid,
+                          name: followers[index].name,
+                          imageUrl: followers[index].image);
+                    },
+                  ),
+                );
         });
     });
     return followers;
@@ -181,19 +201,39 @@ class _NetworkSectionState extends State<NetworkSection> {
       }
       if (this.mounted)
         setState(() {
-          _following = Expanded(
-            child: ListView.builder(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemCount: following.length,
-              itemBuilder: (_, index) {
-                return SingleFollowing(
-                    id:following[index].uid,
-                    name: following[index].name,
-                    imageUrl: following[index].image);
-              },
-            ),
-          );
+          following.length == 0
+              ? _following = Expanded(
+                  child: Center(
+                    child: Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'No following yet',
+                            style: TextStyle(
+                                fontSize: 22.0,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 2.0),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              : _following = Expanded(
+                  child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: following.length,
+                    itemBuilder: (_, index) {
+                      return SingleFollowing(
+                          id: following[index].uid,
+                          name: following[index].name,
+                          imageUrl: following[index].image);
+                    },
+                  ),
+                );
         });
     });
     return following;

@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 Future<User> createAccount(
-    String username, String email, String password, String token) async {
+    String username, String email, String password) async {
   FirebaseAuth _auth = FirebaseAuth.instance;
   try {
     User user = (await _auth.createUserWithEmailAndPassword(
@@ -15,7 +15,6 @@ Future<User> createAccount(
         'username': username,
         'email': email,
         'imgUrl': user.photoURL == null ? "" : user.photoURL,
-        'token': token
       });
       return user;
     }

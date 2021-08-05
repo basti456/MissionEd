@@ -40,6 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
     return Scaffold(
       backgroundColor: Color(0xfffcfcfc),
       body: StreamBuilder(
@@ -49,8 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
             return Center(
               child: CircularProgressIndicator(),
             );
-          } else if (snapshot.hasData) {
-            final user = FirebaseAuth.instance.currentUser;
+          } else if (snapshot.hasData&&user.displayName!=null) {
             /*final token = SendNotification().getToken();*/
             /*print('This is $token');*/
             final databaseRef = FirebaseDatabase.instance
@@ -62,8 +62,8 @@ class _LoginScreenState extends State<LoginScreen> {
               'username': user.displayName,
               'email': user.email,
               'imgUrl': user.photoURL==null?"":user.photoURL,
-              'token': "token"
             });
+            print('This runs');
             return AuthenticateFirebase();
           } else if (snapshot.hasError) {
             return Center(
@@ -146,9 +146,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                         .reference()
                                         .child('Users')
                                         .child(user.uid);
-                                    final token =
-                                        await SendNotification().getToken();
-                                    ref.update({'token': token});
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
